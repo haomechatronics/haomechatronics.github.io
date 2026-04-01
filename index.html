@@ -761,14 +761,15 @@ thêm tên miền GitHub Pages của anh.</div>
   -->
 
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
-    import {
-      getAuth,
-      GoogleAuthProvider,
-      signInWithPopup,
-      signOut,
-      onAuthStateChanged
-    } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithRedirect,
+    getRedirectResult,
+    signOut,
+    onAuthStateChanged
+  } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
     import {
       getFirestore,
       doc,
@@ -988,24 +989,18 @@ thêm tên miền GitHub Pages của anh.</div>
       }
     }
 
-    googleLoginBtn?.addEventListener('click', async () => {
-      authError.textContent = '';
-      const popupTab = window.open('about:blank', '_blank');
+    ggoogleLoginBtn.addEventListener('click', async () => {
+  authError.textContent = '';
+  try {
+    await signInWithRedirect(auth, provider);
+  } catch (error) {
+    authError.textContent = 'Đăng nhập thất bại: ' + error.message;
+  }
+});
 
-      try {
-        await signInWithPopup(auth, provider);
-        const targetUrl = window.location.origin + window.location.pathname + '#lesson-portal';
-
-        if (popupTab) {
-          popupTab.location.href = targetUrl;
-        } else {
-          window.location.href = targetUrl;
-        }
-      } catch (error) {
-        if (popupTab) popupTab.close();
-        authError.textContent = 'Đăng nhập thất bại: ' + error.message;
-      }
-    });
+getRedirectResult(auth).catch((error) => {
+  authError.textContent = 'Đăng nhập thất bại: ' + error.message;
+});
 
     openPortalBtn?.addEventListener('click', () => {
       const targetUrl = window.location.origin + window.location.pathname + '#lesson-portal';
