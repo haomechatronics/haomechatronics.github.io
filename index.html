@@ -160,6 +160,65 @@
         grid-template-columns: 1fr;
       }
     }
+
+
+    .portal-gate-card[hidden],
+    .portal-content[hidden] {
+      display: none !important;
+    }
+
+    .lesson-form select {
+      width: 100%;
+      border: 1px solid #dbe2ea;
+      border-radius: 14px;
+      padding: 13px 15px;
+      font: inherit;
+      outline: none;
+      background: #fff;
+    }
+
+    .course-group-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .course-group-card {
+      background: #f8fafc;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .course-group-card h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .course-group-card .empty-state {
+      padding: 6px 0 0;
+    }
+
+    body.portal-mode .header,
+    body.portal-mode .hero,
+    body.portal-mode .section:not(#lesson-portal),
+    body.portal-mode .footer {
+      display: none !important;
+    }
+
+    body.portal-mode #lesson-portal {
+      display: block !important;
+      padding-top: 36px;
+      padding-bottom: 48px;
+    }
+
+    body.portal-mode {
+      background: linear-gradient(120deg, #07111f 0%, #0a1a34 60%, #07111f 100%);
+    }
+
+    body.portal-mode .site-shell {
+      min-height: 100vh;
+    }
+
   </style>
 
 </head>
@@ -539,7 +598,7 @@
             <h2>Đăng nhập Google để vào khu vực bài học</h2>
             <p>
               Người dùng được cấp quyền sẽ đăng nhập bằng Google. Sau khi đăng nhập thành công,
-              hệ thống sẽ mở một tab phụ trong cùng website để quản lý và xem link bài học YouTube.
+              hệ thống sẽ mở một tab phụ trong cùng website để quản lý và xem link YouTube cho 3 loại khóa học.
             </p>
           </div>
 
@@ -585,8 +644,8 @@ thêm tên miền GitHub Pages của anh.</div>
           <div class="portal-topbar">
             <div class="section-heading" style="margin-bottom:0;">
               <span class="section-tag">Tab phụ bài học</span>
-              <h2>Quản lý link YouTube khóa học</h2>
-              <p>Admin có thể cấp quyền tài khoản con. Tài khoản con được cấp quyền có thể đăng nhập và thêm link bài học.</p>
+              <h2>Quản lý link YouTube cho 3 loại khóa học</h2>
+              <p>Admin có thể cấp quyền tài khoản con. Tài khoản con được cấp quyền có thể đăng nhập và thêm link bài học theo từng nhóm khóa học.</p>
             </div>
             <div class="inline-actions">
               <button class="btn btn-secondary" id="portalRefreshBtn" type="button">Tải lại danh sách</button>
@@ -594,53 +653,90 @@ thêm tên miền GitHub Pages của anh.</div>
             </div>
           </div>
 
-          <div class="portal-grid">
-            <div class="list-stack">
-              <article class="portal-card">
-                <div class="mini-badge">Thêm bài học</div>
-                <form class="lesson-form" id="lessonForm">
-                  <input type="text" id="lessonTitle" placeholder="Tiêu đề bài học" required />
-                  <input type="url" id="lessonUrl" placeholder="Link YouTube https://www.youtube.com/..." required />
-                  <textarea id="lessonDescription" placeholder="Mô tả ngắn về bài học"></textarea>
-                  <button class="btn btn-primary" type="submit">Lưu link bài học</button>
-                </form>
-                <p class="portal-note" id="lessonFormStatus"></p>
-              </article>
-
-              <article class="portal-card">
-                <div class="mini-badge">Danh sách bài học</div>
-                <div id="lessonList" class="list-stack">
-                  <div class="empty-state">Chưa có bài học nào.</div>
-                </div>
-              </article>
+          <article class="portal-card portal-gate-card" id="portalGateCard">
+            <div class="mini-badge">Truy cập tab phụ</div>
+            <h3>Khu vực bài học đang chờ xác thực</h3>
+            <p class="portal-note" id="portalGateMessage">
+              Vui lòng đăng nhập từ trang chính bằng Gmail đã được cấp quyền. Sau khi đăng nhập xong, tab phụ này sẽ tự hiển thị khu vực quản lý bài học.
+            </p>
+            <div class="inline-actions">
+              <a class="btn btn-primary" href="./index.html#login-google">Về trang chính để đăng nhập</a>
+              <button class="btn btn-secondary" id="portalRetryBtn" type="button">Kiểm tra lại quyền truy cập</button>
             </div>
+          </article>
 
-            <div class="list-stack">
-              <article class="portal-card">
-                <div class="mini-badge">Thông tin đăng nhập</div>
-                <h3>Tài khoản hiện tại</h3>
-                <p class="portal-note" id="portalUserInfo">Chưa có thông tin.</p>
-              </article>
+          <div class="portal-content" id="portalContent" hidden>
+            <div class="portal-grid">
+              <div class="list-stack">
+                <article class="portal-card">
+                  <div class="mini-badge">Thêm bài học</div>
+                  <form class="lesson-form" id="lessonForm">
+                    <select id="lessonCourseType" required>
+                      <option value="">Chọn loại khóa học</option>
+                      <option value="basic">PLC Cơ bản</option>
+                      <option value="practical">PLC Ứng dụng thực tế</option>
+                      <option value="advanced">PLC Nâng cao + HMI</option>
+                    </select>
+                    <input type="text" id="lessonTitle" placeholder="Tiêu đề bài học" required />
+                    <input type="url" id="lessonUrl" placeholder="Link YouTube https://www.youtube.com/..." required />
+                    <textarea id="lessonDescription" placeholder="Mô tả ngắn về bài học"></textarea>
+                    <button class="btn btn-primary" type="submit">Lưu link bài học</button>
+                  </form>
+                  <p class="portal-note" id="lessonFormStatus"></p>
+                </article>
 
-              <article class="portal-card admin-only" id="adminPanel" hidden>
-                <div class="mini-badge">Admin</div>
-                <h3>Cấp quyền tài khoản con</h3>
-                <p class="portal-note">
-                  Nhập Gmail cần cấp quyền. Người đó sẽ đăng nhập bằng đúng Google đó để vào trang bài học.
-                </p>
-                <form class="subuser-form" id="subuserForm">
-                  <input type="email" id="subuserEmail" placeholder="email@gmail.com" required />
-                  <button class="btn btn-primary" type="submit">Thêm tài khoản con</button>
-                </form>
-                <p class="portal-note" id="subuserStatus"></p>
-              </article>
+                <article class="portal-card">
+                  <div class="mini-badge">Danh sách bài học</div>
+                  <div class="course-group-grid">
+                    <div class="course-group-card">
+                      <h3>PLC Cơ bản</h3>
+                      <div id="lessonListBasic" class="list-stack">
+                        <div class="empty-state">Chưa có bài học nào.</div>
+                      </div>
+                    </div>
+                    <div class="course-group-card">
+                      <h3>PLC Ứng dụng thực tế</h3>
+                      <div id="lessonListPractical" class="list-stack">
+                        <div class="empty-state">Chưa có bài học nào.</div>
+                      </div>
+                    </div>
+                    <div class="course-group-card">
+                      <h3>PLC Nâng cao + HMI</h3>
+                      <div id="lessonListAdvanced" class="list-stack">
+                        <div class="empty-state">Chưa có bài học nào.</div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
 
-              <article class="portal-card admin-only" id="subuserListCard" hidden>
-                <div class="mini-badge">Danh sách tài khoản con</div>
-                <div id="subuserList" class="list-stack">
-                  <div class="empty-state">Chưa có tài khoản con nào.</div>
-                </div>
-              </article>
+              <div class="list-stack">
+                <article class="portal-card">
+                  <div class="mini-badge">Thông tin đăng nhập</div>
+                  <h3>Tài khoản hiện tại</h3>
+                  <p class="portal-note" id="portalUserInfo">Chưa có thông tin.</p>
+                </article>
+
+                <article class="portal-card admin-only" id="adminPanel" hidden>
+                  <div class="mini-badge">Admin</div>
+                  <h3>Cấp quyền tài khoản con</h3>
+                  <p class="portal-note">
+                    Nhập Gmail cần cấp quyền. Người đó sẽ đăng nhập bằng đúng Google đó để vào tab phụ bài học.
+                  </p>
+                  <form class="subuser-form" id="subuserForm">
+                    <input type="email" id="subuserEmail" placeholder="email@gmail.com" required />
+                    <button class="btn btn-primary" type="submit">Thêm tài khoản con</button>
+                  </form>
+                  <p class="portal-note" id="subuserStatus"></p>
+                </article>
+
+                <article class="portal-card admin-only" id="subuserListCard" hidden>
+                  <div class="mini-badge">Danh sách tài khoản con</div>
+                  <div id="subuserList" class="list-stack">
+                    <div class="empty-state">Chưa có tài khoản con nào.</div>
+                  </div>
+                </article>
+              </div>
             </div>
           </div>
         </div>
@@ -761,15 +857,14 @@ thêm tên miền GitHub Pages của anh.</div>
   -->
 
   <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithRedirect,
-    getRedirectResult,
-    signOut,
-    onAuthStateChanged
-  } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signOut,
+      onAuthStateChanged
+    } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
     import {
       getFirestore,
       doc,
@@ -810,16 +905,23 @@ thêm tên miền GitHub Pages của anh.</div>
     const authError = document.getElementById('authError');
 
     const portalSection = document.getElementById('lesson-portal');
+    const portalGateCard = document.getElementById('portalGateCard');
+    const portalGateMessage = document.getElementById('portalGateMessage');
+    const portalContent = document.getElementById('portalContent');
+    const portalRetryBtn = document.getElementById('portalRetryBtn');
     const adminPanel = document.getElementById('adminPanel');
     const subuserListCard = document.getElementById('subuserListCard');
     const portalUserInfo = document.getElementById('portalUserInfo');
 
     const lessonForm = document.getElementById('lessonForm');
+    const lessonCourseType = document.getElementById('lessonCourseType');
     const lessonTitle = document.getElementById('lessonTitle');
     const lessonUrl = document.getElementById('lessonUrl');
     const lessonDescription = document.getElementById('lessonDescription');
     const lessonFormStatus = document.getElementById('lessonFormStatus');
-    const lessonList = document.getElementById('lessonList');
+    const lessonListBasic = document.getElementById('lessonListBasic');
+    const lessonListPractical = document.getElementById('lessonListPractical');
+    const lessonListAdvanced = document.getElementById('lessonListAdvanced');
 
     const subuserForm = document.getElementById('subuserForm');
     const subuserEmail = document.getElementById('subuserEmail');
@@ -828,6 +930,12 @@ thêm tên miền GitHub Pages của anh.</div>
 
     let currentUser = null;
     let currentRole = null;
+    const isPortalMode = new URLSearchParams(window.location.search).get('portal') === '1';
+
+    if (isPortalMode) {
+      document.body.classList.add('portal-mode');
+      document.title = 'Portal bài học | Haomechatronics PLC Academy';
+    }
 
     function escapeHtml(value = '') {
       return value
@@ -884,13 +992,16 @@ thêm tên miền GitHub Pages của anh.</div>
     }
 
     function showPortal(enabled) {
-      portalSection.hidden = !enabled;
-      if (enabled) {
-        if (window.location.hash === '#lesson-portal') {
-          setTimeout(() => {
-            document.getElementById('lesson-portal')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 150);
-        }
+      portalSection.hidden = !isPortalMode;
+      if (!isPortalMode) return;
+
+      portalGateCard.hidden = !!enabled;
+      portalContent.hidden = !enabled;
+    }
+
+    function updatePortalGateMessage(message) {
+      if (portalGateMessage) {
+        portalGateMessage.textContent = message;
       }
     }
 
@@ -899,35 +1010,75 @@ thêm tên miền GitHub Pages của anh.</div>
       subuserListCard.hidden = !enabled;
     }
 
+    function courseTypeLabel(courseType) {
+      if (courseType === 'basic') return 'PLC Cơ bản';
+      if (courseType === 'practical') return 'PLC Ứng dụng thực tế';
+      if (courseType === 'advanced') return 'PLC Nâng cao + HMI';
+      return 'Chưa phân loại';
+    }
+
+    function renderLessonGroup(container, items) {
+      if (!container) return;
+
+      if (!items.length) {
+        container.innerHTML = '<div class="empty-state">Chưa có bài học nào.</div>';
+        return;
+      }
+
+      container.innerHTML = '';
+      items.forEach((data) => {
+        const article = document.createElement('article');
+        article.className = 'lesson-card';
+        article.innerHTML = `
+          <h4>${escapeHtml(data.title || 'Không có tiêu đề')}</h4>
+          <a class="youtube-link" href="${escapeHtml(data.url || '#')}" target="_blank" rel="noopener">
+            ${escapeHtml(data.url || '')}
+          </a>
+          <p>${escapeHtml(data.description || '')}</p>
+          <p class="lesson-meta">Nhóm khóa học: ${escapeHtml(courseTypeLabel(data.courseType || ''))}</p>
+          <p class="lesson-meta">Người thêm: ${escapeHtml(data.createdBy || 'Không rõ')}</p>
+        `;
+        container.appendChild(article);
+      });
+    }
+
     async function renderLessons() {
-      lessonList.innerHTML = '<div class="empty-state">Đang tải danh sách bài học...</div>';
+      lessonListBasic.innerHTML = '<div class="empty-state">Đang tải danh sách bài học...</div>';
+      lessonListPractical.innerHTML = '<div class="empty-state">Đang tải danh sách bài học...</div>';
+      lessonListAdvanced.innerHTML = '<div class="empty-state">Đang tải danh sách bài học...</div>';
 
       try {
         const q = query(collection(db, 'youtubeLinks'), orderBy('createdAt', 'desc'));
         const snap = await getDocs(q);
 
         if (snap.empty) {
-          lessonList.innerHTML = '<div class="empty-state">Chưa có bài học nào.</div>';
+          renderLessonGroup(lessonListBasic, []);
+          renderLessonGroup(lessonListPractical, []);
+          renderLessonGroup(lessonListAdvanced, []);
           return;
         }
 
-        lessonList.innerHTML = '';
+        const groups = {
+          basic: [],
+          practical: [],
+          advanced: []
+        };
+
         snap.forEach((item) => {
           const data = item.data();
-          const article = document.createElement('article');
-          article.className = 'lesson-card';
-          article.innerHTML = `
-            <h4>${escapeHtml(data.title || 'Không có tiêu đề')}</h4>
-            <a class="youtube-link" href="${escapeHtml(data.url || '#')}" target="_blank" rel="noopener">
-              ${escapeHtml(data.url || '')}
-            </a>
-            <p>${escapeHtml(data.description || '')}</p>
-            <p class="lesson-meta">Người thêm: ${escapeHtml(data.createdBy || 'Không rõ')}</p>
-          `;
-          lessonList.appendChild(article);
+          const type = data.courseType || 'basic';
+          if (!groups[type]) groups[type] = [];
+          groups[type].push(data);
         });
+
+        renderLessonGroup(lessonListBasic, groups.basic);
+        renderLessonGroup(lessonListPractical, groups.practical);
+        renderLessonGroup(lessonListAdvanced, groups.advanced);
       } catch (error) {
-        lessonList.innerHTML = `<div class="empty-state">Không tải được danh sách: ${escapeHtml(error.message)}</div>`;
+        const errorHtml = `<div class="empty-state">Không tải được danh sách: ${escapeHtml(error.message)}</div>`;
+        lessonListBasic.innerHTML = errorHtml;
+        lessonListPractical.innerHTML = errorHtml;
+        lessonListAdvanced.innerHTML = errorHtml;
       }
     }
 
@@ -977,6 +1128,14 @@ thêm tên miền GitHub Pages của anh.</div>
       showPortal(allowed);
       showAdminBlocks(currentRole === 'admin');
 
+      if (isPortalMode) {
+        if (!user) {
+          updatePortalGateMessage('Tab phụ này yêu cầu đăng nhập. Hãy quay về trang chính, đăng nhập bằng Gmail đã được cấp quyền, rồi mở lại tab phụ bài học.');
+        } else if (!allowed) {
+          updatePortalGateMessage('Tài khoản này đã đăng nhập nhưng chưa được admin cấp quyền vào tab phụ bài học.');
+        }
+      }
+
       if (user && !allowed) {
         authError.textContent = 'Tài khoản này chưa được admin cấp quyền vào khu vực bài học.';
       }
@@ -989,21 +1148,28 @@ thêm tên miền GitHub Pages của anh.</div>
       }
     }
 
-    ggoogleLoginBtn.addEventListener('click', async () => {
-  authError.textContent = '';
-  try {
-    await signInWithRedirect(auth, provider);
-  } catch (error) {
-    authError.textContent = 'Đăng nhập thất bại: ' + error.message;
-  }
-});
+    googleLoginBtn?.addEventListener('click', async () => {
+      authError.textContent = '';
+      const targetUrl = window.location.origin + window.location.pathname + '?portal=1';
+      const popupTab = window.open(targetUrl, '_blank');
 
-getRedirectResult(auth).catch((error) => {
-  authError.textContent = 'Đăng nhập thất bại: ' + error.message;
-});
+      try {
+        await signInWithPopup(auth, provider);
+
+        if (popupTab && !popupTab.closed) {
+          popupTab.location.href = targetUrl + '&ready=' + Date.now();
+          popupTab.focus();
+        } else {
+          window.open(targetUrl, '_blank');
+        }
+      } catch (error) {
+        if (popupTab && !popupTab.closed) popupTab.close();
+        authError.textContent = 'Đăng nhập thất bại: ' + error.message;
+      }
+    });
 
     openPortalBtn?.addEventListener('click', () => {
-      const targetUrl = window.location.origin + window.location.pathname + '#lesson-portal';
+      const targetUrl = window.location.origin + window.location.pathname + '?portal=1';
       window.open(targetUrl, '_blank');
     });
 
@@ -1019,7 +1185,13 @@ getRedirectResult(auth).catch((error) => {
       if (currentRole) {
         await renderLessons();
         if (currentRole === 'admin') await renderSubusers();
+      } else if (isPortalMode) {
+        await syncView(auth.currentUser);
       }
+    });
+
+    portalRetryBtn?.addEventListener('click', async () => {
+      await syncView(auth.currentUser);
     });
 
     lessonForm?.addEventListener('submit', async (event) => {
@@ -1031,6 +1203,11 @@ getRedirectResult(auth).catch((error) => {
         return;
       }
 
+      if (!lessonCourseType.value) {
+        lessonFormStatus.textContent = 'Vui lòng chọn loại khóa học.';
+        return;
+      }
+
       if (!isValidYoutubeUrl(lessonUrl.value)) {
         lessonFormStatus.textContent = 'Vui lòng nhập đúng link YouTube.';
         return;
@@ -1038,6 +1215,7 @@ getRedirectResult(auth).catch((error) => {
 
       try {
         await addDoc(collection(db, 'youtubeLinks'), {
+          courseType: lessonCourseType.value,
           title: lessonTitle.value.trim(),
           url: lessonUrl.value.trim(),
           description: lessonDescription.value.trim(),
