@@ -42,6 +42,7 @@
           <a href="#curriculum">Lộ trình</a>
           <a href="#instructor">Giảng viên</a>
           <a href="#payment">Đăng ký</a>
+          <a href="#login">Đăng nhập</a>
           <a href="#contact">Liên hệ</a>
         </nav>
       </div>
@@ -384,6 +385,27 @@
         </div>
       </section>
 
+      <section class="section section-light" id="login">
+        <div class="container">
+          <div class="section-heading center">
+            <span class="section-tag">Khu vực quản trị</span>
+            <h2>Đăng nhập Google để quản lý bài học</h2>
+            <p>Đăng nhập xong sẽ mở trang quản trị ở tab phụ để anh up bài học sau này.</p>
+          </div>
+
+          <div class="payment-card full-width" style="max-width: 760px; margin: 0 auto;">
+            <div style="display:flex; gap:16px; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+              <div>
+                <h3 style="margin-bottom:8px;">Đăng nhập bằng Google</h3>
+                <p class="muted" style="margin:0;">Chỉ tài khoản quản trị mới có quyền vào trang đăng bài học.</p>
+              </div>
+              <button class="btn btn-primary" id="googleLoginBtn" type="button">Đăng nhập Google</button>
+            </div>
+            <p id="loginStatus" class="muted" style="margin-top:16px;">Chưa đăng nhập.</p>
+          </div>
+        </div>
+      </section>
+
       <section class="section faq-section">
         <div class="container">
           <div class="section-heading center">
@@ -459,5 +481,6 @@
   </div>
 
   <script src="script.js"></script>
+  <script type="module" src="google-auth.js"></script>
 </body>
 </html>
