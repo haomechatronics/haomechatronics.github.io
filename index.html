@@ -562,16 +562,19 @@
             </article>
 
             <article class="auth-card">
-             
-const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
-const firebaseConfig = {
-  apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
-  authDomain: 'project-81bb7049-bc9f-499f-974.firebaseapp.com',
-  projectId: 'project-81bb7049-bc9f-499f-974',
-  storageBucket: 'project-81bb7049-bc9f-499f-974.firebasestorage.app',
-  messagingSenderId: '533570063852',
-  appId: ':533570063852:web:d15aa61abd7a7c2e64c4c9'
-};</div>
+              <div class="mini-badge">Thiết lập đã gắn sẵn</div>
+              <h3>Cấu hình đã được điền vào file</h3>
+              <p class="auth-note">
+                File này đã gắn sẵn Gmail admin và cấu hình Firebase. Anh chỉ việc dán đè lên
+                <strong>index.html</strong>, sau đó nhớ bật <strong>Google Sign-in</strong> và dán
+                <strong>Firestore Rules</strong> trong Firebase Console.
+              </p>
+              <div class="code-note">Admin hiện tại: haostudio84l1@gmail.com
+Project ID: project-81bb7049-bc9f-499f-974
+
+Nếu đăng nhập không được trên GitHub Pages:
+Authentication → Settings → Authorized domains
+thêm tên miền GitHub Pages của anh.</div>
             </article>
           </div>
         </div>
@@ -732,7 +735,7 @@ const firebaseConfig = {
       }
 
       function isAdmin() {
-        return isSignedIn() && request.auth.token.email == "haomechatronics@gmail.com";
+        return isSignedIn() && request.auth.token.email == "haostudio84l1@gmail.com";
       }
 
       function isAllowed() {
@@ -779,21 +782,22 @@ const firebaseConfig = {
       serverTimestamp
     } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
 
-    const ADMIN_EMAIL = 'haomechatronics@gmail.com'; // <-- đổi thành Gmail admin thật
+    const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
 
     const firebaseConfig = {
-      apiKey: 'PASTE_HERE',
-      authDomain: 'PASTE_HERE',
-      projectId: 'PASTE_HERE',
-      storageBucket: 'PASTE_HERE',
-      messagingSenderId: 'PASTE_HERE',
-      appId: 'PASTE_HERE'
+      apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
+      authDomain: 'project-81bb7049-bc9f-499f-974.firebaseapp.com',
+      projectId: 'project-81bb7049-bc9f-499f-974',
+      storageBucket: 'project-81bb7049-bc9f-499f-974.firebasestorage.app',
+      messagingSenderId: '533570063852',
+      appId: '1:533570063852:web:d15aa61abd7a7c2e64c4c9'
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
 
     const googleLoginBtn = document.getElementById('googleLoginBtn');
     const googleLogoutBtn = document.getElementById('googleLogoutBtn');
@@ -850,9 +854,16 @@ const firebaseConfig = {
         return 'admin';
       }
 
-      const allowedRef = doc(db, 'allowedUsers', email);
-      const allowedSnap = await getDoc(allowedRef);
-      return allowedSnap.exists() ? 'editor' : null;
+      try {
+        const allowedRef = doc(db, 'allowedUsers', email);
+        const allowedSnap = await getDoc(allowedRef);
+        return allowedSnap.exists() ? 'editor' : null;
+      } catch (error) {
+        if (error?.code === 'permission-denied' || String(error?.message || '').includes('Missing or insufficient permissions')) {
+          return null;
+        }
+        throw error;
+      }
     }
 
     function updateAuthMessage(user, role) {
@@ -950,12 +961,24 @@ const firebaseConfig = {
 
     async function syncView(user) {
       currentUser = user;
-      currentRole = await getUserRole(user);
+      authError.textContent = '';
+
+      try {
+        currentRole = await getUserRole(user);
+      } catch (error) {
+        currentRole = null;
+        authError.textContent = 'Không kiểm tra được quyền truy cập: ' + error.message;
+      }
+
       updateAuthMessage(user, currentRole);
 
       const allowed = !!currentRole;
       showPortal(allowed);
       showAdminBlocks(currentRole === 'admin');
+
+      if (user && !allowed) {
+        authError.textContent = 'Tài khoản này chưa được admin cấp quyền vào khu vực bài học.';
+      }
 
       if (allowed) {
         await renderLessons();
@@ -967,17 +990,26 @@ const firebaseConfig = {
 
     googleLoginBtn?.addEventListener('click', async () => {
       authError.textContent = '';
+      const popupTab = window.open('about:blank', '_blank');
 
       try {
         await signInWithPopup(auth, provider);
-        window.open(window.location.pathname + '#lesson-portal', '_blank');
+        const targetUrl = window.location.origin + window.location.pathname + '#lesson-portal';
+
+        if (popupTab) {
+          popupTab.location.href = targetUrl;
+        } else {
+          window.location.href = targetUrl;
+        }
       } catch (error) {
+        if (popupTab) popupTab.close();
         authError.textContent = 'Đăng nhập thất bại: ' + error.message;
       }
     });
 
     openPortalBtn?.addEventListener('click', () => {
-      window.open(window.location.pathname + '#lesson-portal', '_blank');
+      const targetUrl = window.location.origin + window.location.pathname + '#lesson-portal';
+      window.open(targetUrl, '_blank');
     });
 
     googleLogoutBtn?.addEventListener('click', async () => {
