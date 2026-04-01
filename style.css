@@ -102,16 +102,24 @@ select {
 }
 
 .brand-mark {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: #fff;
-  font-weight: 800;
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.35);
+  background: #ffffff;
+  overflow: hidden;
+  padding: 4px;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.20);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .nav {
@@ -361,7 +369,25 @@ select {
   border-radius: 16px;
   background:
     linear-gradient(180deg, rgba(37, 99, 235, 0.22), rgba(37, 99, 235, 0.06)),
-    linear-gradient(transparent 0%, transparent 12%, rgba(15, 23, 42, 0.08) 12%, rgba(15, 23, 42, 0.08) 15%, transparent 15%, transparent 30%, rgba(15, 23, 42, 0.08) 30%, rgba(15, 23, 42, 0.08) 33%, transparent 33%, transparent 52%, rgba(15, 23, 42, 0.08) 52%, rgba(15, 23, 42, 0.08) 55%, transparent 55%, transparent 75%, rgba(15, 23, 42, 0.08) 75%, rgba(15, 23, 42, 0.08) 78%, transparent 78%);
+    linear-gradient(
+      transparent 0%,
+      transparent 12%,
+      rgba(15, 23, 42, 0.08) 12%,
+      rgba(15, 23, 42, 0.08) 15%,
+      transparent 15%,
+      transparent 30%,
+      rgba(15, 23, 42, 0.08) 30%,
+      rgba(15, 23, 42, 0.08) 33%,
+      transparent 33%,
+      transparent 52%,
+      rgba(15, 23, 42, 0.08) 52%,
+      rgba(15, 23, 42, 0.08) 55%,
+      transparent 55%,
+      transparent 75%,
+      rgba(15, 23, 42, 0.08) 75%,
+      rgba(15, 23, 42, 0.08) 78%,
+      transparent 78%
+    );
 }
 
 .terminal-row {
@@ -1120,6 +1146,7 @@ select {
     gap: 12px;
   }
 }
+
 .hero-image-card,
 .instructor-photo-card {
   background: #ffffff;
@@ -1217,6 +1244,7 @@ select {
     max-height: none;
   }
 }
+
 /* ===== FIX MÀU CHỮ CHO PHẦN PAYMENT ===== */
 #payment,
 #payment * {
@@ -1365,26 +1393,8 @@ select {
   background: linear-gradient(135deg, #0ea5e9, #0891b2);
   color: #ffffff;
 }
-/* ===== FIX CHỮ TRẮNG CHO SECTION KHÓA HỌC + GIẢNG VIÊN ===== */
 
-#courses .section-heading h2,
-#instructor .instructor-copy h2 {
-  color: #ffffff !important;
-}
-
-#courses .section-heading p,
-#instructor .instructor-copy p {
-  color: rgba(255, 255, 255, 0.88) !important;
-}
-
-#courses .section-heading,
-#instructor .instructor-copy {
-  position: relative;
-  z-index: 2;
-}
-
-/* ===== FIX CHỮ TRẮNG RÕ HƠN ===== */
-
+/* ===== FIX CHỮ TRẮNG CHO SECTION NỀN TỐI ===== */
 #courses .section-heading h2,
 #instructor .instructor-copy h2 {
   color: #ffffff !important;
@@ -1396,10 +1406,13 @@ select {
   color: #e2e8f0 !important;
 }
 
+#courses .section-heading,
+#instructor .instructor-copy {
+  position: relative;
+  z-index: 2;
+}
+
 #courses .section-tag,
 #instructor .section-tag {
   color: #2dd4bf;
 }
-
-
-
