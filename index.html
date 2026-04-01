@@ -16,6 +16,152 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .auth-section .section-heading,
+    .portal-section .section-heading {
+      margin-bottom: 28px;
+    }
+
+    .auth-grid,
+    .portal-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .auth-card,
+    .portal-card,
+    .lesson-card,
+    .subuser-card {
+      background: #ffffff;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    .portal-section[hidden],
+    .admin-only[hidden] {
+      display: none !important;
+    }
+
+    .auth-status {
+      margin-top: 16px;
+      font-weight: 600;
+    }
+
+    .auth-note,
+    .portal-note {
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    .lesson-form,
+    .subuser-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .lesson-form input,
+    .lesson-form textarea,
+    .subuser-form input {
+      width: 100%;
+      border: 1px solid #dbe2ea;
+      border-radius: 14px;
+      padding: 13px 15px;
+      font: inherit;
+      outline: none;
+      background: #fff;
+    }
+
+    .lesson-form textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .inline-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .mini-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      color: #1d4ed8;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .portal-topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .list-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .lesson-meta,
+    .user-meta {
+      color: #64748b;
+      font-size: 14px;
+      margin: 8px 0 0;
+    }
+
+    .lesson-card h4,
+    .subuser-card h4 {
+      margin: 0 0 10px;
+    }
+
+    .youtube-link {
+      word-break: break-all;
+      font-weight: 600;
+    }
+
+    .empty-state {
+      color: #64748b;
+      padding: 18px 0;
+    }
+
+    .danger-note {
+      color: #b91c1c;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .code-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 14px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 900px) {
+      .auth-grid,
+      .portal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
 </head>
 <body>
 <div class="site-shell">
@@ -42,7 +188,7 @@
           <a href="#curriculum">Lộ trình</a>
           <a href="#instructor">Giảng viên</a>
           <a href="#payment">Đăng ký</a>
-          <a href="#login">Đăng nhập</a>
+          <a href="#login-google">Đăng nhập</a>
           <a href="#contact">Liên hệ</a>
         </nav>
       </div>
@@ -385,26 +531,125 @@
         </div>
       </section>
 
-      <section class="section section-light" id="login">
+      
+      <section class="section auth-section" id="login-google">
         <div class="container">
-          <div class="section-heading center">
-            <span class="section-tag">Khu vực quản trị</span>
-            <h2>Đăng nhập Google để quản lý bài học</h2>
-            <p>Đăng nhập xong sẽ mở trang quản trị ở tab phụ để anh up bài học sau này.</p>
+          <div class="section-heading">
+            <span class="section-tag">Đăng nhập học liệu</span>
+            <h2>Đăng nhập Google để vào khu vực bài học</h2>
+            <p>
+              Người dùng được cấp quyền sẽ đăng nhập bằng Google. Sau khi đăng nhập thành công,
+              hệ thống sẽ mở một tab phụ trong cùng website để quản lý và xem link bài học YouTube.
+            </p>
           </div>
 
-          <div class="payment-card full-width" style="max-width: 760px; margin: 0 auto;">
-            <div style="display:flex; gap:16px; justify-content:space-between; align-items:center; flex-wrap:wrap;">
-              <div>
-                <h3 style="margin-bottom:8px;">Đăng nhập bằng Google</h3>
-                <p class="muted" style="margin:0;">Chỉ tài khoản quản trị mới có quyền vào trang đăng bài học.</p>
+          <div class="auth-grid">
+            <article class="auth-card">
+              <div class="mini-badge">Google Login</div>
+              <h3>Đăng nhập nhanh</h3>
+              <p class="auth-note">
+                Admin dùng đúng Gmail quản trị. Các tài khoản con chỉ cần đăng nhập bằng Gmail đã được admin cấp quyền.
+              </p>
+
+              <div class="inline-actions">
+                <button class="btn btn-primary" id="googleLoginBtn" type="button">Đăng nhập bằng Google</button>
+                <button class="btn btn-secondary" id="openPortalBtn" type="button">Mở tab phụ bài học</button>
+                <button class="btn btn-secondary" id="googleLogoutBtn" type="button">Đăng xuất</button>
               </div>
-              <button class="btn btn-primary" id="googleLoginBtn" type="button">Đăng nhập Google</button>
-            </div>
-            <p id="loginStatus" class="muted" style="margin-top:16px;">Chưa đăng nhập.</p>
+
+              <div class="auth-status" id="authStatus">Chưa đăng nhập.</div>
+              <p class="danger-note" id="authError"></p>
+            </article>
+
+            <article class="auth-card">
+              <div class="mini-badge">Thiết lập một lần</div>
+              <h3>Cần sửa 2 chỗ trong file</h3>
+              <p class="auth-note">
+                1) Sửa <strong>ADMIN_EMAIL</strong> thành Gmail admin thật của anh.<br />
+                2) Dán <strong>firebaseConfig</strong> của project Firebase vào đúng chỗ trong file này.
+              </p>
+              <div class="code-note">// 2 chỗ cần sửa trong file này:
+const ADMIN_EMAIL = "haomechatronics@gmail.com";
+
+const firebaseConfig = {
+  apiKey: "PASTE_HERE",
+  authDomain: "PASTE_HERE",
+  projectId: "PASTE_HERE",
+  storageBucket: "PASTE_HERE",
+  messagingSenderId: "PASTE_HERE",
+  appId: "PASTE_HERE"
+};</div>
+            </article>
           </div>
         </div>
       </section>
+
+      <section class="section section-light portal-section" id="lesson-portal" hidden>
+        <div class="container">
+          <div class="portal-topbar">
+            <div class="section-heading" style="margin-bottom:0;">
+              <span class="section-tag">Tab phụ bài học</span>
+              <h2>Quản lý link YouTube khóa học</h2>
+              <p>Admin có thể cấp quyền tài khoản con. Tài khoản con được cấp quyền có thể đăng nhập và thêm link bài học.</p>
+            </div>
+            <div class="inline-actions">
+              <button class="btn btn-secondary" id="portalRefreshBtn" type="button">Tải lại danh sách</button>
+              <button class="btn btn-primary" id="portalLogoutBtn" type="button">Đăng xuất</button>
+            </div>
+          </div>
+
+          <div class="portal-grid">
+            <div class="list-stack">
+              <article class="portal-card">
+                <div class="mini-badge">Thêm bài học</div>
+                <form class="lesson-form" id="lessonForm">
+                  <input type="text" id="lessonTitle" placeholder="Tiêu đề bài học" required />
+                  <input type="url" id="lessonUrl" placeholder="Link YouTube https://www.youtube.com/..." required />
+                  <textarea id="lessonDescription" placeholder="Mô tả ngắn về bài học"></textarea>
+                  <button class="btn btn-primary" type="submit">Lưu link bài học</button>
+                </form>
+                <p class="portal-note" id="lessonFormStatus"></p>
+              </article>
+
+              <article class="portal-card">
+                <div class="mini-badge">Danh sách bài học</div>
+                <div id="lessonList" class="list-stack">
+                  <div class="empty-state">Chưa có bài học nào.</div>
+                </div>
+              </article>
+            </div>
+
+            <div class="list-stack">
+              <article class="portal-card">
+                <div class="mini-badge">Thông tin đăng nhập</div>
+                <h3>Tài khoản hiện tại</h3>
+                <p class="portal-note" id="portalUserInfo">Chưa có thông tin.</p>
+              </article>
+
+              <article class="portal-card admin-only" id="adminPanel" hidden>
+                <div class="mini-badge">Admin</div>
+                <h3>Cấp quyền tài khoản con</h3>
+                <p class="portal-note">
+                  Nhập Gmail cần cấp quyền. Người đó sẽ đăng nhập bằng đúng Google đó để vào trang bài học.
+                </p>
+                <form class="subuser-form" id="subuserForm">
+                  <input type="email" id="subuserEmail" placeholder="email@gmail.com" required />
+                  <button class="btn btn-primary" type="submit">Thêm tài khoản con</button>
+                </form>
+                <p class="portal-note" id="subuserStatus"></p>
+              </article>
+
+              <article class="portal-card admin-only" id="subuserListCard" hidden>
+                <div class="mini-badge">Danh sách tài khoản con</div>
+                <div id="subuserList" class="list-stack">
+                  <div class="empty-state">Chưa có tài khoản con nào.</div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       <section class="section faq-section">
         <div class="container">
@@ -480,7 +725,349 @@
     </footer>
   </div>
 
+
   <script src="script.js"></script>
-  <script type="module" src="google-auth.js"></script>
+
+  <!--
+  FIRESTORE RULES DÁN TRONG FIREBASE CONSOLE:
+
+  rules_version = '2';
+  service cloud.firestore {
+    match /databases/{database}/documents {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isAdmin() {
+        return isSignedIn() && request.auth.token.email == "haomechatronics@gmail.com";
+      }
+
+      function isAllowed() {
+        return isSignedIn() &&
+          (
+            isAdmin() ||
+            exists(/databases/$(database)/documents/allowedUsers/$(request.auth.token.email))
+          );
+      }
+
+      match /allowedUsers/{email} {
+        allow read: if isAllowed();
+        allow create, update, delete: if isAdmin();
+      }
+
+      match /youtubeLinks/{docId} {
+        allow read: if isAllowed();
+        allow create: if isAllowed();
+        allow update, delete: if isAdmin();
+      }
+    }
+  }
+  -->
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signOut,
+      onAuthStateChanged
+    } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      getDocs,
+      addDoc,
+      collection,
+      query,
+      orderBy,
+      serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+
+    const ADMIN_EMAIL = 'haomechatronics@gmail.com'; // <-- đổi thành Gmail admin thật
+
+    const firebaseConfig = {
+      apiKey: 'PASTE_HERE',
+      authDomain: 'PASTE_HERE',
+      projectId: 'PASTE_HERE',
+      storageBucket: 'PASTE_HERE',
+      messagingSenderId: 'PASTE_HERE',
+      appId: 'PASTE_HERE'
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    const googleLogoutBtn = document.getElementById('googleLogoutBtn');
+    const openPortalBtn = document.getElementById('openPortalBtn');
+    const portalLogoutBtn = document.getElementById('portalLogoutBtn');
+    const portalRefreshBtn = document.getElementById('portalRefreshBtn');
+
+    const authStatus = document.getElementById('authStatus');
+    const authError = document.getElementById('authError');
+
+    const portalSection = document.getElementById('lesson-portal');
+    const adminPanel = document.getElementById('adminPanel');
+    const subuserListCard = document.getElementById('subuserListCard');
+    const portalUserInfo = document.getElementById('portalUserInfo');
+
+    const lessonForm = document.getElementById('lessonForm');
+    const lessonTitle = document.getElementById('lessonTitle');
+    const lessonUrl = document.getElementById('lessonUrl');
+    const lessonDescription = document.getElementById('lessonDescription');
+    const lessonFormStatus = document.getElementById('lessonFormStatus');
+    const lessonList = document.getElementById('lessonList');
+
+    const subuserForm = document.getElementById('subuserForm');
+    const subuserEmail = document.getElementById('subuserEmail');
+    const subuserStatus = document.getElementById('subuserStatus');
+    const subuserList = document.getElementById('subuserList');
+
+    let currentUser = null;
+    let currentRole = null;
+
+    function escapeHtml(value = '') {
+      return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function isValidYoutubeUrl(url) {
+      try {
+        const parsed = new URL(url);
+        return parsed.hostname.includes('youtube.com') || parsed.hostname.includes('youtu.be');
+      } catch {
+        return false;
+      }
+    }
+
+    async function getUserRole(user) {
+      if (!user || !user.email) return null;
+      const email = user.email.toLowerCase().trim();
+
+      if (email === ADMIN_EMAIL.toLowerCase().trim()) {
+        return 'admin';
+      }
+
+      const allowedRef = doc(db, 'allowedUsers', email);
+      const allowedSnap = await getDoc(allowedRef);
+      return allowedSnap.exists() ? 'editor' : null;
+    }
+
+    function updateAuthMessage(user, role) {
+      if (!user) {
+        authStatus.textContent = 'Chưa đăng nhập.';
+        portalUserInfo.textContent = 'Chưa đăng nhập.';
+        return;
+      }
+
+      const roleLabel = role === 'admin' ? 'Admin' : 'Tài khoản con';
+      authStatus.textContent = `Đã đăng nhập: ${user.email} (${roleLabel})`;
+      portalUserInfo.innerHTML = `
+        <strong>Họ tên:</strong> ${escapeHtml(user.displayName || 'Không rõ')}<br />
+        <strong>Email:</strong> ${escapeHtml(user.email || '')}<br />
+        <strong>Vai trò:</strong> ${escapeHtml(roleLabel)}
+      `;
+    }
+
+    function showPortal(enabled) {
+      portalSection.hidden = !enabled;
+      if (enabled) {
+        if (window.location.hash === '#lesson-portal') {
+          setTimeout(() => {
+            document.getElementById('lesson-portal')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 150);
+        }
+      }
+    }
+
+    function showAdminBlocks(enabled) {
+      adminPanel.hidden = !enabled;
+      subuserListCard.hidden = !enabled;
+    }
+
+    async function renderLessons() {
+      lessonList.innerHTML = '<div class="empty-state">Đang tải danh sách bài học...</div>';
+
+      try {
+        const q = query(collection(db, 'youtubeLinks'), orderBy('createdAt', 'desc'));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+          lessonList.innerHTML = '<div class="empty-state">Chưa có bài học nào.</div>';
+          return;
+        }
+
+        lessonList.innerHTML = '';
+        snap.forEach((item) => {
+          const data = item.data();
+          const article = document.createElement('article');
+          article.className = 'lesson-card';
+          article.innerHTML = `
+            <h4>${escapeHtml(data.title || 'Không có tiêu đề')}</h4>
+            <a class="youtube-link" href="${escapeHtml(data.url || '#')}" target="_blank" rel="noopener">
+              ${escapeHtml(data.url || '')}
+            </a>
+            <p>${escapeHtml(data.description || '')}</p>
+            <p class="lesson-meta">Người thêm: ${escapeHtml(data.createdBy || 'Không rõ')}</p>
+          `;
+          lessonList.appendChild(article);
+        });
+      } catch (error) {
+        lessonList.innerHTML = `<div class="empty-state">Không tải được danh sách: ${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    async function renderSubusers() {
+      if (currentRole !== 'admin') return;
+
+      subuserList.innerHTML = '<div class="empty-state">Đang tải tài khoản con...</div>';
+
+      try {
+        const snap = await getDocs(collection(db, 'allowedUsers'));
+
+        if (snap.empty) {
+          subuserList.innerHTML = '<div class="empty-state">Chưa có tài khoản con nào.</div>';
+          return;
+        }
+
+        subuserList.innerHTML = '';
+        snap.forEach((item) => {
+          const data = item.data();
+          const article = document.createElement('article');
+          article.className = 'subuser-card';
+          article.innerHTML = `
+            <h4>${escapeHtml(data.email || item.id)}</h4>
+            <p class="user-meta">Vai trò: tài khoản con</p>
+          `;
+          subuserList.appendChild(article);
+        });
+      } catch (error) {
+        subuserList.innerHTML = `<div class="empty-state">Không tải được danh sách: ${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    async function syncView(user) {
+      currentUser = user;
+      currentRole = await getUserRole(user);
+      updateAuthMessage(user, currentRole);
+
+      const allowed = !!currentRole;
+      showPortal(allowed);
+      showAdminBlocks(currentRole === 'admin');
+
+      if (allowed) {
+        await renderLessons();
+        if (currentRole === 'admin') {
+          await renderSubusers();
+        }
+      }
+    }
+
+    googleLoginBtn?.addEventListener('click', async () => {
+      authError.textContent = '';
+
+      try {
+        await signInWithPopup(auth, provider);
+        window.open(window.location.pathname + '#lesson-portal', '_blank');
+      } catch (error) {
+        authError.textContent = 'Đăng nhập thất bại: ' + error.message;
+      }
+    });
+
+    openPortalBtn?.addEventListener('click', () => {
+      window.open(window.location.pathname + '#lesson-portal', '_blank');
+    });
+
+    googleLogoutBtn?.addEventListener('click', async () => {
+      await signOut(auth);
+    });
+
+    portalLogoutBtn?.addEventListener('click', async () => {
+      await signOut(auth);
+    });
+
+    portalRefreshBtn?.addEventListener('click', async () => {
+      if (currentRole) {
+        await renderLessons();
+        if (currentRole === 'admin') await renderSubusers();
+      }
+    });
+
+    lessonForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      lessonFormStatus.textContent = '';
+
+      if (!currentUser || !currentRole) {
+        lessonFormStatus.textContent = 'Bạn chưa được cấp quyền.';
+        return;
+      }
+
+      if (!isValidYoutubeUrl(lessonUrl.value)) {
+        lessonFormStatus.textContent = 'Vui lòng nhập đúng link YouTube.';
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, 'youtubeLinks'), {
+          title: lessonTitle.value.trim(),
+          url: lessonUrl.value.trim(),
+          description: lessonDescription.value.trim(),
+          createdBy: currentUser.email || '',
+          createdAt: serverTimestamp()
+        });
+
+        lessonForm.reset();
+        lessonFormStatus.textContent = 'Đã lưu link bài học.';
+        await renderLessons();
+      } catch (error) {
+        lessonFormStatus.textContent = 'Lưu thất bại: ' + error.message;
+      }
+    });
+
+    subuserForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      subuserStatus.textContent = '';
+
+      if (currentRole !== 'admin') {
+        subuserStatus.textContent = 'Chỉ admin mới thêm được tài khoản con.';
+        return;
+      }
+
+      const email = subuserEmail.value.toLowerCase().trim();
+
+      if (!email) {
+        subuserStatus.textContent = 'Vui lòng nhập email.';
+        return;
+      }
+
+      try {
+        await setDoc(doc(db, 'allowedUsers', email), {
+          email,
+          createdBy: currentUser?.email || ADMIN_EMAIL,
+          createdAt: serverTimestamp()
+        });
+
+        subuserEmail.value = '';
+        subuserStatus.textContent = 'Đã cấp quyền tài khoản con.';
+        await renderSubusers();
+      } catch (error) {
+        subuserStatus.textContent = 'Không thêm được: ' + error.message;
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      authError.textContent = '';
+      await syncView(user);
+    });
+  </script>
 </body>
 </html>
