@@ -1217,5 +1217,155 @@ select {
     max-height: none;
   }
 }
+/* ===== FIX MÀU CHỮ CHO PHẦN PAYMENT ===== */
+#payment,
+#payment * {
+  box-sizing: border-box;
+}
+
+#payment {
+  color: #0f172a;
+}
+
+#payment .section-heading h2,
+#payment .payment-card h3,
+#payment .timeline-item h4,
+#payment .faq-question,
+#payment .bank-box strong,
+#payment .channel-info strong,
+#payment .qr-text strong {
+  color: #0b1220;
+}
+
+#payment p,
+#payment li,
+#payment .muted,
+#payment .bank-box p,
+#payment .qr-text span,
+#payment .channel-info span,
+#payment .faq-answer p,
+#payment .timeline-item p {
+  color: #334155;
+}
+
+#payment .payment-section {
+  background:
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.10), transparent 22%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+}
+
+#payment .payment-card {
+  background: #ffffff;
+  border: 1px solid #d7e3f4;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+#payment .payment-card-highlight {
+  background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
+  border: 1px solid #bfd4ff;
+}
+
+#payment .bank-box,
+#payment .step-note,
+#payment .timeline-item {
+  background: #f8fbff;
+  border: 1px solid #d7e3f4;
+  color: #0f172a;
+}
+
+#payment .channel-card {
+  background: #ffffff;
+  border: 1px solid #cfe0ff;
+  color: #0f172a;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+#payment .channel-card:hover {
+  background: #f3f8ff;
+  border-color: #93c5fd;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.14);
+}
+
+#payment .channel-card strong {
+  color: #0f172a;
+}
+
+#payment .channel-card span {
+  color: #475569;
+}
+
+#payment .channel-qr {
+  background: #ffffff;
+  border: 1px solid #d7e3f4;
+}
+
+#payment .qr-image.large {
+  background: #ffffff;
+  border: 1px solid #d7e3f4;
+}
+
+#payment .qr-placeholder {
+  background:
+    linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(14, 165, 233, 0.06)),
+    repeating-linear-gradient(
+      45deg,
+      rgba(15, 23, 42, 0.025) 0,
+      rgba(15, 23, 42, 0.025) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+  border: 2px dashed #60a5fa;
+}
+
+#payment .qr-text strong {
+  color: #0f172a;
+}
+
+#payment .qr-text span {
+  color: #475569;
+}
+
+#payment .timeline-number {
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: #ffffff;
+}
+
+#payment .faq-item {
+  background: #ffffff;
+  border: 1px solid #d7e3f4;
+}
+
+#payment .faq-question {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+#payment .faq-question span {
+  color: #2563eb;
+}
+
+#payment .faq-answer {
+  background: #f8fbff;
+}
+
+#payment .faq-answer p {
+  color: #334155;
+}
+
+#payment a {
+  color: inherit;
+}
+
+#payment .channel-card.zalo .channel-icon {
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: #ffffff;
+}
+
+#payment .channel-card.telegram .channel-icon {
+  background: linear-gradient(135deg, #0ea5e9, #0891b2);
+  color: #ffffff;
+}
+
+
 
 
