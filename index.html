@@ -3,16 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Website cung cấp khóa học PLC chuyên nghiệp của Haomechatronics với lộ trình từ cơ bản đến nâng cao." />
+  <meta name="description" content="Website cung cấp khóa học PLC chuyên nghiệp của Haomechatronics." />
   <title>Haomechatronics PLC Academy</title>
-  
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
   <link rel="icon" type="image/jpeg" href="Images/logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* CSS dành riêng cho phần Auth & Portal */
+    .auth-section, .portal-section { padding: 60px 0; }
+    .auth-grid, .portal-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px; align-items: start; }
+    .auth-card, .portal-card, .lesson-card, .subuser-card {
+      background: #ffffff; border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 20px; padding: 24px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06); margin-bottom: 20px;
+    }
+    .portal-section[hidden] { display: none !important; }
+    .auth-status { margin-top: 16px; font-weight: 600; color: #2563eb; }
+    .lesson-form input, .lesson-form textarea, .subuser-form input {
+      width: 100%; border: 1px solid #dbe2ea; border-radius: 12px; padding: 12px; margin-bottom: 10px; font-family: inherit;
+    }
+    .mini-badge {
+      display: inline-flex; padding: 6px 12px; border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1); color: #1d4ed8; font-size: 12px; font-weight: 700; margin-bottom: 12px;
+    }
+    .youtube-link { color: #ef4444; font-weight: 600; text-decoration: none; }
+    @media (max-width: 900px) { .auth-grid, .portal-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
 <div class="site-shell">
@@ -22,18 +40,12 @@
         <span class="brand-mark"><img src="Images/logo.jpg" alt="Logo"></span>
         <span><strong>Haomechatronics</strong><small>PLC Academy</small></span>
       </a>
-
-      <button class="nav-toggle" id="navToggle" aria-label="Mở menu">
-        <span></span><span></span><span></span>
-      </button>
-
       <nav class="nav" id="navMenu">
         <a href="#courses">Khóa học</a>
         <a href="#curriculum">Lộ trình</a>
-        <a href="#instructor">Giảng viên</a>
         <a href="#payment">Đăng ký</a>
+        <a href="#login-google">Đăng nhập</a>
         <a href="#contact">Liên hệ</a>
-        <a href="javascript:void(0)" class="btn-login-nav" onclick="openLoginModal()">Đăng nhập</a>
       </nav>
     </div>
   </header>
@@ -44,73 +56,177 @@
         <div class="hero-copy">
           <span class="eyebrow">Đào tạo PLC thực chiến</span>
           <h1>Làm chủ PLC từ nền tảng đến ứng dụng công nghiệp thực tế</h1>
-          <p class="hero-text">
-            Khóa học dành cho sinh viên, kỹ thuật viên và kỹ sư muốn học chắc bản chất PLC,
-            lập trình Ladder, xử lý tín hiệu vào ra, kết nối HMI và triển khai bài toán điều khiển ngoài thực tế.
-          </p>
+          <p class="hero-text">Khóa học dành cho sinh viên, kỹ thuật viên và kỹ sư muốn học chắc bản chất PLC...</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#courses">Xem khóa học</a>
-            <a class="btn btn-secondary" onclick="openLoginModal()">Vào học ngay</a>
-          </div>
-          <div class="hero-stats">
-            <div class="stat-card"><strong>20+</strong><span>Bài học thực hành</span></div>
-            <div class="stat-card"><strong>3</strong><span>Lộ trình học</span></div>
-            <div class="stat-card"><strong>1:1</strong><span>Hỗ trợ</span></div>
+            <a class="btn btn-secondary" href="#login-google">Vào học ngay</a>
           </div>
         </div>
         <div class="hero-visual">
-          <div class="hero-image-card"><img src="Images/Banner-plc.jpg" alt="Banner" /></div>
+          <img src="Images/Banner-plc.jpg" alt="Banner" style="border-radius: 20px; width: 100%;">
+        </div>
+      </div>
+    </section>
+
+    <section class="section auth-section" id="login-google">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-tag">Học viên</span>
+          <h2>Đăng nhập để vào khu vực bài học</h2>
+        </div>
+        <div class="auth-grid">
+          <article class="auth-card">
+            <div class="mini-badge">Google Auth</div>
+            <h3>Truy cập nhanh</h3>
+            <p>Sử dụng Gmail đã được cấp quyền để xem danh sách bài giảng YouTube độc quyền.</p>
+            <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+              <button class="btn btn-primary" id="googleLoginBtn">Đăng nhập Google</button>
+              <button class="btn btn-secondary" id="openPortalBtn">Mở bài học</button>
+              <button class="btn btn-secondary" id="googleLogoutBtn">Đăng xuất</button>
+            </div>
+            <div class="auth-status" id="authStatus">Trạng thái: Chưa đăng nhập.</div>
+          </article>
+          
+          <article class="auth-card">
+            <h3>Lưu ý cho học viên</h3>
+            <p>Nếu bạn đã thanh toán nhưng chưa vào được bài học, vui lòng liên hệ Admin qua Telegram/Facebook để được cấp quyền Gmail.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light portal-section" id="lesson-portal" hidden>
+      <div class="container">
+        <div class="portal-grid">
+          <div class="list-stack">
+            <article class="portal-card">
+              <div class="mini-badge">Quản lý</div>
+              <form class="lesson-form" id="lessonForm">
+                <input type="text" id="lessonTitle" placeholder="Tiêu đề bài học" required />
+                <input type="url" id="lessonUrl" placeholder="Link YouTube" required />
+                <textarea id="lessonDescription" placeholder="Mô tả bài học" rows="3" style="width: 100%; border-radius: 12px; border: 1px solid #dbe2ea; padding: 10px;"></textarea>
+                <button class="btn btn-primary" type="submit">Lưu bài học</button>
+              </form>
+            </article>
+
+            <article class="portal-card">
+              <h3>Danh sách bài học</h3>
+              <div id="lessonList">Đang tải...</div>
+            </article>
+          </div>
+
+          <div class="list-stack">
+            <article class="portal-card">
+              <h3>Tài khoản</h3>
+              <p id="portalUserInfo">Đang tải...</p>
+            </article>
+
+            <article class="portal-card" id="adminPanel" hidden>
+              <div class="mini-badge">Admin Only</div>
+              <form class="subuser-form" id="subuserForm">
+                <input type="email" id="subuserEmail" placeholder="Gmail học viên" required />
+                <button class="btn btn-primary" type="submit">Cấp quyền học viên</button>
+              </form>
+              <div id="subuserList" style="margin-top: 15px;"></div>
+            </article>
+          </div>
         </div>
       </div>
     </section>
 
     </main>
-
-  <footer class="footer" id="contact">
-    <div class="container footer-grid">
-      <div>
-        <h3>Haomechatronics PLC Academy</h3>
-        <p>Website chuyên cung cấp các khóa học PLC thực chiến.</p>
-      </div>
-      <div>
-        <h4>Thông tin liên hệ</h4>
-        <ul class="footer-list">
-          <li>Email: haomechatronics@gmail.com</li>
-          <li>Telegram: @HMSplc</li>
-        </ul>
-      </div>
-      <div>
-        <h4>Triết lý</h4>
-        <ul class="footer-list">
-          <li>Không có việc gì khó chỉ sợ lòng không bền</li>
-          <li>Kỷ luật là sức mạnh</li>
-          <li>Thực chiến, thực học, thực làm</li>
-        </ul>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p>© <span id="year"></span> Haomechatronics. All rights reserved.</p>
-    </div>
-  </footer>
 </div>
 
-<div id="loginModal" class="modal">
-  <div class="modal-content">
-    <span class="close-modal" onclick="closeLoginModal()">&times;</span>
-    <h3>Đăng nhập học viên</h3>
-    <p style="margin-bottom: 20px; color: #666;">Sử dụng tài khoản Google để truy cập bài giảng</p>
-    
-    <div id="g_id_onload"
-         data-client_id="YOUR_GOOGLE_CLIENT_ID" 
-         data-callback="handleCredentialResponse"
-         data-auto_prompt="false">
-    </div>
-    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="signin_with" data-shape="rectangular" data-logo_alignment="left"></div>
-    
-    <p id="loginError" style="color: red; margin-top: 15px; display: none;">Đăng nhập thất bại, vui lòng thử lại!</p>
-  </div>
-</div>
+<script type="module">
+  // FIREBASE LOGIC (Bạn cần điền Config của bạn vào đây)
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+  import { getFirestore, doc, setDoc, getDoc, getDocs, addDoc, collection, query, orderBy, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
 
-<script src="script.js"></script>
+  const ADMIN_EMAIL = "haomechatronics@gmail.com";
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  // Các phần tử giao diện
+  const loginBtn = document.getElementById('googleLoginBtn');
+  const logoutBtn = document.getElementById('googleLogoutBtn');
+  const portalSection = document.getElementById('lesson-portal');
+  const authStatus = document.getElementById('authStatus');
+
+  // Xử lý Đăng nhập
+  loginBtn.onclick = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (e) { alert("Lỗi đăng nhập: " + e.message); }
+  };
+
+  logoutBtn.onclick = () => signOut(auth);
+
+  // Theo dõi trạng thái đăng nhập
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      authStatus.textContent = "Đã đăng nhập: " + user.email;
+      const isAdmin = user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+      
+      // Kiểm tra quyền (trong Firebase 'allowedUsers')
+      const userDoc = await getDoc(doc(db, "allowedUsers", user.email.toLowerCase()));
+      
+      if (isAdmin || userDoc.exists()) {
+        portalSection.hidden = false;
+        document.getElementById('portalUserInfo').textContent = user.email + (isAdmin ? " (Admin)" : " (Học viên)");
+        if (isAdmin) document.getElementById('adminPanel').hidden = false;
+        loadLessons();
+      } else {
+        alert("Tài khoản chưa được cấp quyền truy cập học liệu.");
+        signOut(auth);
+      }
+    } else {
+      authStatus.textContent = "Chưa đăng nhập.";
+      portalSection.hidden = true;
+    }
+  });
+
+  // Hàm tải bài học
+  async function loadLessons() {
+    const q = query(collection(db, "youtubeLinks"), orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
+    const list = document.getElementById('lessonList');
+    list.innerHTML = "";
+    snap.forEach(doc => {
+      const data = doc.data();
+      list.innerHTML += `
+        <div class="lesson-card">
+          <h4>${data.title}</h4>
+          <a class="youtube-link" href="${data.url}" target="_blank">Xem trên YouTube</a>
+          <p>${data.description || ''}</p>
+        </div>`;
+    });
+  }
+
+  // Xử lý Form lưu bài học
+  document.getElementById('lessonForm').onsubmit = async (e) => {
+    e.preventDefault();
+    await addDoc(collection(db, "youtubeLinks"), {
+      title: document.getElementById('lessonTitle').value,
+      url: document.getElementById('lessonUrl').value,
+      description: document.getElementById('lessonDescription').value,
+      createdAt: serverTimestamp()
+    });
+    alert("Đã lưu bài học!");
+    loadLessons();
+  };
+</script>
 </body>
 </html>
