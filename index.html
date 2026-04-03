@@ -1,29 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Website cung cấp khóa học PLC chuyên nghiệp của Haomechatronics với lộ trình từ cơ bản đến nâng cao." />
+  <title>Haomechatronics PLC Academy</title>
+  <link rel="icon" type="image/jpeg" href="Images/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* --- CSS Tối ưu Menu & Auth --- */
+    .nav-wrap { display: flex; justify-content: space-between; align-items: center; }
+    .auth-nav-wrapper { margin-left: 20px; display: flex; align-items: center; }
+    
+    .btn-nav-login {
+      background: #2563eb; color: white; border: none; padding: 10px 22px;
+      border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;
+    }
+    .btn-nav-login:hover { background: #1d4ed8; transform: translateY(-2px); }
+
+    .user-controls { display: flex; gap: 12px; align-items: center; }
+    .user-email { font-size: 13px; font-weight: 600; color: #475569; max-width: 100px; overflow: hidden; text-overflow: ellipsis; }
+    
+    .btn-portal { background: #059669; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+    .btn-logout { background: #fee2e2; color: #ef4444; border: none; padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+
+    /* --- Portal Styles --- */
+    .portal-section { background: #f8fafc; min-height: 100vh; padding: 40px 0; }
+    .portal-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; }
+    .portal-card { background: white; padding: 24px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.04); margin-bottom: 20px; }
+    .lesson-form input, .lesson-form select, .lesson-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: inherit; }
+    .lesson-card { background: #fff; border-left: 4px solid #2563eb; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .lesson-card h4 { margin: 0 0 8px; color: #1e293b; }
+    .youtube-link { color: #2563eb; font-weight: 700; text-decoration: none; display: inline-block; margin-top: 5px; }
+    
+    body.portal-mode .header, body.portal-mode .hero, body.portal-mode .section:not(#lesson-portal), body.portal-mode .footer { display: none !important; }
+    body.portal-mode { background: #f1f5f9; }
+
+    @media (max-width: 900px) {
+      .portal-grid { grid-template-columns: 1fr; }
+      .nav { flex-direction: column; align-items: flex-start; }
+      .auth-nav-wrapper { margin: 15px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="site-shell">
+  <header class="header">
+    <div class="container nav-wrap">
+      <a class="brand" href="/">
+        <span class="brand-mark"><img src="Images/logo.jpg" alt="Logo"></span>
+        <span><strong>Haomechatronics</strong><small>PLC Academy</small></span>
+      </a>
+
+      <nav class="nav" id="navMenu">
+        <a href="#courses">Khóa học</a>
+        <a href="#curriculum">Lộ trình</a>
+        <a href="#payment">Đăng ký</a>
+        <a href="#contact">Liên hệ</a>
+        
+        <div class="auth-nav-wrapper">
+          <button class="btn-nav-login" id="loginBtn">Đăng nhập</button>
+          <div class="user-controls" id="userControls" hidden>
+            <span class="user-email" id="userEmailLabel"></span>
+            <button class="btn-portal" id="openPortalBtn">Vào học</button>
+            <button class="btn-logout" id="logoutBtn">Thoát</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Đào tạo PLC thực chiến</span>
+          <h1>Làm chủ PLC từ nền tảng đến ứng dụng công nghiệp</h1>
+          <p class="hero-text">Học chắc bản chất, lập trình Ladder, xử lý tín hiệu và triển khai bài toán thực tế cùng Haomechatronics.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#courses">Xem khóa học</a>
+            <a class="btn btn-secondary" href="#payment">Đăng ký ngay</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-image-card"><img src="Images/Banner-plc.jpg" alt="PLC Banner"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="courses">
+        <div class="container">
+          <div class="section-heading center">
+            <h2>Lộ trình học PLC</h2>
+          </div>
+          <div class="course-grid">
+            <article class="course-card">
+              <h3>PLC Cơ bản</h3>
+              <div class="course-price">799.000đ</div>
+              <p>Dành cho người mới bắt đầu từ số 0.</p>
+              <a class="btn btn-block btn-primary" href="#payment">Đăng ký</a>
+            </article>
+            <article class="course-card featured">
+              <h3>PLC Ứng dụng</h3>
+              <div class="course-price">1.499.000đ</div>
+              <p>Nâng cao tay nghề thực chiến công nghiệp.</p>
+              <a class="btn btn-block btn-primary" href="#payment">Đăng ký</a>
+            </article>
+            <article class="course-card">
+              <h3>PLC & HMI</h3>
+              <div class="course-price">2.499.000đ</div>
+              <p>Thiết kế giao diện và hệ thống hoàn chỉnh.</p>
+              <a class="btn btn-block btn-primary" href="#payment">Đăng ký</a>
+            </article>
+          </div>
+        </div>
+    </section>
+
+    <section class="section section-light" id="payment">
+        <div class="container">
+            <div class="section-heading center">
+                <h2>Đăng ký & Thanh toán</h2>
+                <p>Quét mã chuyển khoản và nhắn tin xác nhận để nhận tài khoản học.</p>
+            </div>
+            <div class="payment-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="payment-card portal-card">
+                    <h3>Bước 1: Chuyển khoản</h3>
+                    <img src="Images/qr-bank.png" style="max-width: 200px; margin: 10px 0;">
+                    <p>BIDV: 7301897774<br>NGUYEN TAN HAO</p>
+                </div>
+                <div class="payment-card portal-card">
+                    <h3>Bước 2: Xác nhận</h3>
+                    <p>Nhắn tin qua Facebook hoặc Telegram để kích hoạt tài khoản.</p>
+                    <a href="https://t.me/hmsplc" class="btn btn-primary">Nhắn Telegram</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section portal-section" id="lesson-portal" hidden>
+      <div class="container">
+        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 30px;">
+            <h2>Khu vực học tập</h2>
+            <button class="btn-logout" onclick="location.reload()">Thoát chế độ học</button>
+        </div>
+
+        <div class="portal-grid">
+          <div class="main-content">
+            <div id="adminPanel" class="portal-card" hidden>
+              <h3>Thêm bài giảng mới</h3>
+              <form id="lessonForm" class="lesson-form">
+                <select id="courseType" required>
+                  <option value="basic">PLC Cơ bản</option>
+                  <option value="practical">PLC Ứng dụng</option>
+                  <option value="advanced">PLC & HMI</option>
+                </select>
+                <input type="text" id="lTitle" placeholder="Tên bài học" required>
+                <input type="url" id="lUrl" placeholder="Link YouTube" required>
+                <textarea id="lDesc" placeholder="Mô tả bài học"></textarea>
+                <button type="submit" class="btn btn-primary">Lưu bài học</button>
+              </form>
+            </div>
+
+            <div class="portal-card">
+              <h3>Bài học của bạn</h3>
+              <div id="lessonContainer">
+                  <h4>PLC Cơ bản</h4> <div id="list-basic"></div>
+                  <hr>
+                  <h4>PLC Ứng dụng</h4> <div id="list-practical"></div>
+                  <hr>
+                  <h4>PLC & HMI</h4> <div id="list-advanced"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar">
+            <div class="portal-card" id="adminUserPanel" hidden>
+              <h3>Cấp quyền học viên</h3>
+              <form id="userForm">
+                <input type="email" id="uEmail" placeholder="Email học viên" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+                <button type="submit" class="btn btn-primary" style="width:100%">Thêm học viên</button>
+              </form>
+              <div id="userList" style="margin-top:15px; font-size:13px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <div class="container">
+      <p>© 2026 Haomechatronics. Liên hệ: haomechatronics@gmail.com</p>
+    </div>
+  </footer>
+</div>
+
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    signOut,
-    onAuthStateChanged
-  } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    getDoc,
-    getDocs,
-    deleteDoc,
-    addDoc,
-    collection,
-    query,
-    where,
-    onSnapshot,
-    orderBy,
-    serverTimestamp
-  } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, orderBy, onSnapshot, deleteDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
 
-  // --- CẤU HÌNH ---
   const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
   const firebaseConfig = {
     apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
@@ -39,167 +220,98 @@
   const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
 
-  // --- DOM ELEMENTS ---
-  const elements = {
-    loginBtn: document.getElementById('googleLoginBtn'),
-    logoutBtn: document.getElementById('googleLogoutBtn'),
-    portalLogoutBtn: document.getElementById('portalLogoutBtn'),
-    openPortalBtn: document.getElementById('openPortalBtn'),
-    status: document.getElementById('authStatus'),
-    error: document.getElementById('authError'),
-    portalSection: document.getElementById('lesson-portal'),
-    portalContent: document.getElementById('portalContent'),
-    portalGate: document.getElementById('portalGateCard'),
-    adminPanels: document.querySelectorAll('.admin-only'),
-    lessonForm: document.getElementById('lessonForm'),
-    subuserForm: document.getElementById('subuserForm'),
-    userInfo: document.getElementById('portalUserInfo'),
-    lists: {
-      basic: document.getElementById('lessonListBasic'),
-      practical: document.getElementById('lessonListPractical'),
-      advanced: document.getElementById('lessonListAdvanced'),
-      users: document.getElementById('subuserList')
-    }
-  };
+  // Elements
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const userControls = document.getElementById('userControls');
+  const emailLabel = document.getElementById('userEmailLabel');
+  const portalSection = document.getElementById('lesson-portal');
 
-  // --- LOGIC XỬ LÝ CHÍNH ---
+  // Auth Logic
+  loginBtn.onclick = () => signInWithPopup(auth, provider);
+  logoutBtn.onclick = () => signOut(auth).then(() => location.reload());
 
-  // 1. Đăng nhập / Đăng xuất
-  elements.loginBtn.onclick = () => signInWithPopup(auth, provider).catch(err => elements.error.innerText = err.message);
-  
-  const logoutAction = () => {
-    signOut(auth).then(() => {
-      window.location.hash = "#home";
-      location.reload();
-    });
-  };
-  elements.logoutBtn.onclick = logoutAction;
-  elements.portalLogoutBtn.onclick = logoutAction;
-
-  // 2. Theo dõi trạng thái đăng nhập
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const isAdmin = user.email === ADMIN_EMAIL;
-      elements.status.innerHTML = `Đang đăng nhập: <strong>${user.email}</strong> ${isAdmin ? '(Admin)' : ''}`;
-      elements.userInfo.innerText = `Email: ${user.email} | Quyền: ${isAdmin ? 'Quản trị viên' : 'Học viên'}`;
-      
-      // Kiểm tra quyền truy cập Firestore
-      const userRef = doc(db, "allowedUsers", user.email);
-      const userSnap = await getDoc(userRef);
+      const userSnap = await getDoc(doc(db, "allowedUsers", user.email));
 
       if (isAdmin || userSnap.exists()) {
-        showPortal(isAdmin);
+        loginBtn.hidden = true;
+        userControls.hidden = false;
+        emailLabel.innerText = user.email.split('@')[0];
+        if (isAdmin) {
+            document.getElementById('adminPanel').hidden = false;
+            document.getElementById('adminUserPanel').hidden = false;
+            loadUsers();
+        }
+        loadLessons();
       } else {
-        elements.error.innerText = "Tài khoản của bạn chưa được cấp quyền truy cập bài học.";
+        alert("Tài khoản chưa được cấp quyền truy cập.");
+        signOut(auth);
       }
-    } else {
-      elements.status.innerText = "Chưa đăng nhập.";
-      elements.portalSection.hidden = true;
     }
   });
 
-  // 3. Hiển thị Portal
-  function showPortal(isAdmin) {
-    elements.portalSection.hidden = false;
-    elements.portalGate.hidden = true;
-    elements.portalContent.hidden = false;
+  document.getElementById('openPortalBtn').onclick = () => {
     document.body.classList.add('portal-mode');
+    portalSection.hidden = false;
+    window.scrollTo(0,0);
+  };
 
-    // Ẩn/Hiện tính năng Admin
-    elements.adminPanels.forEach(p => p.hidden = !isAdmin);
-
-    loadLessons();
-    if (isAdmin) loadSubusers();
-  }
-
-  // 4. Quản lý Bài học (CRUD)
-  elements.lessonForm.onsubmit = async (e) => {
+  // Lesson Logic
+  document.getElementById('lessonForm').onsubmit = async (e) => {
     e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.disabled = true;
-
-    try {
-      await addDoc(collection(db, "youtubeLinks"), {
-        type: document.getElementById('lessonCourseType').value,
-        title: document.getElementById('lessonTitle').value,
-        url: document.getElementById('lessonUrl').value,
-        desc: document.getElementById('lessonDescription').value,
-        createdAt: serverTimestamp()
-      });
-      elements.lessonForm.reset();
-      alert("Đã thêm bài học thành công!");
-    } catch (err) { alert("Lỗi: " + err.message); }
-    btn.disabled = false;
+    await addDoc(collection(db, "youtubeLinks"), {
+      type: document.getElementById('courseType').value,
+      title: document.getElementById('lTitle').value,
+      url: document.getElementById('lUrl').value,
+      desc: document.getElementById('lDesc').value,
+      createdAt: serverTimestamp()
+    });
+    e.target.reset();
   };
 
   function loadLessons() {
-    const q = query(collection(db, "youtubeLinks"), orderBy("createdAt", "desc"));
-    onSnapshot(q, (snapshot) => {
-      // Clear lists
-      Object.values(elements.lists).forEach(list => { if(list.id !== 'subuserList') list.innerHTML = ''; });
-
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const isAdmin = auth.currentUser?.email === ADMIN_EMAIL;
-        const item = document.createElement('div');
-        item.className = 'lesson-card';
-        item.innerHTML = `
-          <h4>${data.title}</h4>
-          <p>${data.desc || ''}</p>
-          <a class="youtube-link" href="${data.url}" target="_blank">📺 Xem video bài giảng</a>
-          ${isAdmin ? `<br><button class="btn btn-secondary" style="margin-top:10px; padding:5px 10px; font-size:12px; color:red;" onclick="window.deleteLesson('${doc.id}')">Xóa bài</button>` : ''}
-        `;
-        
-        const targetList = elements.lists[data.type];
-        if (targetList) targetList.appendChild(item);
-      });
+    onSnapshot(query(collection(db, "youtubeLinks"), orderBy("createdAt", "desc")), (snap) => {
+      document.getElementById('list-basic').innerHTML = '';
+      document.getElementById('list-practical').innerHTML = '';
+      document.getElementById('list-advanced').innerHTML = '';
       
-      // Kiểm tra nếu trống
-      ['basic', 'practical', 'advanced'].forEach(type => {
-        if (!elements.lists[type].innerHTML) elements.lists[type].innerHTML = '<div class="empty-state">Chưa có bài học nào.</div>';
-      });
-    });
-  }
-
-  // 5. Quản lý Tài khoản con (Admin only)
-  elements.subuserForm.onsubmit = async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('subuserEmail').value.toLowerCase().trim();
-    try {
-      await setDoc(doc(db, "allowedUsers", email), { email, addedAt: serverTimestamp() });
-      elements.subuserForm.reset();
-      alert("Đã cấp quyền cho: " + email);
-    } catch (err) { alert("Lỗi: " + err.message); }
-  };
-
-  function loadSubusers() {
-    onSnapshot(collection(db, "allowedUsers"), (snapshot) => {
-      elements.lists.users.innerHTML = '';
-      snapshot.forEach((doc) => {
-        const div = document.createElement('div');
-        div.className = 'subuser-card';
-        div.innerHTML = `
-          <span>${doc.id}</span>
-          <button class="btn" style="color:red; background:none; border:none; cursor:pointer;" onclick="window.deleteUser('${doc.id}')">Thu hồi quyền</button>
+      snap.forEach(d => {
+        const data = d.data();
+        const card = document.createElement('div');
+        card.className = 'lesson-card';
+        card.innerHTML = `
+          <h4>${data.title}</h4>
+          <a href="${data.url}" class="youtube-link" target="_blank">📺 Xem bài giảng</a>
+          ${auth.currentUser.email === ADMIN_EMAIL ? `<br><button onclick="window.delL('${d.id}')" style="color:red; border:none; background:none; cursor:pointer; font-size:11px;">Xóa</button>` : ''}
         `;
-        elements.lists.users.appendChild(div);
+        document.getElementById(`list-${data.type}`).appendChild(card);
       });
     });
   }
 
-  // Gán hàm vào window để dùng trong HTML động
-  window.deleteLesson = (id) => confirm("Xóa bài học này?") && deleteDoc(doc(db, "youtubeLinks", id));
-  window.deleteUser = (email) => confirm("Thu hồi quyền của " + email + "?") && deleteDoc(doc(db, "allowedUsers", email));
-  
-  // Nút mở Portal thủ công
-  elements.openPortalBtn.onclick = () => {
-    if (auth.currentUser) {
-        document.body.classList.add('portal-mode');
-        elements.portalSection.hidden = false;
-        window.scrollTo(0,0);
-    } else {
-        alert("Vui lòng đăng nhập trước!");
-    }
+  // User Management
+  document.getElementById('userForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const mail = document.getElementById('uEmail').value.toLowerCase().trim();
+    await setDoc(doc(db, "allowedUsers", mail), { email: mail });
+    e.target.reset();
   };
 
+  function loadUsers() {
+    onSnapshot(collection(db, "allowedUsers"), (snap) => {
+      document.getElementById('userList').innerHTML = '<strong>Học viên đã cấp quyền:</strong><br>';
+      snap.forEach(d => {
+        document.getElementById('userList').innerHTML += `• ${d.id} <button onclick="window.delU('${d.id}')" style="color:red;border:none;background:none;cursor:pointer;">x</button><br>`;
+      });
+    });
+  }
+
+  window.delL = (id) => confirm("Xóa bài?") && deleteDoc(doc(db, "youtubeLinks", id));
+  window.delU = (id) => confirm("Thu hồi quyền?") && deleteDoc(doc(db, "allowedUsers", id));
 </script>
+
+</body>
+</html>
