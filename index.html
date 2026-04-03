@@ -3,17 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Website cung cấp khóa học PLC chuyên nghiệp của Haomechatronics với lộ trình từ cơ bản đến nâng cao, hỗ trợ đăng ký qua Facebook và Telegram." />
+  <meta name="description" content="Website cung cấp khóa học PLC chuyên nghiệp của Haomechatronics với lộ trình từ cơ bản đến nâng cao." />
   <title>Haomechatronics PLC Academy</title>
-
   <link rel="icon" type="image/jpeg" href="Images/logo.jpg" />
-  <link rel="shortcut icon" href="Images/logo.jpg" />
-  <link rel="apple-touch-icon" href="Images/logo.jpg" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -21,27 +16,15 @@
     <header class="header" id="home">
       <div class="container nav-wrap">
         <a class="brand" href="#home">
-          <span class="brand-mark">
-            <img src="Images/logo.jpg" alt="Haomechatronics Logo">
-          </span>
-          <span>
-            <strong>Haomechatronics</strong>
-            <small>PLC Academy</small>
-          </span>
+          <span class="brand-mark"><img src="Images/logo.jpg" alt="Logo"></span>
+          <span><strong>Haomechatronics</strong><small>PLC Academy</small></span>
         </a>
-
-        <button class="nav-toggle" id="navToggle" aria-label="Mở menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
+        <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
         <nav class="nav" id="navMenu">
           <a href="#courses">Khóa học</a>
           <a href="#curriculum">Lộ trình</a>
-          <a href="#instructor">Giảng viên</a>
           <a href="#payment">Đăng ký</a>
-          <a href="#contact">Liên hệ</a>
+          <a href="javascript:void(0)" class="btn-login-nav" onclick="openLoginModal()">Đăng nhập</a>
         </nav>
       </div>
     </header>
@@ -50,410 +33,58 @@
       <section class="hero">
         <div class="container hero-grid">
           <div class="hero-copy">
-            <span class="eyebrow">Đào tạo PLC thực chiến</span>
-            <h1>Làm chủ PLC từ nền tảng đến ứng dụng công nghiệp thực tế</h1>
-            <p class="hero-text">
-              Khóa học dành cho sinh viên, kỹ thuật viên và kỹ sư muốn học chắc bản chất PLC,
-              lập trình Ladder, xử lý tín hiệu vào ra, kết nối HMI và triển khai bài toán điều khiển ngoài thực tế.
-            </p>
-
+            <h1>Làm chủ PLC từ nền tảng đến ứng dụng thực tế</h1>
+            <p class="hero-text">Khóa học thực chiến dành cho sinh viên và kỹ sư muốn nắm chắc bản chất lập trình điều khiển công nghiệp.</p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="#courses">Xem khóa học</a>
-              <a class="btn btn-secondary" href="#payment">Đăng ký ngay</a>
-            </div>
-
-            <div class="hero-stats">
-              <div class="stat-card">
-                <strong>20+</strong>
-                <span>Bài học thực hành</span>
-              </div>
-              <div class="stat-card">
-                <strong>3</strong>
-                <span>Lộ trình học rõ ràng</span>
-              </div>
-              <div class="stat-card">
-                <strong>1:1</strong>
-                <span>Hỗ trợ sau khi mua</span>
-              </div>
+              <a class="btn btn-secondary" onclick="openLoginModal()">Vào học ngay</a>
             </div>
           </div>
-
           <div class="hero-visual">
-            <div class="hero-image-card">
-              <img src="Images/Banner-plc.jpg" alt="Khóa học PLC Haomechatronics" />
-            </div>
+            <div class="hero-image-card"><img src="Images/Banner-plc.jpg" alt="Banner"></div>
           </div>
         </div>
       </section>
 
-      <section class="section section-light">
-        <div class="container">
-          <div class="section-heading center">
-            <span class="section-tag">Giá trị bạn nhận được</span>
-            <h2>Học để làm được việc, không chỉ học để biết</h2>
-            <p>
-              Nội dung được xây dựng theo hướng thực hành, bám sát môi trường xưởng,
-              dây chuyền nhỏ và bài toán điều khiển công nghiệp.
-            </p>
-          </div>
-
-          <div class="feature-grid">
-            <article class="feature-card">
-              <div class="icon-badge">01</div>
-              <h3>Nắm chắc nền tảng</h3>
-              <p>Hiểu đúng cấu trúc PLC, chu kỳ quét, vùng nhớ, tín hiệu input/output và nguyên lý điều khiển.</p>
-            </article>
-            <article class="feature-card">
-              <div class="icon-badge">02</div>
-              <h3>Lập trình bài bản</h3>
-              <p>Thực hành Ladder từ cơ bản đến logic liên động, timer, counter, sequence và xử lý lỗi.</p>
-            </article>
-            <article class="feature-card">
-              <div class="icon-badge">03</div>
-              <h3>Ứng dụng công nghiệp</h3>
-              <p>Làm quen mô hình điều khiển động cơ, van điện từ, cảm biến, băng tải và hệ thống trộn chiết.</p>
-            </article>
-            <article class="feature-card">
-              <div class="icon-badge">04</div>
-              <h3>Hỗ trợ sau khóa học</h3>
-              <p>Sau khi thanh toán, học viên được hỗ trợ nhận tài khoản học, tài liệu và định hướng triển khai.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="courses">
-        <div class="container">
-          <div class="section-heading">
-            <span class="section-tag">Các gói khóa học</span>
-            <h2>Lộ trình học PLC theo từng mức độ</h2>
-            <p>Chọn khóa học phù hợp với trình độ hiện tại và mục tiêu nghề nghiệp của bạn.</p>
-          </div>
-
-          <div class="course-grid">
-            <article class="course-card">
-              <div class="course-top">
-                <span class="course-level">Starter</span>
-                <h3>PLC Cơ bản</h3>
-                <p>Dành cho người mới bắt đầu muốn học từ số 0.</p>
-              </div>
-              <div class="course-body">
-                <div class="course-price">799.000đ</div>
-                <ul>
-                  <li>Tổng quan PLC và cấu trúc phần cứng</li>
-                  <li>Input, Output, relay, cảm biến</li>
-                  <li>Tiếp điểm, cuộn dây, set/reset</li>
-                  <li>Timer, Counter, bit nhớ</li>
-                  <li>Bài tập lập trình cơ bản</li>
-                </ul>
-                <a class="btn btn-block btn-primary" href="#payment">Đăng ký khóa này</a>
-              </div>
-            </article>
-
-            <article class="course-card featured">
-              <div class="course-badge">Khóa nổi bật</div>
-              <div class="course-top">
-                <span class="course-level">Professional</span>
-                <h3>PLC Ứng dụng thực tế</h3>
-                <p>Phù hợp người muốn nâng cao tay nghề và đi làm.</p>
-              </div>
-              <div class="course-body">
-                <div class="course-price">1.499.000đ</div>
-                <ul>
-                  <li>Điều khiển động cơ, van, cảm biến</li>
-                  <li>Liên động, bảo vệ và an toàn hệ thống</li>
-                  <li>Trình tự hoạt động theo bước</li>
-                  <li>Phân tích sơ đồ điện điều khiển</li>
-                  <li>Bài toán thực tế dạng mini project</li>
-                </ul>
-                <a class="btn btn-block btn-primary" href="#payment">Đăng ký khóa này</a>
-              </div>
-            </article>
-
-            <article class="course-card">
-              <div class="course-top">
-                <span class="course-level">Advanced</span>
-                <h3>PLC Nâng cao + HMI</h3>
-                <p>Dành cho kỹ thuật viên, kỹ sư muốn đi sâu triển khai hệ thống.</p>
-              </div>
-              <div class="course-body">
-                <div class="course-price">2.499.000đ</div>
-                <ul>
-                  <li>Kết nối HMI với PLC</li>
-                  <li>Thiết kế giao diện giám sát</li>
-                  <li>Hiển thị trạng thái và cảnh báo</li>
-                  <li>Tối ưu chương trình, chuẩn hóa code</li>
-                  <li>Dự án hoàn chỉnh từ điều khiển đến giao diện</li>
-                </ul>
-                <a class="btn btn-block btn-primary" href="#payment">Đăng ký khóa này</a>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-light" id="curriculum">
-        <div class="container">
-          <div class="section-heading">
-            <span class="section-tag">Nội dung đào tạo</span>
-            <h2>Lộ trình bài học PLC</h2>
-            <p>Khung bài học mẫu để học viên hình dung rõ mạch kiến thức và tiến trình học tập.</p>
-          </div>
-
-          <div class="curriculum-grid">
-            <article class="curriculum-card">
-              <h3>Phần 1: Nền tảng PLC</h3>
-              <ul>
-                <li>PLC là gì? Ứng dụng trong tự động hóa</li>
-                <li>Cấu trúc phần cứng và nguyên lý hoạt động</li>
-                <li>Ngõ vào, ngõ ra, relay, sensor</li>
-                <li>Chu kỳ quét và xử lý tín hiệu</li>
-                <li>Làm quen phần mềm lập trình</li>
-              </ul>
-            </article>
-
-            <article class="curriculum-card">
-              <h3>Phần 2: Lập trình cơ bản</h3>
-              <ul>
-                <li>Tiếp điểm thường mở, thường đóng</li>
-                <li>Cuộn dây, giữ mạch, set/reset</li>
-                <li>Timer trong PLC</li>
-                <li>Counter và ứng dụng đếm sản phẩm</li>
-                <li>Bài tập điều khiển đèn, motor cơ bản</li>
-              </ul>
-            </article>
-
-            <article class="curriculum-card">
-              <h3>Phần 3: Ứng dụng thực tế</h3>
-              <ul>
-                <li>Điều khiển động cơ thuận nghịch</li>
-                <li>Liên động và bảo vệ an toàn</li>
-                <li>Điều khiển băng tải bằng cảm biến</li>
-                <li>Trình tự hóa theo bước</li>
-                <li>Xử lý lỗi và kiểm tra logic hệ thống</li>
-              </ul>
-            </article>
-
-            <article class="curriculum-card">
-              <h3>Phần 4: Nâng cao và HMI</h3>
-              <ul>
-                <li>Kết nối HMI với PLC</li>
-                <li>Hiển thị trạng thái vận hành</li>
-                <li>Thiết kế màn hình điều khiển</li>
-                <li>Tổ chức code dễ bảo trì</li>
-                <li>Hoàn thiện mini project tổng hợp</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="instructor">
-        <div class="container instructor-grid">
-          <div class="instructor-visual">
-            <div class="instructor-photo-card">
-              <img src="Images/teacher-hao.jpg" alt="Giảng viên Haomechatronics" />
-            </div>
-          </div>
-
-          <div class="instructor-copy">
-            <span class="section-tag">Giảng viên</span>
-            <h2>Haomechatronics</h2>
-            <p>
-              Định hướng khóa học theo phong cách thực chiến, tập trung vào kiến thức đủ sâu để học viên
-              có thể hiểu bản chất, viết được chương trình và tự tin tiếp cận bài toán điều khiển ngoài thực tế.
-            </p>
-            <div class="check-list">
-              <div>Giải thích rõ từ nền tảng đến ứng dụng.</div>
-              <div>Phù hợp sinh viên, kỹ thuật viên và kỹ sư mới đi làm.</div>
-              <div>Hỗ trợ sau thanh toán để nhận tài khoản học.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-light testimonials-section">
-        <div class="container">
-          <div class="section-heading center">
-            <span class="section-tag">Phản hồi</span>
-            <h2>Những điều học viên thường quan tâm</h2>
-            <p>Liên hệ với chúng tôi để được hỗ trợ</p>
-          </div>
-
-          <div class="testimonial-grid">
-            <article class="testimonial-card">
-              <p>“Khóa học trình bày mạch lạc, dễ theo dõi và có tính thực tế cao giúp người học hiểu PLC cơ bản và ứng dụng.”</p>
-              <strong>Học PLC để làm gì?</strong>
-            </article>
-            <article class="testimonial-card">
-              <p>“Không có việc gì khó chỉ sợ lòng không bền, tuy nhiên đến với khóa học sẽ giúp bạn tiếp cận kiến thức theo hướng đúng đắn và đơn giản nhất.”</p>
-              <strong>Học có khó không?</strong>
-            </article>
-            <article class="testimonial-card">
-              <p>“Khóa học sẽ ưu tiên học trên các phần mềm mô phỏng giúp mọi học viên đều có thể thực hành được.”</p>
-              <strong>Không có phần cứng có học được không?</strong>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section payment-section" id="payment">
-        <div class="container">
-          <div class="section-heading">
-            <span class="section-tag">Đăng ký khóa học</span>
-            <h2>Thanh toán và nhận tài khoản học</h2>
-            <p>
-              Quy trình đơn giản: quét mã chuyển khoản, sau đó nhắn Facebook hoặc Telegram kèm ảnh xác nhận để nhận tài khoản khóa học.
-            </p>
-          </div>
-
-          <div class="payment-grid">
-            <article class="payment-card payment-card-highlight">
-              <h3>Bước 1: Chuyển khoản</h3>
-              <p class="muted">Sử dụng mã QR bên dưới để thực hiện giao dịch nhanh chóng.</p>
-
-              <div class="qr-image large">
-                <img src="Images/qr-bank.png" alt="Mã QR chuyển khoản" />
-              </div>
-
-              <div class="bank-box">
-                <p><strong>Ngân hàng:</strong> BIDV</p>
-                <p><strong>Số tài khoản:</strong> 7301897774</p>
-                <p><strong>Chủ tài khoản:</strong> NGUYEN TAN HAO </p>
-                <p><strong>Nội dung CK:</strong> HOVATEN + TENKHOAHOC</p>
-              </div>
-            </article>
-
-            <article class="payment-card">
-              <h3>Bước 2: Nhắn tin xác nhận</h3>
-              <p class="muted">Sau khi chuyển khoản thành công, gửi ảnh chụp giao dịch qua một trong hai kênh:</p>
-
-              <div class="channel-list">
-                <a class="channel-card facebook" href="https://www.facebook.com/profile.php?id=61573484933450" target="_blank">
-                  <div class="channel-qr">
-                    <img src="Images/qr-facebook.png" alt="Mã QR Facebook" />
-                  </div>
-                  <div class="channel-info">
-                    <strong>Facebook</strong>
-                    <span>Nhắn tin trực tiếp qua Fanpage</span>
-                  </div>
-                </a>
-
-                <a class="channel-card telegram" href="https://t.me/hmsplc" target="_blank" rel="noopener">
-                  <div class="channel-qr">
-                    <img src="Images/qr-telegram.png" alt="Mã QR Telegram" />
-                  </div>
-                  <div class="channel-info">
-                    <strong>Telegram</strong>
-                    <span>Xác nhận qua tin nhắn Telegram</span>
-                  </div>
-                </a>
-              </div>
-
-              <div class="step-note">
-                <h4>Thông tin cần gửi:</h4>
-                <ul>
-                  <li>Họ và tên</li>
-                  <li>Khóa học muốn đăng ký</li>
-                  <li>Ảnh chụp giao dịch chuyển khoản</li>
-                  <li>Email nhận tài khoản học</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="payment-card full-width">
-              <h3>Bước 3: Hoàn tất</h3>
-              <div class="timeline-grid">
-                <div class="timeline-item">
-                  <span class="timeline-number">01</span>
-                  <p>Hệ thống kiểm tra giao dịch (5-15 phút).</p>
-                </div>
-                <div class="timeline-item">
-                  <span class="timeline-number">02</span>
-                  <p>Cấp mã kích hoạt hoặc tài khoản đăng nhập.</p>
-                </div>
-                <div class="timeline-item">
-                  <span class="timeline-number">03</span>
-                  <p>Bắt đầu lộ trình học cùng chuyên gia.</p>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section faq-section">
-        <div class="container">
-          <div class="section-heading center">
-            <span class="section-tag">Hỏi đáp</span>
-            <h2>Một số thắc mắc phổ biến</h2>
-          </div>
-
-          <div class="faq-list">
-            <article class="faq-item">
-              <button class="faq-question" type="button">
-                Tôi chưa biết gì về điện/PLC có học được không?
-                <span>+</span>
-              </button>
-              <div class="faq-answer">
-                <p>Hoàn toàn được. Lộ trình Starter được thiết kế tỉ mỉ từ khái niệm cơ bản nhất dành cho người mới.</p>
-              </div>
-            </article>
-
-            <article class="faq-item">
-              <button class="faq-question" type="button">
-                Thời gian nhận tài khoản sau khi đóng học phí?
-                <span>+</span>
-              </button>
-              <div class="faq-answer">
-                <p>Thông thường từ 5 - 30 phút sau khi admin xác nhận hình ảnh giao dịch của bạn.</p>
-              </div>
-            </article>
-
-            <article class="faq-item">
-              <button class="faq-question" type="button">
-                Tôi có được hỗ trợ kỹ thuật trong lúc học không?
-                <span>+</span>
-              </button>
-              <div class="faq-answer">
-                <p>Có. Bạn sẽ được hỗ trợ giải đáp thắc mắc thông qua nhóm học viên hoặc nhắn tin trực tiếp với giảng viên.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-    </main>
+      </main>
 
     <footer class="footer" id="contact">
       <div class="container footer-grid">
-        <div class="footer-brand">
-          <h3>Haomechatronics PLC Academy</h3>
-          <p>Đào tạo kỹ năng lập trình PLC thực chiến, giúp bạn làm chủ công nghệ tự động hóa.</p>
-        </div>
-
         <div>
-          <h4>Thông tin liên hệ</h4>
+          <h3>Haomechatronics</h3>
+          <p>Thực chiến - Thực học - Thực làm.</p>
+        </div>
+        <div>
+          <h4>Liên hệ</h4>
           <ul class="footer-list">
             <li>Email: haomechatronics@gmail.com</li>
-            <li>Facebook: Hao Mechatronics</li>
             <li>Telegram: @HMSplc</li>
           </ul>
         </div>
-
-        <div>
-          <h4>Triết lý đào tạo</h4>
-          <ul class="footer-list">
-            <li>Không có việc gì khó, chỉ sợ lòng không bền</li>
-            <li>Kỷ luật là sức mạnh</li>
-            <li>Thực chiến - Thực học - Thực làm</li>
-          </ul>
-        </div>
       </div>
-
       <div class="container footer-bottom">
-        <p>© <span id="year"></span> Haomechatronics. All rights reserved.</p>
+        <p>© 2024 Haomechatronics. All rights reserved.</p>
       </div>
     </footer>
+  </div>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+      <h3>Đăng nhập học viên</h3>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Tên đăng nhập</label>
+          <input type="text" id="username" placeholder="admin" required>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu</label>
+          <input type="password" id="password" placeholder="123456" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Vào học ngay</button>
+        <p id="loginError" style="color:red; display:none; margin-top:10px;">Sai tài khoản hoặc mật khẩu!</p>
+      </form>
+    </div>
   </div>
 
   <script src="script.js"></script>
