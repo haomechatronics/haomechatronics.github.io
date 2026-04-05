@@ -34,26 +34,33 @@ if (googleLogoutBtn) {
 
 // Theo dõi trạng thái đăng nhập
 onAuthStateChanged(auth, async (user) => {
+  
+  // --- NÂNG CẤP CHẶN TRANG PHỤ TẠI ĐÂY ---
+  // Ép ẩn toàn bộ nội dung ngay lập tức trước khi tải dữ liệu từ hệ thống
+  if (document.getElementById('adminPanel')) document.getElementById('adminPanel').hidden = true;
+  if (document.getElementById('portalContent')) document.getElementById('portalContent').hidden = true;
+
   if (user) {
     const userEmail = user.email;
-    authStatus.innerText = `Đang đăng nhập: ${userEmail}`;
+    authStatus.innerText = `Đang kiểm tra quyền truy cập...`;
     
     // Kiểm tra xem là Admin hay Học viên có quyền
     const hasAccess = await checkUserAccess(userEmail);
 
     if (userEmail === ADMIN_EMAIL) {
-      // Nếu là Admin: Hiện toàn bộ bảng điều khiển
+      // Nếu là Admin: Mở toàn bộ bảng điều khiển
+      authStatus.innerText = `Đang đăng nhập (Admin): ${userEmail}`;
       if (document.getElementById('adminPanel')) document.getElementById('adminPanel').hidden = false;
       if (document.getElementById('portalContent')) document.getElementById('portalContent').hidden = false;
       loadAllLessons();
       loadAllowedUsers();
     } else if (hasAccess) {
-      // Nếu là Học viên được cấp quyền: Chỉ xem bài học, không hiện bảng Admin
-      if (document.getElementById('adminPanel')) document.getElementById('adminPanel').hidden = true;
+      // Nếu là Học viên được cấp quyền: Chỉ mở bài học
+      authStatus.innerText = `Đang đăng nhập (Học viên): ${userEmail}`;
       if (document.getElementById('portalContent')) document.getElementById('portalContent').hidden = false;
-      loadAllLessons(); // Học viên chỉ xem
+      loadAllLessons(); 
     } else {
-      // KHÔNG CÓ QUYỀN - Đã cập nhật thông báo báo lỗi tại đây
+      // KHÔNG CÓ QUYỀN - Báo lỗi và giữ nguyên trạng thái ẩn mọi trang phụ
       alert("Tài khoản chưa được đăng ký, vui lòng liên hệ Admin để đăng ký.");
       signOut(auth);
     }
