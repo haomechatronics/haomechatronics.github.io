@@ -1,1258 +1,212 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Website cung cấp khóa học PLC chuyên nghiệp của Haomechatronics với lộ trình từ cơ bản đến nâng cao, hỗ trợ đăng ký qua Facebook và Telegram." />
-  <title>Haomechatronics PLC Academy</title>
-  <title>Haomechatronics PLC Academy</title>
-<title>Haomechatronics PLC Academy</title>
-<link rel="icon" type="image/jpeg" href="Images/logo.jpg" />
-<link rel="shortcut icon" href="Images/logo.jpg" />
-<link rel="apple-touch-icon" href="Images/logo.jpg" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Website cung cấp khóa học PLC chuyên nghiệp của Haomechatronics với lộ trình từ cơ bản đến nâng cao." />
+    <title>Haomechatronics PLC Academy</title>
+    
+    <link rel="icon" type="image/jpeg" href="Images/logo.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 
-
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-
-  <style>
-    .auth-section .section-heading,
-    .portal-section .section-heading {
-      margin-bottom: 28px;
-    }
-
-    .auth-grid,
-    .portal-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
-      align-items: start;
-    }
-
-    .auth-card,
-    .portal-card,
-    .lesson-card,
-    .subuser-card {
-      background: #ffffff;
-      border: 1px solid rgba(17, 24, 39, 0.08);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-    }
-
-    .portal-section[hidden],
-    .admin-only[hidden] {
-      display: none !important;
-    }
-
-    .auth-status {
-      margin-top: 16px;
-      font-weight: 600;
-    }
-
-    .auth-note,
-    .portal-note {
-      color: #475569;
-      line-height: 1.7;
-    }
-
-    .lesson-form,
-    .subuser-form {
-      display: grid;
-      gap: 14px;
-    }
-
-    .lesson-form input,
-    .lesson-form textarea,
-    .subuser-form input {
-      width: 100%;
-      border: 1px solid #dbe2ea;
-      border-radius: 14px;
-      padding: 13px 15px;
-      font: inherit;
-      outline: none;
-      background: #fff;
-    }
-
-    .lesson-form textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .inline-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-
-    .mini-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.08);
-      color: #1d4ed8;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-
-    .portal-topbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    .list-stack {
-      display: grid;
-      gap: 16px;
-    }
-
-    .lesson-meta,
-    .user-meta {
-      color: #64748b;
-      font-size: 14px;
-      margin: 8px 0 0;
-    }
-
-    .lesson-card h4,
-    .subuser-card h4 {
-      margin: 0 0 10px;
-    }
-
-    .youtube-link {
-      word-break: break-all;
-      font-weight: 600;
-    }
-
-    .empty-state {
-      color: #64748b;
-      padding: 18px 0;
-    }
-
-    .danger-note {
-      color: #b91c1c;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    .code-note {
-      margin-top: 18px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: #0f172a;
-      color: #e2e8f0;
-      font-size: 14px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-    }
-
-    @media (max-width: 900px) {
-      .auth-grid,
-      .portal-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-
-    .portal-gate-card[hidden],
-    .portal-content[hidden] {
-      display: none !important;
-    }
-
-    .lesson-form select {
-      width: 100%;
-      border: 1px solid #dbe2ea;
-      border-radius: 14px;
-      padding: 13px 15px;
-      font: inherit;
-      outline: none;
-      background: #fff;
-    }
-
-    .course-group-grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .course-group-card {
-      background: #f8fafc;
-      border: 1px solid rgba(17, 24, 39, 0.08);
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .course-group-card h3 {
-      margin: 0 0 12px;
-      font-size: 20px;
-    }
-
-    .course-group-card .empty-state {
-      padding: 6px 0 0;
-    }
-
-    body.portal-mode .header,
-    body.portal-mode .hero,
-    body.portal-mode .section:not(#lesson-portal),
-    body.portal-mode .footer {
-      display: none !important;
-    }
-
-    body.portal-mode #lesson-portal {
-      display: block !important;
-      padding-top: 36px;
-      padding-bottom: 48px;
-    }
-
-    body.portal-mode {
-      background: linear-gradient(120deg, #07111f 0%, #0a1a34 60%, #07111f 100%);
-    }
-
-    body.portal-mode .site-shell {
-      min-height: 100vh;
-    }
-
-  </style>
-
+    <style>
+        /* CSS bổ sung cho phần Auth và Portal */
+        .auth-section { background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        .auth-section .section-heading, .portal-section .section-heading { margin-bottom: 28px; }
+        .auth-grid, .portal-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px; align-items: start; }
+        .auth-card, .portal-card, .lesson-card, .subuser-card { 
+            background: #ffffff; border: 1px solid rgba(17, 24, 39, 0.08); 
+            border-radius: 20px; padding: 24px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06); 
+        }
+        .portal-section[hidden], .admin-only[hidden], .portal-content[hidden] { display: none !important; }
+        .auth-status { margin-top: 16px; font-weight: 600; }
+        .danger-note { color: #b91c1c; font-size: 14px; margin-top: 10px; }
+        .inline-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+        .mini-badge { 
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; 
+            border-radius: 999px; background: rgba(37, 99, 235, 0.08); 
+            color: #1d4ed8; font-size: 14px; font-weight: 600; margin-bottom: 12px; 
+        }
+        .lesson-form, .subuser-form { display: grid; gap: 14px; }
+        .lesson-form input, .lesson-form select, .lesson-form textarea, .subuser-form input {
+            width: 100%; border: 1px solid #dbe2ea; border-radius: 14px; padding: 13px 15px; font: inherit;
+        }
+        body.portal-mode { background: #07111f; }
+        body.portal-mode .header, body.portal-mode .hero, body.portal-mode .section:not(#lesson-portal), body.portal-mode .footer { display: none !important; }
+        body.portal-mode #lesson-portal { display: block !important; padding: 40px 0; }
+        @media (max-width: 900px) { .auth-grid, .portal-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
+
 <div class="site-shell">
-  <header class="header" id="home">
-    <div class="container nav-wrap">
-      <a class="brand" href="#home">
-        <span class="brand-mark">
-          <img src="Images/logo.jpg" alt="Haomechatronics Logo">
-        </span>
-        <span>
-          <strong>Haomechatronics</strong>
-          <small>PLC Academy</small>
-        </span>
-      </a>
-
-        <button class="nav-toggle" id="navToggle" aria-label="Mở menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <nav class="nav" id="navMenu">
-          <a href="#courses">Khóa học</a>
-          <a href="#curriculum">Lộ trình</a>
-          <a href="#instructor">Giảng viên</a>
-          <a href="#payment">Đăng ký</a>
-          <a href="#login-google">Đăng nhập</a>
-          <a href="#contact">Liên hệ</a>
-        </nav>
-      </div>
+    <header class="header" id="home">
+        <div class="container nav-wrap">
+            <a class="brand" href="#home">
+                <span class="brand-mark"><img src="Images/logo.jpg" alt="Logo"></span>
+                <span><strong>Haomechatronics</strong><small>PLC Academy</small></span>
+            </a>
+            <nav class="nav" id="navMenu">
+                <a href="#login-google">Đăng nhập</a>
+                <a href="#courses">Khóa học</a>
+                <a href="#curriculum">Lộ trình</a>
+                <a href="#payment">Đăng ký</a>
+                <a href="#contact">Liên hệ</a>
+            </nav>
+        </div>
     </header>
 
     <main>
-      <section class="hero">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <span class="eyebrow">Đào tạo PLC thực chiến</span>
-            <h1>Làm chủ PLC từ nền tảng đến ứng dụng công nghiệp thực tế</h1>
-            <p class="hero-text">
-              Khóa học dành cho sinh viên, kỹ thuật viên và kỹ sư muốn học chắc bản chất PLC,
-              lập trình Ladder, xử lý tín hiệu vào ra, kết nối HMI và triển khai bài toán điều khiển ngoài thực tế.
-            </p>
-
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="#courses">Xem khóa học</a>
-              <a class="btn btn-secondary" href="#payment">Đăng ký ngay</a>
-            </div>
-
-            <div class="hero-stats">
-              <div class="stat-card">
-                <strong>20+</strong>
-                <span>Bài học thực hành</span>
-              </div>
-              <div class="stat-card">
-                <strong>3</strong>
-                <span>Lộ trình học rõ ràng</span>
-              </div>
-              <div class="stat-card">
-                <strong>1:1</strong>
-                <span>Hỗ trợ sau khi mua</span>
-              </div>
-            </div>
-          </div>
-
-    <div class="hero-visual">
-  <div class="hero-image-card">
-    <img src="Images/Banner-plc.jpg" alt="Khóa học PLC Haomechatronics" />
-  </div>
-</div>
-
-
-      </section>
-
-      <section class="section section-light">
-        <div class="container">
-          <div class="section-heading center">
-            <span class="section-tag">Giá trị bạn nhận được</span>
-            <h2>Học để làm được việc, không chỉ học để biết</h2>
-            <p>
-              Nội dung được xây dựng theo hướng thực hành, bám sát môi trường xưởng,
-              dây chuyền nhỏ và bài toán điều khiển công nghiệp.
-            </p>
-          </div>
-
-          <div class="feature-grid">
-            <article class="feature-card">
-              <div class="icon-badge">01</div>
-              <h3>Nắm chắc nền tảng</h3>
-              <p>Hiểu đúng cấu trúc PLC, chu kỳ quét, vùng nhớ, tín hiệu input/output và nguyên lý điều khiển.</p>
-            </article>
-            <article class="feature-card">
-              <div class="icon-badge">02</div>
-              <h3>Lập trình bài bản</h3>
-              <p>Thực hành Ladder từ cơ bản đến logic liên động, timer, counter, sequence và xử lý lỗi.</p>
-            </article>
-            <article class="feature-card">
-              <div class="icon-badge">03</div>
-              <h3>Ứng dụng công nghiệp</h3>
-              <p>Làm quen mô hình điều khiển động cơ, van điện từ, cảm biến, băng tải và hệ thống trộn chiết.</p>
-            </article>
-            <article class="feature-card">
-              <div class="icon-badge">04</div>
-              <h3>Hỗ trợ sau khóa học</h3>
-              <p>Sau khi thanh toán, học viên được hỗ trợ nhận tài khoản học, tài liệu và định hướng triển khai.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="courses">
-        <div class="container">
-          <div class="section-heading">
-            <span class="section-tag">Các gói khóa học</span>
-            <h2>Lộ trình học PLC theo từng mức độ</h2>
-            <p>Chọn khóa học phù hợp với trình độ hiện tại và mục tiêu nghề nghiệp của bạn.</p>
-          </div>
-
-          <div class="course-grid">
-            <article class="course-card">
-              <div class="course-top">
-                <span class="course-level">Starter</span>
-                <h3>PLC Cơ bản</h3>
-                <p>Dành cho người mới bắt đầu muốn học từ số 0.</p>
-              </div>
-              <div class="course-body">
-                <div class="course-price">799.000đ</div>
-                <ul>
-                  <li>Tổng quan PLC và cấu trúc phần cứng</li>
-                  <li>Input, Output, relay, cảm biến</li>
-                  <li>Tiếp điểm, cuộn dây, set/reset</li>
-                  <li>Timer, Counter, bit nhớ</li>
-                  <li>Bài tập lập trình cơ bản</li>
-                </ul>
-                <a class="btn btn-block btn-primary" href="#payment">Đăng ký khóa này</a>
-              </div>
-            </article>
-
-            <article class="course-card featured">
-              <div class="course-badge">Khóa nổi bật</div>
-              <div class="course-top">
-                <span class="course-level">Professional</span>
-                <h3>PLC Ứng dụng thực tế</h3>
-                <p>Phù hợp người muốn nâng cao tay nghề và đi làm.</p>
-              </div>
-              <div class="course-body">
-                <div class="course-price">1.499.000đ</div>
-                <ul>
-                  <li>Điều khiển động cơ, van, cảm biến</li>
-                  <li>Liên động, bảo vệ và an toàn hệ thống</li>
-                  <li>Trình tự hoạt động theo bước</li>
-                  <li>Phân tích sơ đồ điện điều khiển</li>
-                  <li>Bài toán thực tế dạng mini project</li>
-                </ul>
-                <a class="btn btn-block btn-primary" href="#payment">Đăng ký khóa này</a>
-              </div>
-            </article>
-
-            <article class="course-card">
-              <div class="course-top">
-                <span class="course-level">Advanced</span>
-                <h3>PLC Nâng cao + HMI</h3>
-                <p>Dành cho kỹ thuật viên, kỹ sư muốn đi sâu triển khai hệ thống.</p>
-              </div>
-              <div class="course-body">
-                <div class="course-price">2.499.000đ</div>
-                <ul>
-                  <li>Kết nối HMI với PLC</li>
-                  <li>Thiết kế giao diện giám sát</li>
-                  <li>Hiển thị trạng thái và cảnh báo</li>
-                  <li>Tối ưu chương trình, chuẩn hóa code</li>
-                  <li>Dự án hoàn chỉnh từ điều khiển đến giao diện</li>
-                </ul>
-                <a class="btn btn-block btn-primary" href="#payment">Đăng ký khóa này</a>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-light" id="curriculum">
-        <div class="container">
-          <div class="section-heading">
-            <span class="section-tag">Nội dung đào tạo</span>
-            <h2>Lộ trình bài học PLC</h2>
-            <p>Khung bài học mẫu để học viên hình dung rõ mạch kiến thức và tiến trình học tập.</p>
-          </div>
-
-          <div class="curriculum-grid">
-            <article class="curriculum-card">
-              <h3>Phần 1: Nền tảng PLC</h3>
-              <ul>
-                <li>PLC là gì? Ứng dụng trong tự động hóa</li>
-                <li>Cấu trúc phần cứng và nguyên lý hoạt động</li>
-                <li>Ngõ vào, ngõ ra, relay, sensor</li>
-                <li>Chu kỳ quét và xử lý tín hiệu</li>
-                <li>Làm quen phần mềm lập trình</li>
-              </ul>
-            </article>
-
-            <article class="curriculum-card">
-              <h3>Phần 2: Lập trình cơ bản</h3>
-              <ul>
-                <li>Tiếp điểm thường mở, thường đóng</li>
-                <li>Cuộn dây, giữ mạch, set/reset</li>
-                <li>Timer trong PLC</li>
-                <li>Counter và ứng dụng đếm sản phẩm</li>
-                <li>Bài tập điều khiển đèn, motor cơ bản</li>
-              </ul>
-            </article>
-
-            <article class="curriculum-card">
-              <h3>Phần 3: Ứng dụng thực tế</h3>
-              <ul>
-                <li>Điều khiển động cơ thuận nghịch</li>
-                <li>Liên động và bảo vệ an toàn</li>
-                <li>Điều khiển băng tải bằng cảm biến</li>
-                <li>Trình tự hóa theo bước</li>
-                <li>Xử lý lỗi và kiểm tra logic hệ thống</li>
-              </ul>
-            </article>
-
-            <article class="curriculum-card">
-              <h3>Phần 4: Nâng cao và HMI</h3>
-              <ul>
-                <li>Kết nối HMI với PLC</li>
-                <li>Hiển thị trạng thái vận hành</li>
-                <li>Thiết kế màn hình điều khiển</li>
-                <li>Tổ chức code dễ bảo trì</li>
-                <li>Hoàn thiện mini project tổng hợp</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="instructor">
-        <div class="container instructor-grid">
-          <div class="instructor-visual">
-  <div class="instructor-photo-card">
-    <img src="Images/teacher-hao.jpg" alt="Giảng viên Haomechatronics" />
-  </div>
-</div>
-
-          <div class="instructor-copy">
-            <span class="section-tag">Giảng viên</span>
-            <h2>Haomechatronics</h2>
-            <p>
-              Định hướng khóa học theo phong cách thực chiến, tập trung vào kiến thức đủ sâu để học viên
-              có thể hiểu bản chất, viết được chương trình và tự tin tiếp cận bài toán điều khiển ngoài thực tế.
-            </p>
-            <div class="check-list">
-              <div>Giải thích rõ từ nền tảng đến ứng dụng.</div>
-              <div>Phù hợp sinh viên, kỹ thuật viên và kỹ sư mới đi làm.</div>
-              <div>Hỗ trợ sau thanh toán để nhận tài khoản học.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-light testimonials-section">
-        <div class="container">
-          <div class="section-heading center">
-            <span class="section-tag">Phản hồi</span>
-            <h2>Những điều học viên thường quan tâm</h2>
-            <p>Liên hệ với chúng tôi để được hổ trợ</p>
-          </div>
-
-          <div class="testimonial-grid">
-            <article class="testimonial-card">
-              <p>“Khóa học trình bày mạch lạc, dễ theo dõi và có tính thực tế cao giúp người học hiểu PLC cơ bản và ứng dụng.”</p>
-              <strong>Học PLC để làm gì?</strong>
-            </article>
-            <article class="testimonial-card">
-              <p>“Không có việc gì khó chỉ sợ lòng không bền, tuy nhiên đến với khóa học sẽ giúp bạn tiếp cận kiến thức theo hướng đúng đắng và đơn giản nhất.”</p>
-              <strong>Học có khó không?</strong>
-            </article>
-            <article class="testimonial-card">
-              <p>“Khóa học sẽ ưu tiên học trên các phần mềm mô phỏng giúp mọi học viên điều có thể thực hành được.”</p>
-              <strong>Không có phần cứng có học được không?</strong>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section payment-section" id="payment">
-        <div class="container">
-          <div class="section-heading">
-            <span class="section-tag">Đăng ký khóa học</span>
-            <h2>Thanh toán và nhận tài khoản học</h2>
-            <p>
-              Quy trình đơn giản: quét mã chuyển khoản, sau đó nhắn facebook hoặc Telegram kèm ảnh xác nhận để nhận tài khoản khóa học.
-            </p>
-          </div>
-
-          <div class="payment-grid">
-            <article class="payment-card payment-card-highlight">
-              <h3>Bước 1: Chuyển khoản</h3>
-              <p class="muted">Chèn mã QR thanh toán của bạn vào khu vực bên dưới.</p>
-
-              <div class="qr-image large">
-  <img src="Images/qr-bank.png" alt="Mã QR chuyển khoản" />
-</div>
-
-              <div class="bank-box">
-                <p><strong>Ngân hàng:</strong> BIDV</p>
-                <p><strong>Số tài khoản:</strong> 7301897774</p>
-                <p><strong>Chủ tài khoản:</strong> NGUYEN TAN HAO </p>
-                <p><strong>Nội dung CK:</strong> HOVATEN + TENKHOAHOC</p>
-              </div>
-            </article>
-
-            <article class="payment-card">
-              <h3>Bước 2: Nhắn tin xác nhận</h3>
-              <p class="muted">Sau khi chuyển khoản, gửi ảnh chụp giao dịch qua một trong hai kênh bên dưới.</p>
-
-             <div class="channel-list">
-  <a class="channel-card zalo" href="https://www.facebook.com/profile.php?id=61573484933450">
-    <div class="channel-qr">
-      <img src="Images/qr-facebook.png" alt="Mã QR Facebook" />
-    </div>
-    <div class="channel-info">
-      <strong>Facebook</strong>
-      <span>Quét mã để nhắn Facebook đăng ký khóa học</span>
-    </div>
-  </a>
-
-  <a class="channel-card telegram" href="https://t.me/hmsplc" target="_blank" rel="noopener">
-    <div class="channel-qr">
-      <img src="Images/qr-telegram.png" alt="Mã QR Telegram" />
-    </div>
-    <div class="channel-info">
-      <strong>Telegram</strong>
-      <span>Quét mã để nhắn Telegram xác nhận thanh toán</span>
-    </div>
-  </a>
-</div>
-
-              <div class="step-note">
-                <h4>Thông tin cần gửi</h4>
-                <ul>
-                  <li>Họ và tên</li>
-                  <li>Khóa học muốn đăng ký</li>
-                  <li>Ảnh chụp giao dịch chuyển khoản</li>
-                  <li>Số điện thoại hoặc email nhận tài khoản học</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="payment-card full-width">
-              <h3>Bước 3: Nhận tài khoản khóa học</h3>
-              <div class="timeline-grid">
-                <div class="timeline-item">
-                  <span class="timeline-number">01</span>
-                  <p>Chuyển khoản đúng nội dung để dễ xác nhận.</p>
-                </div>
-                <div class="timeline-item">
-                  <span class="timeline-number">02</span>
-                  <p>Nhắn qua Zalo hoặc Telegram sau khi chuyển khoản.</p>
-                </div>
-                <div class="timeline-item">
-                  <span class="timeline-number">03</span>
-                  <p>Sau khi kiểm tra, bạn sẽ được cấp tài khoản học.</p>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      
-      <section class="section auth-section" id="login-google">
-        <div class="container">
-          <div class="section-heading">
-            <span class="section-tag">Đăng nhập học liệu</span>
-            <h2>Đăng nhập Google để vào khu vực bài học</h2>
-            <p>
-              Người dùng được cấp quyền sẽ đăng nhập bằng Google. Sau khi đăng nhập thành công,
-              hệ thống sẽ mở một tab phụ trong cùng website để quản lý và xem link YouTube cho 3 loại khóa học.
-            </p>
-          </div>
-
-          <div class="auth-grid">
-            <article class="auth-card">
-              <div class="mini-badge">Google Login</div>
-              <h3>Đăng nhập nhanh</h3>
-              <p class="auth-note">
-                Admin dùng đúng Gmail quản trị. Các tài khoản con chỉ cần đăng nhập bằng Gmail đã được admin cấp quyền.
-              </p>
-
-              <div class="inline-actions">
-                <button class="btn btn-primary" id="googleLoginBtn" type="button">Đăng nhập bằng Google</button>
-                <button class="btn btn-secondary" id="openPortalBtn" type="button">Mở tab phụ bài học</button>
-                <button class="btn btn-secondary" id="googleLogoutBtn" type="button">Đăng xuất</button>
-              </div>
-
-              <div class="auth-status" id="authStatus">Chưa đăng nhập.</div>
-              <p class="danger-note" id="authError"></p>
-            </article>
-
-            
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-light portal-section" id="lesson-portal" hidden>
-        <div class="container">
-          <div class="portal-topbar">
-            <div class="section-heading" style="margin-bottom:0;">
-              <span class="section-tag">Tab phụ bài học</span>
-              <h2>Quản lý link YouTube cho 3 loại khóa học</h2>
-              <p>Admin có thể cấp quyền tài khoản con. Tài khoản con được cấp quyền có thể đăng nhập và thêm link bài học theo từng nhóm khóa học.</p>
-            </div>
-            <div class="inline-actions">
-              <button class="btn btn-secondary" id="portalRefreshBtn" type="button">Tải lại danh sách</button>
-              <button class="btn btn-primary" id="portalLogoutBtn" type="button">Đăng xuất</button>
-            </div>
-          </div>
-
-          <article class="portal-card portal-gate-card" id="portalGateCard">
-            <div class="mini-badge">Truy cập tab phụ</div>
-            <h3>Khu vực bài học đang chờ xác thực</h3>
-            <p class="portal-note" id="portalGateMessage">
-              Vui lòng đăng nhập từ trang chính bằng Gmail đã được cấp quyền. Sau khi đăng nhập xong, tab phụ này sẽ tự hiển thị khu vực quản lý bài học.
-            </p>
-            <div class="inline-actions">
-              <a class="btn btn-primary" href="./index.html#login-google">Về trang chính để đăng nhập</a>
-              <button class="btn btn-secondary" id="portalRetryBtn" type="button">Kiểm tra lại quyền truy cập</button>
-            </div>
-          </article>
-
-          <div class="portal-content" id="portalContent" hidden>
-            <div class="portal-grid">
-              <div class="list-stack">
-                <article class="portal-card">
-                  <div class="mini-badge">Thêm bài học</div>
-                  <form class="lesson-form" id="lessonForm">
-                    <select id="lessonCourseType" required>
-                      <option value="">Chọn loại khóa học</option>
-                      <option value="basic">PLC Cơ bản</option>
-                      <option value="practical">PLC Ứng dụng thực tế</option>
-                      <option value="advanced">PLC Nâng cao + HMI</option>
-                    </select>
-                    <input type="text" id="lessonTitle" placeholder="Tiêu đề bài học" required />
-                    <input type="url" id="lessonUrl" placeholder="Link YouTube https://www.youtube.com/..." required />
-                    <textarea id="lessonDescription" placeholder="Mô tả ngắn về bài học"></textarea>
-                    <button class="btn btn-primary" type="submit">Lưu link bài học</button>
-                  </form>
-                  <p class="portal-note" id="lessonFormStatus"></p>
-                </article>
-
-                <article class="portal-card">
-                  <div class="mini-badge">Danh sách bài học</div>
-                  <div class="course-group-grid">
-                    <div class="course-group-card">
-                      <h3>PLC Cơ bản</h3>
-                      <div id="lessonListBasic" class="list-stack">
-                        <div class="empty-state">Chưa có bài học nào.</div>
-                      </div>
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <span class="eyebrow">Đào tạo PLC thực chiến</span>
+                    <h1>Làm chủ PLC từ nền tảng đến ứng dụng công nghiệp</h1>
+                    <p class="hero-text">Khóa học dành cho sinh viên và kỹ sư muốn nắm chắc bản chất lập trình và triển khai thực tế.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#login-google">Vào khu vực học tập</a>
+                        <a class="btn btn-secondary" href="#courses">Tìm hiểu thêm</a>
                     </div>
-                    <div class="course-group-card">
-                      <h3>PLC Ứng dụng thực tế</h3>
-                      <div id="lessonListPractical" class="list-stack">
-                        <div class="empty-state">Chưa có bài học nào.</div>
-                      </div>
-                    </div>
-                    <div class="course-group-card">
-                      <h3>PLC Nâng cao + HMI</h3>
-                      <div id="lessonListAdvanced" class="list-stack">
-                        <div class="empty-state">Chưa có bài học nào.</div>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </div>
-
-              <div class="list-stack">
-                <article class="portal-card">
-                  <div class="mini-badge">Thông tin đăng nhập</div>
-                  <h3>Tài khoản hiện tại</h3>
-                  <p class="portal-note" id="portalUserInfo">Chưa có thông tin.</p>
-                </article>
-
-                <article class="portal-card admin-only" id="adminPanel" hidden>
-                  <div class="mini-badge">Admin</div>
-                  <h3>Cấp quyền tài khoản con</h3>
-                  <p class="portal-note">
-                    Nhập Gmail cần cấp quyền. Người đó sẽ đăng nhập bằng đúng Google đó để vào tab phụ bài học.
-                  </p>
-                  <form class="subuser-form" id="subuserForm">
-                    <input type="email" id="subuserEmail" placeholder="email@gmail.com" required />
-                    <button class="btn btn-primary" type="submit">Thêm tài khoản con</button>
-                  </form>
-                  <p class="portal-note" id="subuserStatus"></p>
-                </article>
-
-                <article class="portal-card admin-only" id="subuserListCard" hidden>
-                  <div class="mini-badge">Danh sách tài khoản con</div>
-                  <div id="subuserList" class="list-stack">
-                    <div class="empty-state">Chưa có tài khoản con nào.</div>
-                  </div>
-                </article>
-              </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-card"><img src="Images/Banner-plc.jpg" alt="Banner"></div>
+                </div>
             </div>
-          </div>
-        </div>
-      </section>
+        </section>
 
+        <section class="section auth-section" id="login-google">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="section-tag">Portal Truy Cập</span>
+                    <h2>Đăng nhập để vào khu vực bài học</h2>
+                    <p>Học viên được cấp quyền sử dụng Gmail để truy cập tài liệu và video bài học.</p>
+                </div>
+                <div class="auth-grid">
+                    <article class="auth-card">
+                        <div class="mini-badge">Google Authentication</div>
+                        <div class="inline-actions">
+                            <button class="btn btn-primary" id="googleLoginBtn">Đăng nhập Google</button>
+                            <button class="btn btn-secondary" id="openPortalBtn">Mở tab bài học</button>
+                            <button class="btn btn-secondary" id="googleLogoutBtn">Đăng xuất</button>
+                        </div>
+                        <div class="auth-status" id="authStatus">Trạng thái: Đang kiểm tra...</div>
+                        <p class="danger-note" id="authError"></p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-      <section class="section faq-section">
-        <div class="container">
-          <div class="section-heading center">
-            <span class="section-tag">Câu hỏi thường gặp</span>
-            <h2>Một số thắc mắc phổ biến</h2>
-          </div>
+        <section class="section section-light">
+            <div class="container">
+                <div class="section-heading center">
+                    <h2>Học để làm được việc</h2>
+                </div>
+                <div class="feature-grid">
+                    <article class="feature-card"><h3>Nắm chắc nền tảng</h3><p>Hiểu đúng cấu trúc PLC và tín hiệu I/O.</p></article>
+                    <article class="feature-card"><h3>Lập trình bài bản</h3><p>Thực hành Ladder từ cơ bản đến nâng cao.</p></article>
+                </div>
+            </div>
+        </section>
 
-          <div class="faq-list">
-            <article class="faq-item active">
-              <button class="faq-question" type="button">
-                Tôi chưa biết gì về PLC có học được không?
-                <span>+</span>
-              </button>
-              <div class="faq-answer">
-                <p>Có. Bạn có thể bắt đầu từ khóa PLC Cơ bản vì nội dung được thiết kế cho người mới.</p>
-              </div>
-            </article>
+        <section class="section" id="courses">...</section>
 
-            <article class="faq-item">
-              <button class="faq-question" type="button">
-                Sau khi chuyển khoản bao lâu thì nhận được tài khoản?
-                <span>+</span>
-              </button>
-              <div class="faq-answer">
-                <p>Sau khi bạn gửi xác nhận thanh toán qua Zalo hoặc Telegram, tài khoản sẽ được cấp theo thời gian bạn quy định.</p>
-              </div>
-            </article>
-
-            <article class="faq-item">
-              <button class="faq-question" type="button">
-                Tôi có thể nhờ tư vấn chọn khóa học phù hợp không?
-                <span>+</span>
-              </button>
-              <div class="faq-answer">
-                <p>Có. Bạn có thể liên hệ trực tiếp để được tư vấn lộ trình phù hợp với nền tảng hiện tại.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
+        <section class="section section-light portal-section" id="lesson-portal" hidden>
+            <div class="container">
+                <div class="portal-topbar">
+                    <h2>Quản lý & Xem bài học</h2>
+                    <button class="btn btn-primary" id="portalLogoutBtn">Thoát Portal</button>
+                </div>
+                
+                <div class="portal-content" id="portalContent" hidden>
+                    <div class="portal-grid">
+                        <div class="list-stack">
+                            <article class="portal-card" id="adminPanel" hidden>
+                                <h3>Cấp quyền tài khoản con (Admin)</h3>
+                                <form class="subuser-form" id="subuserForm">
+                                    <input type="email" id="subuserEmail" placeholder="email@gmail.com" required>
+                                    <button class="btn btn-primary" type="submit">Thêm tài khoản</button>
+                                </form>
+                            </article>
+                            <article class="portal-card">
+                                <h3>Danh sách bài học</h3>
+                                <div id="lessonListBasic"></div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer" id="contact">
-      <div class="container footer-grid">
-        <div>
-          <h3>Haomechatronics PLC Academy</h3>
-          <p>Website chuyên cung cấp các khóa học PLC dành cho người học muốn tiếp cận tự động hóa theo hướng thực chiến.</p>
+        <div class="container footer-bottom">
+            <p>© 2026 Haomechatronics. All rights reserved.</p>
         </div>
-
-        <div>
-          <h4>Thông tin liên hệ</h4>
-          <ul class="footer-list">
-            <li>Email: haomechatronics@gmail.com</li>
-            <li>Facebook: Hao Mechatronics</li>
-            <li>Telegram: @HMSplc</li>
-          </ul>
-        </div>
-<div>
-          <h4>Triết lý </h4>
-          <ul class="footer-list">
-            <li>Không có viêc gì khó chỉ sợ lòng không bền</li>
-            <li>Kỷ luật là sức mạnh</li>
-            <li>Thực chiến,thực học, thực làm</li>
-          </ul>
-        </div>
-      </div>
-       
-
-      <div class="container footer-bottom">
-        <p>© <span id="year"></span> Haomechatronics. All rights reserved.</p>
-      </div>
     </footer>
-  </div>
+</div>
 
-
-  <script src="script.js"></script>
-
-  <!--
-  FIRESTORE RULES DÁN TRONG FIREBASE CONSOLE:
-
-  rules_version = '2';
-  service cloud.firestore {
-    match /databases/{database}/documents {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isAdmin() {
-        return isSignedIn() && request.auth.token.email == "haostudio84l1@gmail.com";
-      }
-
-      function isAllowed() {
-        return isSignedIn() &&
-          (
-            isAdmin() ||
-            exists(/databases/$(database)/documents/allowedUsers/$(request.auth.token.email))
-          );
-      }
-
-      match /allowedUsers/{email} {
-        allow read: if isAllowed();
-        allow create, update, delete: if isAdmin();
-      }
-
-      match /youtubeLinks/{docId} {
-        allow read: if isAllowed();
-        allow create: if isAllowed();
-        allow update, delete: if isAdmin();
-      }
-    }
-  }
-  -->
-
-  <script type="module">
+<script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
-    import {
-      getAuth,
-      GoogleAuthProvider,
-      signInWithPopup,
-      signOut,
-      onAuthStateChanged
-    } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      getDoc,
-      getDocs,
-      addDoc,
-      collection,
-      query,
-      orderBy,
-      serverTimestamp
-    } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+    import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
 
     const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
-
     const firebaseConfig = {
-      apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
-      authDomain: 'project-81bb7049-bc9f-499f-974.firebaseapp.com',
-      projectId: 'project-81bb7049-bc9f-499f-974',
-      storageBucket: 'project-81bb7049-bc9f-499f-974.firebasestorage.app',
-      messagingSenderId: '533570063852',
-      appId: '1:533570063852:web:d15aa61abd7a7c2e64c4c9'
+        apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
+        authDomain: 'project-81bb7049-bc9f-499f-974.firebaseapp.com',
+        projectId: 'project-81bb7049-bc9f-499f-974',
+        storageBucket: 'project-81bb7049-bc9f-499f-974.firebasestorage.app',
+        messagingSenderId: '533570063852',
+        appId: '1:533570063852:web:d15aa61abd7a7c2e64c4c9'
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
 
+    // DOM Elements
     const googleLoginBtn = document.getElementById('googleLoginBtn');
     const googleLogoutBtn = document.getElementById('googleLogoutBtn');
     const openPortalBtn = document.getElementById('openPortalBtn');
-    const portalLogoutBtn = document.getElementById('portalLogoutBtn');
-    const portalRefreshBtn = document.getElementById('portalRefreshBtn');
-
     const authStatus = document.getElementById('authStatus');
-    const authError = document.getElementById('authError');
 
-    const portalSection = document.getElementById('lesson-portal');
-    const portalGateCard = document.getElementById('portalGateCard');
-    const portalGateMessage = document.getElementById('portalGateMessage');
-    const portalContent = document.getElementById('portalContent');
-    const portalRetryBtn = document.getElementById('portalRetryBtn');
-    const adminPanel = document.getElementById('adminPanel');
-    const subuserListCard = document.getElementById('subuserListCard');
-    const portalUserInfo = document.getElementById('portalUserInfo');
+    // Xử lý Đăng nhập
+    googleLoginBtn.onclick = () => signInWithPopup(auth, provider);
+    googleLogoutBtn.onclick = () => {
+        signOut(auth);
+        document.body.classList.remove('portal-mode');
+    };
 
-    const lessonForm = document.getElementById('lessonForm');
-    const lessonCourseType = document.getElementById('lessonCourseType');
-    const lessonTitle = document.getElementById('lessonTitle');
-    const lessonUrl = document.getElementById('lessonUrl');
-    const lessonDescription = document.getElementById('lessonDescription');
-    const lessonFormStatus = document.getElementById('lessonFormStatus');
-    const lessonListBasic = document.getElementById('lessonListBasic');
-    const lessonListPractical = document.getElementById('lessonListPractical');
-    const lessonListAdvanced = document.getElementById('lessonListAdvanced');
-
-    const subuserForm = document.getElementById('subuserForm');
-    const subuserEmail = document.getElementById('subuserEmail');
-    const subuserStatus = document.getElementById('subuserStatus');
-    const subuserList = document.getElementById('subuserList');
-
-    let currentUser = null;
-    let currentRole = null;
-    const isPortalMode = new URLSearchParams(window.location.search).get('portal') === '1';
-
-    if (isPortalMode) {
-      document.body.classList.add('portal-mode');
-      document.title = 'Portal bài học | Haomechatronics PLC Academy';
-    }
-
-    function escapeHtml(value = '') {
-      return value
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
-
-    function isValidYoutubeUrl(url) {
-      try {
-        const parsed = new URL(url);
-        return parsed.hostname.includes('youtube.com') || parsed.hostname.includes('youtu.be');
-      } catch {
-        return false;
-      }
-    }
-
-    async function getUserRole(user) {
-      if (!user || !user.email) return null;
-      const email = user.email.toLowerCase().trim();
-
-      if (email === ADMIN_EMAIL.toLowerCase().trim()) {
-        return 'admin';
-      }
-
-      try {
-        const allowedRef = doc(db, 'allowedUsers', email);
-        const allowedSnap = await getDoc(allowedRef);
-        return allowedSnap.exists() ? 'editor' : null;
-      } catch (error) {
-        if (error?.code === 'permission-denied' || String(error?.message || '').includes('Missing or insufficient permissions')) {
-          return null;
-        }
-        throw error;
-      }
-    }
-
-    function updateAuthMessage(user, role) {
-      if (!user) {
-        authStatus.textContent = 'Chưa đăng nhập.';
-        portalUserInfo.textContent = 'Chưa đăng nhập.';
-        return;
-      }
-
-      const roleLabel = role === 'admin' ? 'Admin' : 'Tài khoản con';
-      authStatus.textContent = `Đã đăng nhập: ${user.email} (${roleLabel})`;
-      portalUserInfo.innerHTML = `
-        <strong>Họ tên:</strong> ${escapeHtml(user.displayName || 'Không rõ')}<br />
-        <strong>Email:</strong> ${escapeHtml(user.email || '')}<br />
-        <strong>Vai trò:</strong> ${escapeHtml(roleLabel)}
-      `;
-    }
-
-    function showPortal(enabled) {
-      portalSection.hidden = !isPortalMode;
-      if (!isPortalMode) return;
-
-      portalGateCard.hidden = !!enabled;
-      portalContent.hidden = !enabled;
-    }
-
-    function updatePortalGateMessage(message) {
-      if (portalGateMessage) {
-        portalGateMessage.textContent = message;
-      }
-    }
-
-    function showAdminBlocks(enabled) {
-      adminPanel.hidden = !enabled;
-      subuserListCard.hidden = !enabled;
-    }
-
-    function courseTypeLabel(courseType) {
-      if (courseType === 'basic') return 'PLC Cơ bản';
-      if (courseType === 'practical') return 'PLC Ứng dụng thực tế';
-      if (courseType === 'advanced') return 'PLC Nâng cao + HMI';
-      return 'Chưa phân loại';
-    }
-
-    function renderLessonGroup(container, items) {
-      if (!container) return;
-
-      if (!items.length) {
-        container.innerHTML = '<div class="empty-state">Chưa có bài học nào.</div>';
-        return;
-      }
-
-      container.innerHTML = '';
-      items.forEach((data) => {
-        const article = document.createElement('article');
-        article.className = 'lesson-card';
-        article.innerHTML = `
-          <h4>${escapeHtml(data.title || 'Không có tiêu đề')}</h4>
-          <a class="youtube-link" href="${escapeHtml(data.url || '#')}" target="_blank" rel="noopener">
-            ${escapeHtml(data.url || '')}
-          </a>
-          <p>${escapeHtml(data.description || '')}</p>
-          <p class="lesson-meta">Nhóm khóa học: ${escapeHtml(courseTypeLabel(data.courseType || ''))}</p>
-          <p class="lesson-meta">Người thêm: ${escapeHtml(data.createdBy || 'Không rõ')}</p>
-        `;
-        container.appendChild(article);
-      });
-    }
-
-    async function renderLessons() {
-      lessonListBasic.innerHTML = '<div class="empty-state">Đang tải danh sách bài học...</div>';
-      lessonListPractical.innerHTML = '<div class="empty-state">Đang tải danh sách bài học...</div>';
-      lessonListAdvanced.innerHTML = '<div class="empty-state">Đang tải danh sách bài học...</div>';
-
-      try {
-        const q = query(collection(db, 'youtubeLinks'), orderBy('createdAt', 'desc'));
-        const snap = await getDocs(q);
-
-        if (snap.empty) {
-          renderLessonGroup(lessonListBasic, []);
-          renderLessonGroup(lessonListPractical, []);
-          renderLessonGroup(lessonListAdvanced, []);
-          return;
-        }
-
-        const groups = {
-          basic: [],
-          practical: [],
-          advanced: []
-        };
-
-        snap.forEach((item) => {
-          const data = item.data();
-          const type = data.courseType || 'basic';
-          if (!groups[type]) groups[type] = [];
-          groups[type].push(data);
-        });
-
-        renderLessonGroup(lessonListBasic, groups.basic);
-        renderLessonGroup(lessonListPractical, groups.practical);
-        renderLessonGroup(lessonListAdvanced, groups.advanced);
-      } catch (error) {
-        const errorHtml = `<div class="empty-state">Không tải được danh sách: ${escapeHtml(error.message)}</div>`;
-        lessonListBasic.innerHTML = errorHtml;
-        lessonListPractical.innerHTML = errorHtml;
-        lessonListAdvanced.innerHTML = errorHtml;
-      }
-    }
-
-    async function renderSubusers() {
-      if (currentRole !== 'admin') return;
-
-      subuserList.innerHTML = '<div class="empty-state">Đang tải tài khoản con...</div>';
-
-      try {
-        const snap = await getDocs(collection(db, 'allowedUsers'));
-
-        if (snap.empty) {
-          subuserList.innerHTML = '<div class="empty-state">Chưa có tài khoản con nào.</div>';
-          return;
-        }
-
-        subuserList.innerHTML = '';
-        snap.forEach((item) => {
-          const data = item.data();
-          const article = document.createElement('article');
-          article.className = 'subuser-card';
-          article.innerHTML = `
-            <h4>${escapeHtml(data.email || item.id)}</h4>
-            <p class="user-meta">Vai trò: tài khoản con</p>
-          `;
-          subuserList.appendChild(article);
-        });
-      } catch (error) {
-        subuserList.innerHTML = `<div class="empty-state">Không tải được danh sách: ${escapeHtml(error.message)}</div>`;
-      }
-    }
-
-    async function syncView(user) {
-      currentUser = user;
-      authError.textContent = '';
-
-      try {
-        currentRole = await getUserRole(user);
-      } catch (error) {
-        currentRole = null;
-        authError.textContent = 'Không kiểm tra được quyền truy cập: ' + error.message;
-      }
-
-      updateAuthMessage(user, currentRole);
-
-      const allowed = !!currentRole;
-      showPortal(allowed);
-      showAdminBlocks(currentRole === 'admin');
-
-      if (isPortalMode) {
-        if (!user) {
-          updatePortalGateMessage('Tab phụ này yêu cầu đăng nhập. Hãy quay về trang chính, đăng nhập bằng Gmail đã được cấp quyền, rồi mở lại tab phụ bài học.');
-        } else if (!allowed) {
-          updatePortalGateMessage('Tài khoản này đã đăng nhập nhưng chưa được admin cấp quyền vào tab phụ bài học.');
-        }
-      }
-
-      if (user && !allowed) {
-        authError.textContent = 'Tài khoản này chưa được admin cấp quyền vào khu vực bài học.';
-      }
-
-      if (allowed) {
-        await renderLessons();
-        if (currentRole === 'admin') {
-          await renderSubusers();
-        }
-      }
-    }
-
-    googleLoginBtn?.addEventListener('click', async () => {
-      authError.textContent = '';
-      const targetUrl = window.location.origin + window.location.pathname + '?portal=1';
-      const popupTab = window.open(targetUrl, '_blank');
-
-      try {
-        await signInWithPopup(auth, provider);
-
-        if (popupTab && !popupTab.closed) {
-          popupTab.location.href = targetUrl + '&ready=' + Date.now();
-          popupTab.focus();
-        } else {
-          window.open(targetUrl, '_blank');
-        }
-      } catch (error) {
-        if (popupTab && !popupTab.closed) popupTab.close();
-        authError.textContent = 'Đăng nhập thất bại: ' + error.message;
-      }
-    });
-
-    openPortalBtn?.addEventListener('click', () => {
-      const targetUrl = window.location.origin + window.location.pathname + '?portal=1';
-      window.open(targetUrl, '_blank');
-    });
-
-    googleLogoutBtn?.addEventListener('click', async () => {
-      await signOut(auth);
-    });
-
-    portalLogoutBtn?.addEventListener('click', async () => {
-      await signOut(auth);
-    });
-
-    portalRefreshBtn?.addEventListener('click', async () => {
-      if (currentRole) {
-        await renderLessons();
-        if (currentRole === 'admin') await renderSubusers();
-      } else if (isPortalMode) {
-        await syncView(auth.currentUser);
-      }
-    });
-
-    portalRetryBtn?.addEventListener('click', async () => {
-      await syncView(auth.currentUser);
-    });
-
-    lessonForm?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      lessonFormStatus.textContent = '';
-
-      if (!currentUser || !currentRole) {
-        lessonFormStatus.textContent = 'Bạn chưa được cấp quyền.';
-        return;
-      }
-
-      if (!lessonCourseType.value) {
-        lessonFormStatus.textContent = 'Vui lòng chọn loại khóa học.';
-        return;
-      }
-
-      if (!isValidYoutubeUrl(lessonUrl.value)) {
-        lessonFormStatus.textContent = 'Vui lòng nhập đúng link YouTube.';
-        return;
-      }
-
-      try {
-        await addDoc(collection(db, 'youtubeLinks'), {
-          courseType: lessonCourseType.value,
-          title: lessonTitle.value.trim(),
-          url: lessonUrl.value.trim(),
-          description: lessonDescription.value.trim(),
-          createdBy: currentUser.email || '',
-          createdAt: serverTimestamp()
-        });
-
-        lessonForm.reset();
-        lessonFormStatus.textContent = 'Đã lưu link bài học.';
-        await renderLessons();
-      } catch (error) {
-        lessonFormStatus.textContent = 'Lưu thất bại: ' + error.message;
-      }
-    });
-
-    subuserForm?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      subuserStatus.textContent = '';
-
-      if (currentRole !== 'admin') {
-        subuserStatus.textContent = 'Chỉ admin mới thêm được tài khoản con.';
-        return;
-      }
-
-      const email = subuserEmail.value.toLowerCase().trim();
-
-      if (!email) {
-        subuserStatus.textContent = 'Vui lòng nhập email.';
-        return;
-      }
-
-      try {
-        await setDoc(doc(db, 'allowedUsers', email), {
-          email,
-          createdBy: currentUser?.email || ADMIN_EMAIL,
-          createdAt: serverTimestamp()
-        });
-
-        subuserEmail.value = '';
-        subuserStatus.textContent = 'Đã cấp quyền tài khoản con.';
-        await renderSubusers();
-      } catch (error) {
-        subuserStatus.textContent = 'Không thêm được: ' + error.message;
-      }
-    });
-
+    // Theo dõi trạng thái đăng nhập
     onAuthStateChanged(auth, async (user) => {
-      authError.textContent = '';
-      await syncView(user);
+        if (user) {
+            authStatus.innerText = `Chào: ${user.displayName}`;
+            // Kiểm tra quyền Admin/Allowed User tại đây để hiện nút Mở Portal
+        } else {
+            authStatus.innerText = "Chưa đăng nhập.";
+        }
     });
-  </script>
+
+    // Mở Portal
+    openPortalBtn.onclick = () => {
+        if (auth.currentUser) {
+            document.body.classList.add('portal-mode');
+            document.getElementById('lesson-portal').hidden = false;
+            document.getElementById('portalContent').hidden = false;
+        } else {
+            alert("Vui lòng đăng nhập trước!");
+        }
+    };
+
+    document.getElementById('portalLogoutBtn').onclick = () => {
+        document.body.classList.remove('portal-mode');
+        document.getElementById('lesson-portal').hidden = true;
+    };
+</script>
+
 </body>
 </html>
