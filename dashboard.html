@@ -33,8 +33,11 @@
     summary.lesson-summary:hover { background: #f1f5f9; }
     .lesson-content { padding: 24px; border-top: 1px solid #e2e8f0; background: #fafafa;}
     .lesson-text { white-space: pre-wrap; font-size: 17px; color: #1e293b; line-height: 1.8; margin-bottom: 20px;}
-    .lesson-img { max-width: 100%; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
     
+    /* Style mới cho nút tải tài liệu */
+    .btn-download { display: inline-flex; align-items: center; gap: 10px; background: #ecfdf5; color: #059669; padding: 12px 20px; border-radius: 8px; font-weight: 700; text-decoration: none; border: 1px solid #10b981; margin-bottom: 20px; transition: all 0.2s; }
+    .btn-download:hover { background: #10b981; color: white; }
+
     .chk-complete { transform: scale(1.6); cursor: pointer; accent-color: #16a34a; }
     
     @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .container { max-width: 100%; } }
@@ -68,7 +71,7 @@
         <input type="text" id="lessonChapter" class="form-input" placeholder="Tên Chương (VD: Chương 1: Tổng quan)" required />
         <input type="text" id="lessonTitle" class="form-input" placeholder="Tiêu đề bài học (VD: Bài 1: Cấu tạo PLC)" required />
         <textarea id="lessonText" class="form-input" placeholder="Nội dung chữ (Ghi chú, giải thích...)" style="min-height: 120px;"></textarea>
-        <input type="url" id="lessonImg" class="form-input" placeholder="Link hình ảnh (Không bắt buộc)" />
+        <input type="url" id="lessonImg" class="form-input" placeholder="Link tải tài liệu: Drive, Dropbox... (Không bắt buộc)" />
         <input type="url" id="lessonUrl" class="form-input" placeholder="Link YouTube (Không bắt buộc)" />
         
         <div style="display: flex; gap: 12px; margin-top: 8px;">
@@ -101,19 +104,19 @@
     <h2 style="margin-top:0; font-size: 26px; color: #0f172a; margin-bottom: 24px; border-left: 6px solid #2563eb; padding-left: 16px;">Lộ trình học tập của bạn</h2>
     
     <div class="course-group-card" id="group-basic">
-      <h3>📘 Lộ trình: PLC Cơ bản <span class="progress-text" id="prog-text-basic">0%</span></h3>
+      <h3>📘 Phần 1: PLC Cơ bản <span class="progress-text" id="prog-text-basic">0%</span></h3>
       <div class="progress-container"><div class="progress-bar" id="prog-bar-basic"></div></div>
       <div id="list-basic"></div>
     </div>
 
     <div class="course-group-card" id="group-practical">
-      <h3>📙 Lộ trình: PLC Ứng dụng thực tế <span class="progress-text" id="prog-text-practical">0%</span></h3>
+      <h3>📙 Phần 2: PLC Ứng dụng thực tế <span class="progress-text" id="prog-text-practical">0%</span></h3>
       <div class="progress-container"><div class="progress-bar" id="prog-bar-practical"></div></div>
       <div id="list-practical"></div>
     </div>
 
     <div class="course-group-card" id="group-advanced">
-      <h3>📕 Lộ trình: PLC Nâng cao + HMI <span class="progress-text" id="prog-text-advanced">0%</span></h3>
+      <h3>📕 Phần 3: PLC Nâng cao + HMI <span class="progress-text" id="prog-text-advanced">0%</span></h3>
       <div class="progress-container"><div class="progress-bar" id="prog-bar-advanced"></div></div>
       <div id="list-advanced"></div>
     </div>
@@ -123,7 +126,6 @@
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
   import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
-  // Bổ sung thêm updateDoc
   import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc, serverTimestamp, query, orderBy, addDoc, updateDoc, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
 
   const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
@@ -144,8 +146,6 @@
   let currentUser = null;
   let userPermissions = { basic: false, practical: false, advanced: false };
   let completedLessonsData = [];
-  
-  // Biến mới: Lưu toàn bộ dữ liệu bài học để dùng cho việc sửa
   let allLessonsData = {};
   let currentEditId = null;
 
@@ -203,7 +203,7 @@
       const q = query(collection(db, "youtubeLinks"), orderBy("createdAt", "asc"));
       const querySnapshot = await getDocs(q);
       
-      allLessonsData = {}; // Xóa dữ liệu cũ đi trước khi load lại
+      allLessonsData = {};
       let coursesData = {
         basic: { total: 0, done: 0, chapters: {} },
         practical: { total: 0, done: 0, chapters: {} },
@@ -213,8 +213,7 @@
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
         const docId = docSnap.id;
-        
-        allLessonsData[docId] = data; // Lưu lại dữ liệu của từng bài
+        allLessonsData[docId] = data;
 
         const type = data.type;
         const chapterName = data.chapter || "Chưa phân chương";
@@ -241,7 +240,6 @@
           lessons.forEach(lesson => {
             const checkedAttr = lesson.isCompleted ? "checked" : "";
             
-            // Nút sửa và xóa cho Admin
             const adminBtns = (currentUser.email === ADMIN_EMAIL) 
               ? `<hr style="border:0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
                  <div style="display: flex; gap: 12px;">
@@ -250,7 +248,15 @@
                  </div>` : '';
             
             const textHtml = lesson.text ? `<div class="lesson-text">${lesson.text}</div>` : '';
-            const imgHtml = lesson.imgUrl ? `<img src="${lesson.imgUrl}" class="lesson-img" />` : '';
+            
+            // THAY ĐỔI TẠI ĐÂY: Hiển thị nút tải thay vì thẻ <img>
+            const downloadHtml = lesson.imgUrl ? `
+              <div>
+                <a href="${lesson.imgUrl}" target="_blank" class="btn-download">
+                  📂 Tải tài liệu bài học (PDF, Code, Tài liệu...)
+                </a>
+              </div>` : '';
+
             const vidHtml = lesson.url ? `<div><a href="${lesson.url}" target="_blank" style="display: inline-block; background: #fee2e2; color: #dc2626; padding: 12px 20px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 16px;">▶️ Xem Video Bài Học trên YouTube</a></div>` : '';
 
             html += `
@@ -261,7 +267,7 @@
                 </summary>
                 <div class="lesson-content">
                   ${textHtml}
-                  ${imgHtml}
+                  ${downloadHtml}
                   ${vidHtml}
                   ${adminBtns}
                 </div>
@@ -296,7 +302,6 @@
     }
   };
 
-  // ADMIN: HÀM ĐƯA DỮ LIỆU LÊN FORM ĐỂ SỬA
   window.editLesson = (lessonId) => {
     const data = allLessonsData[lessonId];
     if (!data) return;
@@ -310,16 +315,13 @@
     
     currentEditId = lessonId;
     
-    // Đổi giao diện nút bấm và tiêu đề Form
     document.getElementById('formTitle').innerText = "✏️ Chỉnh sửa bài học";
     document.getElementById('submitLessonBtn').innerText = "Cập nhật bài học";
     document.getElementById('cancelEditBtn').style.display = "block";
 
-    // Cuộn lên mượt mà tới form đăng bài
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // ADMIN: HÀM HỦY SỬA
   window.cancelEdit = () => {
     currentEditId = null;
     lessonForm.reset();
@@ -328,7 +330,6 @@
     document.getElementById('cancelEditBtn').style.display = "none";
   };
 
-  // ADMIN: LƯU BÀI HỌC (XỬ LÝ CẢ THÊM MỚI VÀ CẬP NHẬT)
   lessonForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const statusText = document.getElementById('lessonFormStatus');
@@ -346,13 +347,11 @@
       };
 
       if (currentEditId) {
-        // Cập nhật bài cũ
         await updateDoc(doc(db, "youtubeLinks", currentEditId), lessonData);
         statusText.style.color = "#16a34a";
         statusText.innerText = "Cập nhật thành công!";
-        window.cancelEdit(); // Reset form về dạng Thêm mới
+        window.cancelEdit();
       } else {
-        // Thêm bài mới
         lessonData.createdAt = serverTimestamp();
         await addDoc(collection(db, "youtubeLinks"), lessonData);
         statusText.style.color = "#16a34a";
@@ -360,7 +359,7 @@
         lessonForm.reset();
       }
       
-      loadLessons(); // Tải lại danh sách
+      loadLessons();
       setTimeout(() => { statusText.innerText = ""; }, 3000);
     } catch (error) {
       statusText.style.color = "red";
