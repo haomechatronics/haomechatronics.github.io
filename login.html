@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng nhập - Haomechatronics</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; font-family: 'Inter', sans-serif;}
+    .auth-container { width: 100%; max-width: 500px; padding: 20px; }
+    .auth-card { background: #ffffff; border: 1px solid rgba(17, 24, 39, 0.08); border-radius: 20px; padding: 32px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06); }
+    .mini-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(37, 99, 235, 0.08); color: #1d4ed8; font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+    .auth-note { color: #475569; line-height: 1.7; margin-bottom: 24px; }
+    .btn { padding: 14px 24px; border-radius: 12px; border: none; cursor: pointer; font-weight: 600; font-size: 16px; width: 100%; transition: 0.2s;}
+    .btn-primary { background: #2563eb; color: #fff; margin-bottom: 12px; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #f1f5f9; color: #1e293b; text-decoration: none; display: block; text-align: center; box-sizing: border-box;}
+    .btn-secondary:hover { background: #e2e8f0; }
+  </style>
+</head>
+<body>
+
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="mini-badge">Google Login</div>
+    <h2>Đăng nhập hệ thống</h2>
+    <p class="auth-note">
+      Chỉ Admin hoặc những tài khoản Gmail đã mua khóa học và được cấp quyền mới có thể truy cập hệ thống bài giảng.
+    </p>
+
+    <button class="btn btn-primary" id="googleLoginBtn" type="button">Đăng nhập bằng Google</button>
+    <a class="btn btn-secondary" href="index.html">Quay lại Trang chủ</a>
+
+    <div id="authStatus" style="margin-top: 16px; font-weight: 600; text-align: center;"></div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
+    authDomain: 'project-81bb7049-bc9f-499f-974.firebaseapp.com',
+    projectId: 'project-81bb7049-bc9f-499f-974',
+    storageBucket: 'project-81bb7049-bc9f-499f-974.firebasestorage.app',
+    messagingSenderId: '533570063852',
+    appId: '1:533570063852:web:d15aa61abd7a7c2e64c4c9'
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+
+  const googleLoginBtn = document.getElementById('googleLoginBtn');
+  const authStatus = document.getElementById('authStatus');
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      authStatus.style.color = "#16a34a";
+      authStatus.innerText = "Đăng nhập thành công! Đang chuyển hướng...";
+      setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+    }
+  });
+
+  googleLoginBtn.addEventListener('click', () => {
+    authStatus.style.color = "#475569";
+    authStatus.innerText = "Đang kết nối...";
+    signInWithPopup(auth, provider).catch((error) => {
+      authStatus.style.color = "#dc2626";
+      authStatus.innerText = "Lỗi: " + error.message;
+    });
+  });
+</script>
+</body>
+</html>
