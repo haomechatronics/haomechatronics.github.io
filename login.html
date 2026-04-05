@@ -37,7 +37,10 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
-  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+  import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+
+  const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
 
   const firebaseConfig = {
     apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
@@ -50,17 +53,49 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
 
   const googleLoginBtn = document.getElementById('googleLoginBtn');
   const authStatus = document.getElementById('authStatus');
 
-  onAuthStateChanged(auth, (user) => {
+  // KIỂM TRA QUYỀN NGAY TẠI CỬA
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      authStatus.style.color = "#16a34a";
-      authStatus.innerText = "Đăng nhập thành công! Đang chuyển hướng...";
-      setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+      authStatus.style.color = "#2563eb";
+      authStatus.innerText = "Đang kiểm tra quyền truy cập...";
+
+      // 1. Nếu là Admin thì cho qua luôn
+      if (user.email === ADMIN_EMAIL) {
+        authStatus.style.color = "#16a34a";
+        authStatus.innerText = "Đăng nhập thành công! Đang chuyển hướng...";
+        setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+        return;
+      }
+
+      // 2. Nếu là User thường, kiểm tra trong Database
+      try {
+        const docRef = doc(db, 'allowedUsers', user.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          // Có trong danh sách -> Cho qua
+          authStatus.style.color = "#16a34a";
+          authStatus.innerText = "Đăng nhập thành công! Đang chuyển hướng...";
+          setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+        } else {
+          // KHÔNG CÓ TRONG DANH SÁCH -> Chặn và báo lỗi
+          authStatus.style.color = "#dc2626";
+          authStatus.innerText = "Tài khoản chưa được cấp quyền. Vui lòng liên hệ Admin!";
+          await signOut(auth); // Hủy ngay phiên đăng nhập để họ không kẹt lại
+        }
+      } catch (error) {
+        console.error("Lỗi:", error);
+        authStatus.style.color = "#dc2626";
+        authStatus.innerText = "Không thể kiểm tra quyền. Vui lòng thử lại!";
+        await signOut(auth);
+      }
     }
   });
 
@@ -69,7 +104,7 @@
     authStatus.innerText = "Đang kết nối...";
     signInWithPopup(auth, provider).catch((error) => {
       authStatus.style.color = "#dc2626";
-      authStatus.innerText = "Lỗi: " + error.message;
+      authStatus.innerText = "Đăng nhập bị hủy hoặc có lỗi.";
     });
   });
 </script>
