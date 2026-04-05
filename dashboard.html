@@ -28,7 +28,7 @@
 </head>
 <body>
 
-<div class="container" id="lesson-portal">
+<div class="container" id="lesson-portal" style="display: none;">
   <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 20px 24px; border-radius: 20px; margin-bottom: 24px;">
     <div>
       <span style="color: #2563eb; font-weight: 700; font-size: 14px; text-transform: uppercase;">Haomechatronics Academy</span>
@@ -147,6 +147,9 @@
         return;
       }
     }
+
+    // --- ĐÃ THÊM: NẾU VƯỢT QUA BÀI KIỂM TRA QUYỀN TRÊN, BẬT GIAO DIỆN LÊN ---
+    document.getElementById('lesson-portal').style.display = 'block';
 
     currentUser = user;
     portalUserInfo.innerText = user.email;
