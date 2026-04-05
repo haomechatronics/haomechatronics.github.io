@@ -27,15 +27,17 @@
     /* Chống copy nội dung */
     #content-area { user-select: none; }
 
+    /* ĐỔI MÀU HEADER SANG SÁNG ĐỂ NỔI BẬT LOGO */
     header {
       height: 60px;
-      background: #0f172a;
-      color: white;
+      background: #ffffff; 
+      color: #0f172a;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 20px;
       z-index: 100;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .brand-area {
@@ -46,7 +48,6 @@
       letter-spacing: 1px;
     }
 
-    /* Thu nhỏ Logo */
     .brand-logo {
       height: 35px;
       width: auto;
@@ -357,7 +358,6 @@
 
   async function loadLessons(keepChaptersOpen = false) {
     try {
-      // Lưu lại danh sách các chương đang mở trước khi render lại
       const openedChapters = [];
       if(keepChaptersOpen) {
         document.querySelectorAll('.chapter-item.open').forEach(el => openedChapters.push(el.id));
@@ -404,7 +404,6 @@
         for (const chapName in chapters) {
           chapIdx++;
           const chapId = `chap-${type}-${chapIdx}`;
-          // Kiểm tra xem chương này có nằm trong danh sách đang mở không
           const isOpen = openedChapters.includes(chapId) ? 'open' : '';
           
           groupHtml += `
@@ -441,8 +440,6 @@
 
   window.toggleComplete = async (lessonId, isChecked) => {
     const progressRef = doc(db, 'userProgress', currentUser.email);
-    
-    // Cập nhật giao diện tức thì cho chấm tròn để mượt mà
     const dot = document.getElementById(`dot-${lessonId}`);
     if(dot) {
         dot.style.color = isChecked ? '#10b981' : '#cbd5e1';
@@ -456,8 +453,6 @@
       await setDoc(progressRef, { completed: arrayRemove(lessonId) }, { merge: true });
       completedLessonsData = completedLessonsData.filter(id => id !== lessonId);
     }
-    
-    // Load lại nhưng giữ nguyên trạng thái mở của các chương
     loadLessons(true); 
   };
 
