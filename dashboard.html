@@ -62,17 +62,17 @@
       <article class="portal-card">
         <h3 style="margin-top:0;">Danh sách bài học</h3>
         
-        <div class="course-group-card">
+        <div class="course-group-card" id="group-basic">
           <h3>📘 PLC Cơ bản</h3>
           <div id="list-basic"><p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p></div>
         </div>
 
-        <div class="course-group-card">
+        <div class="course-group-card" id="group-practical">
           <h3>📙 PLC Ứng dụng thực tế</h3>
           <div id="list-practical"><p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p></div>
         </div>
 
-        <div class="course-group-card">
+        <div class="course-group-card" id="group-advanced">
           <h3>📕 PLC Nâng cao + HMI</h3>
           <div id="list-advanced"><p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p></div>
         </div>
@@ -87,10 +87,18 @@
 
       <article class="portal-card admin-only" id="adminPanel">
         <h3 style="margin-top:0;">Admin: Cấp quyền Học viên</h3>
-        <p style="color: #64748b; font-size: 14px; margin-bottom: 12px;">Nhập Gmail của học viên đã thanh toán để họ có thể đăng nhập.</p>
-        <form id="subuserForm" style="display: flex; gap: 8px;">
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 12px;">Nhập Email và chọn các khóa học muốn cấp quyền.</p>
+        
+        <form id="subuserForm" style="display: flex; flex-direction: column; gap: 12px;">
           <input type="email" id="subuserEmail" class="form-input" style="margin-bottom:0;" placeholder="hocvien@gmail.com" required />
-          <button class="btn btn-primary" type="submit">Thêm</button>
+          
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; color: #334155; font-weight: 500;">
+            <label style="cursor: pointer;"><input type="checkbox" id="chk-basic"> Cơ bản</label>
+            <label style="cursor: pointer;"><input type="checkbox" id="chk-practical"> Ứng dụng</label>
+            <label style="cursor: pointer;"><input type="checkbox" id="chk-advanced"> Nâng cao</label>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Cấp quyền khóa học</button>
         </form>
         <p id="subuserStatus" style="margin-top: 10px; font-weight: 500; font-size: 14px;"></p>
         
@@ -122,6 +130,8 @@
   const db = getFirestore(app);
 
   let currentUser = null;
+  // Biến lưu trữ quyền của user hiện tại
+  let userPermissions = { basic: false, practical: false, advanced: false };
 
   // DOM Elements
   const portalUserInfo = document.getElementById('portalUserInfo');
@@ -130,14 +140,13 @@
   const lessonForm = document.getElementById('lessonForm');
   const subuserForm = document.getElementById('subuserForm');
 
-  // KIỂM TRA QUYỀN ĐĂNG NHẬP
+  // KIỂM TRA QUYỀN ĐĂNG NHẬP VÀ PHÂN QUYỀN KHÓA HỌC
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
       window.location.href = "login.html"; 
       return;
     }
     
-    // Kiểm tra xem User này có phải Admin hoặc nằm trong danh sách AllowedUsers không
     if (user.email !== ADMIN_EMAIL) {
       const docRef = doc(db, 'allowedUsers', user.email);
       const docSnap = await getDoc(docRef);
@@ -146,9 +155,19 @@
         signOut(auth).then(() => { window.location.href = "index.html"; });
         return;
       }
+      
+      // Đọc quyền từ Database
+      const data = docSnap.data();
+      userPermissions.basic = !!data.basic;
+      userPermissions.practical = !!data.practical;
+      userPermissions.advanced = !!data.advanced;
+
+    } else {
+      // Nếu là Admin thì auto cấp quyền xem mọi thứ
+      userPermissions = { basic: true, practical: true, advanced: true };
     }
 
-    // --- ĐÃ THÊM: NẾU VƯỢT QUA BÀI KIỂM TRA QUYỀN TRÊN, BẬT GIAO DIỆN LÊN ---
+    // Bật giao diện
     document.getElementById('lesson-portal').style.display = 'block';
 
     currentUser = user;
@@ -166,6 +185,11 @@
   // TẢI DANH SÁCH BÀI HỌC
   async function loadLessons() {
     try {
+      // Ẩn/hiện các khung khóa học dựa trên quyền
+      document.getElementById('group-basic').style.display = userPermissions.basic ? 'block' : 'none';
+      document.getElementById('group-practical').style.display = userPermissions.practical ? 'block' : 'none';
+      document.getElementById('group-advanced').style.display = userPermissions.advanced ? 'block' : 'none';
+
       const q = query(collection(db, "youtubeLinks"), orderBy("createdAt", "asc"));
       const querySnapshot = await getDocs(q);
       
@@ -174,7 +198,7 @@
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
         const docId = docSnap.id;
-        // Nút xóa chỉ hiện cho Admin
+        
         const deleteBtn = (currentUser && currentUser.email === ADMIN_EMAIL) 
           ? `<button class="btn-danger" onclick="window.deleteLesson('${docId}')" style="margin-top: 10px; border:none; cursor:pointer;">Xóa bài này</button>` 
           : '';
@@ -236,9 +260,21 @@
       const querySnapshot = await getDocs(collection(db, "allowedUsers"));
       let html = '';
       querySnapshot.forEach((docSnap) => {
+        const d = docSnap.data();
+        
+        // Lấy tên các khóa học user đang sở hữu để hiển thị
+        let perms = [];
+        if(d.basic) perms.push('Cơ bản');
+        if(d.practical) perms.push('Ứng dụng');
+        if(d.advanced) perms.push('Nâng cao');
+        let permStr = perms.length > 0 ? perms.join(' | ') : 'Chưa chọn khóa nào';
+
         html += `
           <div style="display: flex; justify-content: space-between; align-items: center; background: #f1f5f9; padding: 10px; border-radius: 8px;">
-            <span style="font-size: 14px;">${docSnap.id}</span>
+            <div>
+              <span style="font-size: 14px; font-weight: 600; display: block;">${docSnap.id}</span>
+              <span style="font-size: 12px; color: #16a34a; font-weight: 500;">Khóa: ${permStr}</span>
+            </div>
             <button class="btn-danger" onclick="window.deleteUser('${docSnap.id}')" style="border:none; cursor:pointer;">Xóa</button>
           </div>
         `;
@@ -249,17 +285,26 @@
     }
   }
 
-  // ADMIN: THÊM USER MỚI
+  // ADMIN: THÊM/CẬP NHẬT USER VÀ QUYỀN
   subuserForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('subuserEmail').value.trim();
+    
+    // Lấy trạng thái của các ô checkbox
+    const hasBasic = document.getElementById('chk-basic').checked;
+    const hasPractical = document.getElementById('chk-practical').checked;
+    const hasAdvanced = document.getElementById('chk-advanced').checked;
+
     const statusText = document.getElementById('subuserStatus');
     try {
       await setDoc(doc(db, "allowedUsers", email), {
-        addedAt: serverTimestamp()
+        addedAt: serverTimestamp(),
+        basic: hasBasic,
+        practical: hasPractical,
+        advanced: hasAdvanced
       });
       statusText.style.color = "#16a34a";
-      statusText.innerText = "Đã cấp quyền thành công!";
+      statusText.innerText = "Đã cập nhật quyền thành công!";
       subuserForm.reset();
       loadSubusers();
       setTimeout(() => { statusText.innerText = ""; }, 3000);
@@ -269,7 +314,7 @@
     }
   });
 
-  // HÀM XÓA GLOBAL CHO CÁC NÚT BẤM (Vì dùng type="module")
+  // HÀM XÓA GLOBAL
   window.deleteLesson = async (docId) => {
     if(confirm("Bạn có chắc muốn xóa bài học này?")) {
       await deleteDoc(doc(db, "youtubeLinks", docId));
@@ -278,13 +323,12 @@
   };
 
   window.deleteUser = async (email) => {
-    if(confirm(`Thu hồi quyền truy cập của ${email}?`)) {
+    if(confirm(`Thu hồi toàn bộ quyền truy cập của ${email}?`)) {
       await deleteDoc(doc(db, "allowedUsers", email));
       loadSubusers();
     }
   };
 
-  // NÚT CHỨC NĂNG CƠ BẢN
   portalRefreshBtn.addEventListener('click', loadLessons);
   
   portalLogoutBtn.addEventListener('click', () => {
