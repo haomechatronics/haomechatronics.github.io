@@ -2,14 +2,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, addDoc, onSnapshot, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// --- 1. CẤU HÌNH FIREBASE (Giữ nguyên của bạn) ---
+// --- 1. CẤU HÌNH FIREBASE ---
 const firebaseConfig = {
   apiKey: "AIzaSy...", // THAY BẰNG API KEY CỦA BẠN
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "...",
-  appId: "..."
+  authDomain: "YOUR_PROJECT.firebaseapp.com", // THAY BẰNG THÔNG TIN CỦA BẠN
+  projectId: "YOUR_PROJECT", // THAY BẰNG THÔNG TIN CỦA BẠN
+  storageBucket: "YOUR_PROJECT.appspot.com", // THAY BẰNG THÔNG TIN CỦA BẠN
+  messagingSenderId: "...", // THAY BẰNG THÔNG TIN CỦA BẠN
+  appId: "..." // THAY BẰNG THÔNG TIN CỦA BẠN
 };
 
 const app = initializeApp(firebaseConfig);
@@ -17,7 +17,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-// Email của Admin (Bạn thay đúng email của bạn vào đây)
+// Email của Admin
 const ADMIN_EMAIL = "haomechatronics@gmail.com";
 
 // --- 2. XỬ LÝ ĐĂNG NHẬP ---
@@ -34,40 +34,46 @@ if (googleLogoutBtn) {
 
 // Theo dõi trạng thái đăng nhập
 onAuthStateChanged(auth, async (user) => {
-  
-  // --- NÂNG CẤP CHẶN TRANG PHỤ TẠI ĐÂY ---
-  // Ép ẩn toàn bộ nội dung ngay lập tức trước khi tải dữ liệu từ hệ thống
+  // Ép ẩn giao diện ngay lập tức khi vừa tải trang để tránh bị lộ nội dung (chớp màn hình)
   if (document.getElementById('adminPanel')) document.getElementById('adminPanel').hidden = true;
   if (document.getElementById('portalContent')) document.getElementById('portalContent').hidden = true;
 
   if (user) {
     const userEmail = user.email;
-    authStatus.innerText = `Đang kiểm tra quyền truy cập...`;
+    if(authStatus) authStatus.innerText = `Đang kiểm tra quyền truy cập...`;
     
     // Kiểm tra xem là Admin hay Học viên có quyền
     const hasAccess = await checkUserAccess(userEmail);
 
     if (userEmail === ADMIN_EMAIL) {
-      // Nếu là Admin: Mở toàn bộ bảng điều khiển
-      authStatus.innerText = `Đang đăng nhập (Admin): ${userEmail}`;
+      // Nếu là Admin: Hiện toàn bộ bảng điều khiển
+      if(authStatus) authStatus.innerText = `Đang đăng nhập (Admin): ${userEmail}`;
       if (document.getElementById('adminPanel')) document.getElementById('adminPanel').hidden = false;
       if (document.getElementById('portalContent')) document.getElementById('portalContent').hidden = false;
       loadAllLessons();
       loadAllowedUsers();
     } else if (hasAccess) {
-      // Nếu là Học viên được cấp quyền: Chỉ mở bài học
-      authStatus.innerText = `Đang đăng nhập (Học viên): ${userEmail}`;
+      // Nếu là Học viên được cấp quyền: Chỉ xem bài học, không hiện bảng Admin
+      if(authStatus) authStatus.innerText = `Đang đăng nhập (Học viên): ${userEmail}`;
       if (document.getElementById('portalContent')) document.getElementById('portalContent').hidden = false;
       loadAllLessons(); 
     } else {
-      // KHÔNG CÓ QUYỀN - Báo lỗi và giữ nguyên trạng thái ẩn mọi trang phụ
+      // KHÔNG CÓ QUYỀN - Báo lỗi, đăng xuất và ĐÁ VỀ TRANG CHỦ
       alert("Tài khoản chưa được đăng ký, vui lòng liên hệ Admin để đăng ký.");
-      signOut(auth);
+      signOut(auth).then(() => {
+        window.location.href = "index.html"; // Đá về trang chủ
+      });
     }
   } else {
-    authStatus.innerText = "Chưa đăng nhập.";
+    // Chưa đăng nhập
+    if(authStatus) authStatus.innerText = "Chưa đăng nhập.";
     if (document.getElementById('portalContent')) document.getElementById('portalContent').hidden = true;
     if (document.getElementById('adminPanel')) document.getElementById('adminPanel').hidden = true;
+    
+    // Nếu chưa đăng nhập mà đang cố tình truy cập vào thẳng trang dashboard.html thì đá về trang chủ luôn
+    if (window.location.pathname.includes("dashboard.html")) {
+        window.location.href = "index.html";
+    }
   }
 });
 
