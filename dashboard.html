@@ -46,9 +46,11 @@
       letter-spacing: 1px;
     }
 
+    /* Thu nhỏ Logo */
     .brand-logo {
       height: 35px;
       width: auto;
+      object-fit: contain;
       border-radius: 4px;
     }
 
@@ -85,7 +87,6 @@
       margin: 0 auto;
     }
 
-    /* Style cho Group Khóa học (Cơ bản/Nâng cao) */
     .course-group-card { margin-bottom: 5px; border-bottom: 1px solid #e2e8f0; }
     
     .group-header {
@@ -98,7 +99,6 @@
       align-items: center;
     }
 
-    /* Style cho Chương (Accordion) */
     .chapter-item {
       background: #fff;
       border-bottom: 1px solid #f1f5f9;
@@ -120,7 +120,7 @@
     .chapter-header:hover { background: #f1f5f9; }
 
     .chapter-content {
-      display: none; /* Mặc định ẩn bài học bên trong */
+      display: none; 
       background: #fff;
     }
 
@@ -190,11 +190,7 @@
 
 <header>
   <div class="brand-area">
-  
-    <img src="Images/logo.jpg" alt="Haomechatronics Logo">
-      <link rel="icon" type="image/jpeg" href="Images/logo.jpg" />
-  <link rel="shortcut icon" href="Images/logo.jpg" />
-  <link rel="apple-touch-icon" href="Images/logo.jpg" />
+    <img src="Images/logo.jpg" alt="Haomechatronics Logo" class="brand-logo">
     <span>HAOMECHATRONICS ACADEMY</span>
   </div>
   <div style="display: flex; gap: 15px; align-items: center;">
@@ -253,7 +249,7 @@
                   <option value="practical">PLC Ứng dụng thực tế</option>
                   <option value="advanced">PLC Nâng cao + HMI</option>
                 </select>
-                <input type="text" id="lessonChapter" placeholder="Tên Chương (VD: Chương 1: Giới thiệu)" style="width:100%; padding:10px; margin-bottom:10px;">
+                <input type="text" id="lessonChapter" placeholder="Tên Chương" style="width:100%; padding:10px; margin-bottom:10px;">
                 <input type="text" id="lessonTitle" placeholder="Tiêu đề bài học" style="width:100%; padding:10px; margin-bottom:10px;">
                 <textarea id="lessonText" placeholder="Nội dung" style="width:100%; padding:10px; margin-bottom:10px; height:100px;"></textarea>
                 <input type="url" id="lessonImg" placeholder="Link tài liệu" style="width:100%; padding:10px; margin-bottom:10px;">
@@ -282,7 +278,6 @@
   import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
   import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc, serverTimestamp, query, orderBy, addDoc, updateDoc, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
 
-  // --- GIỮ NGUYÊN CONFIG CỦA BẠN ---
   const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
   const firebaseConfig = {
     apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
@@ -303,7 +298,6 @@
   let allLessonsData = {};
   let currentEditId = null;
 
-  // Chặn phím tắt soi code
   document.onkeydown = function(e) {
     if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
   };
@@ -327,7 +321,6 @@
     loadLessons();
   });
 
-  // Hàm mở/đóng chương
   window.toggleChapter = (chapterId) => {
     const el = document.getElementById(chapterId);
     el.classList.toggle('open');
@@ -362,8 +355,14 @@
     `;
   };
 
-  async function loadLessons() {
+  async function loadLessons(keepChaptersOpen = false) {
     try {
+      // Lưu lại danh sách các chương đang mở trước khi render lại
+      const openedChapters = [];
+      if(keepChaptersOpen) {
+        document.querySelectorAll('.chapter-item.open').forEach(el => openedChapters.push(el.id));
+      }
+
       const progressRef = doc(db, 'userProgress', currentUser.email);
       const progressSnap = await getDoc(progressRef);
       if (progressSnap.exists()) completedLessonsData = progressSnap.data().completed || [];
@@ -372,7 +371,6 @@
       const querySnapshot = await getDocs(q);
       allLessonsData = {};
       
-      // Khởi tạo dữ liệu phân loại theo Course -> Chapter
       let structure = { 
         basic: { total: 0, done: 0, chapters: {} },
         practical: { total: 0, done: 0, chapters: {} },
@@ -384,25 +382,18 @@
         const id = docSnap.id;
         const type = data.type;
         const chapterName = data.chapter || "Chương chưa phân loại";
-        
         allLessonsData[id] = data;
-
         if (structure[type]) {
           structure[type].total++;
           if (completedLessonsData.includes(id)) structure[type].done++;
-
-          if (!structure[type].chapters[chapterName]) {
-            structure[type].chapters[chapterName] = [];
-          }
+          if (!structure[type].chapters[chapterName]) structure[type].chapters[chapterName] = [];
           structure[type].chapters[chapterName].push({ id, ...data });
         }
       });
 
-      // Render giao diện Sidebar
       ['basic', 'practical', 'advanced'].forEach(type => {
         const container = document.getElementById(`list-${type}`);
         const groupEl = document.getElementById(`group-${type}`);
-        
         if (!userPermissions[type]) { groupEl.style.display = 'none'; return; }
         groupEl.style.display = 'block';
 
@@ -413,8 +404,11 @@
         for (const chapName in chapters) {
           chapIdx++;
           const chapId = `chap-${type}-${chapIdx}`;
+          // Kiểm tra xem chương này có nằm trong danh sách đang mở không
+          const isOpen = openedChapters.includes(chapId) ? 'open' : '';
+          
           groupHtml += `
-            <div class="chapter-item" id="${chapId}">
+            <div class="chapter-item ${isOpen}" id="${chapId}">
               <div class="chapter-header" onclick="toggleChapter('${chapId}')">
                 ${chapName}
                 <span class="chevron">▼</span>
@@ -424,7 +418,7 @@
                   const isDone = completedLessonsData.includes(lesson.id);
                   return `
                     <div class="lesson-item" id="side-item-${lesson.id}" onclick="window.selectLesson('${lesson.id}')">
-                      <span style="color: ${isDone ? '#10b981' : '#cbd5e1'}">${isDone ? '●' : '○'}</span>
+                      <span id="dot-${lesson.id}" style="color: ${isDone ? '#10b981' : '#cbd5e1'}">${isDone ? '●' : '○'}</span>
                       ${lesson.title}
                     </div>`;
                 }).join('')}
@@ -432,12 +426,10 @@
             </div>`;
         }
         container.innerHTML = groupHtml;
-
         const percent = structure[type].total === 0 ? 0 : Math.round((structure[type].done / structure[type].total) * 100);
         document.getElementById(`prog-text-${type}`).innerText = `${percent}%`;
       });
 
-      // Cập nhật Progress tổng
       let totalAll = structure.basic.total + structure.practical.total + structure.advanced.total;
       let doneAll = structure.basic.done + structure.practical.done + structure.advanced.done;
       const overallPercent = totalAll === 0 ? 0 : Math.round((doneAll / totalAll) * 100);
@@ -447,9 +439,16 @@
     } catch (e) { console.error(e); }
   }
 
-  // --- GIỮ NGUYÊN CÁC HÀM CÒN LẠI ---
   window.toggleComplete = async (lessonId, isChecked) => {
     const progressRef = doc(db, 'userProgress', currentUser.email);
+    
+    // Cập nhật giao diện tức thì cho chấm tròn để mượt mà
+    const dot = document.getElementById(`dot-${lessonId}`);
+    if(dot) {
+        dot.style.color = isChecked ? '#10b981' : '#cbd5e1';
+        dot.innerText = isChecked ? '●' : '○';
+    }
+
     if (isChecked) {
       await setDoc(progressRef, { completed: arrayUnion(lessonId) }, { merge: true });
       if(!completedLessonsData.includes(lessonId)) completedLessonsData.push(lessonId);
@@ -457,7 +456,9 @@
       await setDoc(progressRef, { completed: arrayRemove(lessonId) }, { merge: true });
       completedLessonsData = completedLessonsData.filter(id => id !== lessonId);
     }
-    loadLessons(); 
+    
+    // Load lại nhưng giữ nguyên trạng thái mở của các chương
+    loadLessons(true); 
   };
 
   window.editLesson = (lessonId) => {
@@ -498,7 +499,7 @@
       await addDoc(collection(db, "youtubeLinks"), data);
       document.getElementById('lessonForm').reset();
     }
-    loadLessons(); alert("Thành công!");
+    loadLessons(true); alert("Thành công!");
   });
 
   async function loadSubusers() {
@@ -524,7 +525,7 @@
     loadSubusers(); alert("Đã cập nhật học viên");
   });
 
-  window.deleteLesson = async (id) => { if(confirm("Xóa bài học?")) { await deleteDoc(doc(db, "youtubeLinks", id)); loadLessons(); document.getElementById('lesson-display').innerHTML = ""; } };
+  window.deleteLesson = async (id) => { if(confirm("Xóa bài học?")) { await deleteDoc(doc(db, "youtubeLinks", id)); loadLessons(true); document.getElementById('lesson-display').innerHTML = ""; } };
   window.deleteUser = async (email) => { if(confirm("Xóa học viên?")) { await deleteDoc(doc(db, "allowedUsers", email)); loadSubusers(); } };
   document.getElementById('portalLogoutBtn').addEventListener('click', () => signOut(auth).then(() => window.location.href = "index.html"));
 </script>
