@@ -53,8 +53,8 @@ onAuthStateChanged(auth, async (user) => {
       if (document.getElementById('portalContent')) document.getElementById('portalContent').hidden = false;
       loadAllLessons(); // Học viên chỉ xem
     } else {
-      // Không có quyền
-      alert("Tài khoản của bạn chưa được cấp quyền truy cập khóa học.");
+      // KHÔNG CÓ QUYỀN - Đã cập nhật thông báo báo lỗi tại đây
+      alert("Tài khoản chưa được đăng ký, vui lòng liên hệ Admin để đăng ký.");
       signOut(auth);
     }
   } else {
