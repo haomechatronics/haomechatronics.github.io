@@ -6,55 +6,54 @@
   <title>Khu vực học tập - Haomechatronics</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body { background: linear-gradient(120deg, #07111f 0%, #0a1a34 60%, #07111f 100%); min-height: 100vh; padding: 40px 0; font-family: 'Inter', sans-serif; color: #333;}
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    body { background: linear-gradient(120deg, #07111f 0%, #0a1a34 60%, #07111f 100%); min-height: 100vh; padding: 30px 0; font-family: 'Inter', sans-serif; color: #333;}
+    /* Mở rộng container ra full màn hình */
+    .container { max-width: 96%; margin: 0 auto; padding: 0 20px; }
+    
     .portal-card { background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06); margin-bottom: 24px;}
     .btn { padding: 10px 20px; border-radius: 8px; cursor: pointer; border: none; font-weight: 600;}
     .btn-primary { background: #2563eb; color: #fff; }
     .btn-secondary { background: #e2e8f0; color: #1e293b; }
-    .btn-danger { background: #ef4444; color: white; padding: 6px 12px; font-size: 13px; border-radius: 6px; }
+    .btn-danger { background: #ef4444; color: white; padding: 6px 12px; font-size: 14px; border-radius: 6px; }
     
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;}
     .admin-only { display: none; }
     
-    .form-input { width: 100%; border: 1px solid #dbe2ea; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; box-sizing: border-box; font-family: inherit;}
+    .form-input { width: 100%; border: 1px solid #dbe2ea; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; box-sizing: border-box; font-family: inherit; font-size: 15px;}
     
-    /* Giao diện khóa học mở rộng (Full-width) */
-    .course-group-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; margin-bottom: 24px;}
-    .course-group-card h3 { margin-top: 0; color: #0f172a; font-size: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 20px;}
+    /* Giao diện khóa học Full-width */
+    .course-group-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; margin-bottom: 30px;}
+    .course-group-card h3 { margin-top: 0; color: #0f172a; font-size: 22px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px;}
     
-    .progress-container { background: #e2e8f0; border-radius: 999px; height: 12px; overflow: hidden; margin-bottom: 20px; width: 100%;}
+    .progress-container { background: #e2e8f0; border-radius: 999px; height: 14px; overflow: hidden; margin-bottom: 24px; width: 100%;}
     .progress-bar { background: #16a34a; height: 100%; width: 0%; transition: width 0.5s ease-in-out; }
-    .progress-text { font-size: 16px; color: #475569; font-weight: 700; background: #e2e8f0; padding: 4px 12px; border-radius: 20px;}
+    .progress-text { font-size: 16px; color: #475569; font-weight: 700; background: #e2e8f0; padding: 6px 16px; border-radius: 20px;}
 
-    .chapter-title { background: #1e293b; padding: 10px 16px; border-radius: 8px; font-weight: 700; color: #fff; margin: 24px 0 12px 0; font-size: 16px; text-transform: uppercase;}
+    /* Kích thước chữ to hơn */
+    .chapter-title { background: #1e293b; padding: 12px 20px; border-radius: 8px; font-weight: 700; color: #fff; margin: 24px 0 16px 0; font-size: 18px; text-transform: uppercase;}
     details.lesson-details { background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; margin-bottom: 12px; overflow: hidden; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.02);}
-    summary.lesson-summary { padding: 16px 20px; font-weight: 600; cursor: pointer; background: #fff; display: flex; align-items: center; gap: 12px; user-select: none; font-size: 16px;}
+    summary.lesson-summary { padding: 18px 24px; font-weight: 600; cursor: pointer; background: #fff; display: flex; align-items: center; gap: 16px; user-select: none; font-size: 18px; color: #0f172a;}
     summary.lesson-summary:hover { background: #f1f5f9; }
-    .lesson-content { padding: 20px; border-top: 1px solid #e2e8f0; background: #fafafa;}
-    .lesson-text { white-space: pre-wrap; font-size: 15px; color: #334155; line-height: 1.7; margin-bottom: 16px;}
-    .lesson-img { max-width: 100%; border-radius: 8px; margin-bottom: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+    .lesson-content { padding: 24px; border-top: 1px solid #e2e8f0; background: #fafafa;}
+    .lesson-text { white-space: pre-wrap; font-size: 17px; color: #1e293b; line-height: 1.8; margin-bottom: 20px;}
+    .lesson-img { max-width: 100%; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
     
-    .chk-complete { transform: scale(1.4); cursor: pointer; accent-color: #16a34a; }
+    .chk-complete { transform: scale(1.6); cursor: pointer; accent-color: #16a34a; }
     
-    /* Khu vực upload ảnh */
-    .image-upload-area { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 12px; background: #f8fafc; transition: 0.3s;}
-    .image-upload-area:focus-within { border-color: #2563eb; background: #eff6ff;}
-    #imgPreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 8px; display: none; object-fit: contain;}
-    
-    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .container { max-width: 100%; } }
   </style>
 </head>
 <body>
 
 <div class="container" id="lesson-portal" style="display: none;">
-  <div class="portal-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 24px;">
+  <div class="portal-card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; margin-bottom: 24px;">
     <div>
-      <span style="color: #2563eb; font-weight: 700; font-size: 14px; text-transform: uppercase;">Haomechatronics Academy</span>
-      <h2 style="margin: 5px 0 0 0;">Khu vực bài học</h2>
+      <span style="color: #2563eb; font-weight: 800; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Haomechatronics Academy</span>
+      <h2 style="margin: 5px 0 0 0; font-size: 24px;">Khu vực bài học</h2>
     </div>
     <div style="display: flex; align-items: center; gap: 16px;">
-      <div id="portalUserInfo" style="background: #f1f5f9; padding: 8px 16px; border-radius: 99px; font-weight: 600; color: #334155; font-size: 14px; display: none;"></div>
+      <div id="portalUserInfo" style="font-size: 13px; color: #64748b; font-weight: 500; display: none;"></div>
+      
       <button class="btn btn-secondary" id="portalRefreshBtn">Tải lại</button>
       <button class="btn btn-primary" id="portalLogoutBtn">Đăng xuất</button>
     </div>
@@ -62,7 +61,7 @@
 
   <div class="grid-2 admin-only" style="margin-bottom: 24px;">
     <article class="portal-card" style="margin-bottom: 0;">
-      <h3 style="margin-top:0;">Đăng tải bài học mới</h3>
+      <h3 style="margin-top:0; font-size: 20px;">Đăng tải bài học mới</h3>
       <form id="lessonForm">
         <select id="lessonCourseType" class="form-input" required>
           <option value="">Chọn lộ trình khóa học...</option>
@@ -72,32 +71,26 @@
         </select>
         <input type="text" id="lessonChapter" class="form-input" placeholder="Tên Chương (VD: Chương 1: Tổng quan)" required />
         <input type="text" id="lessonTitle" class="form-input" placeholder="Tiêu đề bài học (VD: Bài 1: Cấu tạo PLC)" required />
-        <textarea id="lessonText" class="form-input" placeholder="Nội dung chữ (Ghi chú, giải thích...)" style="min-height: 100px;"></textarea>
+        <textarea id="lessonText" class="form-input" placeholder="Nội dung chữ (Ghi chú, giải thích...)" style="min-height: 120px;"></textarea>
         
-        <div class="image-upload-area" id="pasteArea">
-          <p style="margin: 0 0 10px 0; font-size: 14px; color: #475569; font-weight: 500;">
-            📸 Tải ảnh từ máy tính hoặc <b style="color:#2563eb;">ấn Ctrl+V dán ảnh trực tiếp</b> vào đây
-          </p>
-          <input type="file" id="lessonImgFile" accept="image/*" class="form-input" style="margin-bottom: 0; padding: 8px;" />
-          <img id="imgPreview" alt="Bản xem trước" />
-        </div>
-
+        <input type="url" id="lessonImg" class="form-input" placeholder="Link hình ảnh (Không bắt buộc)" />
         <input type="url" id="lessonUrl" class="form-input" placeholder="Link YouTube (Không bắt buộc)" />
-        <button class="btn btn-primary" type="submit" style="width: 100%; font-size: 16px;">Lưu bài học</button>
+        
+        <button class="btn btn-primary" type="submit" style="width: 100%; font-size: 16px; padding: 14px;">Lưu bài học</button>
       </form>
       <p id="lessonFormStatus" style="margin-top: 12px; font-weight: 600; text-align: center;"></p>
     </article>
 
     <article class="portal-card" style="margin-bottom: 0;">
-      <h3 style="margin-top:0;">Quản lý & Cấp quyền Học viên</h3>
+      <h3 style="margin-top:0; font-size: 20px;">Quản lý & Cấp quyền Học viên</h3>
       <form id="subuserForm" style="display: flex; flex-direction: column; gap: 12px; background: #f8fafc; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0;">
         <input type="email" id="subuserEmail" class="form-input" style="margin-bottom:0;" placeholder="Nhập Gmail học viên..." required />
         <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 15px; color: #334155; font-weight: 600; margin: 8px 0;">
-          <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;"><input type="checkbox" id="chk-basic" style="width:16px; height:16px;"> PLC Cơ bản</label>
+          <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;"><input type="checkbox" id="chk-basic" style="width:16px; height:16px;"> Cơ bản</label>
           <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;"><input type="checkbox" id="chk-practical" style="width:16px; height:16px;"> Ứng dụng</label>
           <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;"><input type="checkbox" id="chk-advanced" style="width:16px; height:16px;"> Nâng cao</label>
         </div>
-        <button class="btn btn-primary" type="submit">Cập nhật quyền</button>
+        <button class="btn btn-primary" type="submit" style="padding: 12px;">Cập nhật quyền</button>
       </form>
       <p id="subuserStatus" style="margin-top: 10px; font-weight: 500; font-size: 14px; text-align: center;"></p>
       
@@ -107,7 +100,7 @@
   </div>
 
   <article class="portal-card">
-    <h2 style="margin-top:0; font-size: 24px; color: #0f172a; margin-bottom: 24px;">Lộ trình học tập của bạn</h2>
+    <h2 style="margin-top:0; font-size: 26px; color: #0f172a; margin-bottom: 24px; border-left: 6px solid #2563eb; padding-left: 16px;">Lộ trình học tập của bạn</h2>
     
     <div class="course-group-card" id="group-basic">
       <h3>📘 Lộ trình: PLC Cơ bản <span class="progress-text" id="prog-text-basic">0%</span></h3>
@@ -134,8 +127,6 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
   import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
   import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc, serverTimestamp, query, orderBy, addDoc, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
-  // Import thêm Firebase Storage để lưu ảnh tải lên
-  import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-storage.js';
 
   const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
 
@@ -151,46 +142,16 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = window.db = getFirestore(app);
-  const storage = getStorage(app); // Khởi tạo Storage
 
   let currentUser = null;
   let userPermissions = { basic: false, practical: false, advanced: false };
   let completedLessonsData = [];
-  let fileToUpload = null; // Biến lưu trữ ảnh dán/chọn
 
   const portalUserInfo = document.getElementById('portalUserInfo');
   const portalLogoutBtn = document.getElementById('portalLogoutBtn');
   const portalRefreshBtn = document.getElementById('portalRefreshBtn');
   const lessonForm = document.getElementById('lessonForm');
   const subuserForm = document.getElementById('subuserForm');
-  const lessonImgFile = document.getElementById('lessonImgFile');
-  const imgPreview = document.getElementById('imgPreview');
-
-  // XỬ LÝ SỰ KIỆN DÁN ẢNH (Ctrl + V)
-  document.addEventListener('paste', (e) => {
-    if (currentUser && currentUser.email === ADMIN_EMAIL) {
-      const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-      for (let index in items) {
-        const item = items[index];
-        if (item.kind === 'file' && item.type.includes('image/')) {
-          const blob = item.getAsFile();
-          fileToUpload = blob;
-          // Hiện ảnh xem trước
-          imgPreview.src = URL.createObjectURL(blob);
-          imgPreview.style.display = 'block';
-        }
-      }
-    }
-  });
-
-  // XỬ LÝ SỰ KIỆN CHỌN ẢNH TỪ NÚT BẤM
-  lessonImgFile.addEventListener('change', (e) => {
-    if (e.target.files.length > 0) {
-      fileToUpload = e.target.files[0];
-      imgPreview.src = URL.createObjectURL(fileToUpload);
-      imgPreview.style.display = 'block';
-    }
-  });
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) { window.location.href = "login.html"; return; }
@@ -213,11 +174,13 @@
 
     document.getElementById('lesson-portal').style.display = 'block';
     currentUser = user;
-    portalUserInfo.innerText = "Xin chào: " + user.email;
+    
+    // Hiển thị email nhỏ ở góc phải
+    portalUserInfo.innerText = user.email;
     portalUserInfo.style.display = 'block';
 
     if (user.email === ADMIN_EMAIL) {
-      document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'grid'); // Dùng grid thay block cho admin form
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'grid'); 
       loadSubusers();
     }
 
@@ -273,11 +236,11 @@
           lessons.forEach(lesson => {
             const checkedAttr = lesson.isCompleted ? "checked" : "";
             const adminDelBtn = (currentUser.email === ADMIN_EMAIL) 
-              ? `<hr style="border:0; border-top: 1px solid #e2e8f0; margin: 16px 0;"><button class="btn-danger" onclick="window.deleteLesson('${lesson.id}')">🗑️ Xóa bài học này</button>` : '';
+              ? `<hr style="border:0; border-top: 1px solid #e2e8f0; margin: 20px 0;"><button class="btn-danger" onclick="window.deleteLesson('${lesson.id}')">🗑️ Xóa bài học này</button>` : '';
             
             const textHtml = lesson.text ? `<div class="lesson-text">${lesson.text}</div>` : '';
             const imgHtml = lesson.imgUrl ? `<img src="${lesson.imgUrl}" class="lesson-img" />` : '';
-            const vidHtml = lesson.url ? `<div><a href="${lesson.url}" target="_blank" style="display: inline-block; background: #fee2e2; color: #dc2626; padding: 10px 16px; border-radius: 8px; font-weight: 600; text-decoration: none;">▶️ Xem Video Bài Học trên YouTube</a></div>` : '';
+            const vidHtml = lesson.url ? `<div><a href="${lesson.url}" target="_blank" style="display: inline-block; background: #fee2e2; color: #dc2626; padding: 12px 20px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 16px;">▶️ Xem Video Bài Học trên YouTube</a></div>` : '';
 
             html += `
               <details class="lesson-details">
@@ -296,7 +259,7 @@
           });
         }
         
-        container.innerHTML = html || '<p style="color:#64748b; font-size: 15px;">Chưa có bài học nào trong lộ trình này.</p>';
+        container.innerHTML = html || '<p style="color:#64748b; font-size: 16px;">Chưa có bài học nào trong lộ trình này.</p>';
 
         const percent = coursesData[type].total === 0 ? 0 : Math.round((coursesData[type].done / coursesData[type].total) * 100);
         document.getElementById(`prog-bar-${type}`).style.width = `${percent}%`;
@@ -322,43 +285,27 @@
     }
   };
 
-  // ADMIN: UPLOAD ẢNH VÀ LƯU BÀI HỌC
+  // ADMIN: LƯU BÀI HỌC (Đã bỏ up ảnh storage)
   lessonForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const statusText = document.getElementById('lessonFormStatus');
     statusText.style.color = "#2563eb";
-    statusText.innerText = "Đang xử lý...";
+    statusText.innerText = "Đang lưu dữ liệu bài học...";
 
     try {
-      let finalImageUrl = "";
-
-      // Nếu có ảnh từ Ctrl+V hoặc File, tiến hành tải lên Firebase Storage trước
-      if (fileToUpload) {
-        statusText.innerText = "Đang tải ảnh lên máy chủ...";
-        const fileRef = ref(storage, 'images/' + Date.now() + '_' + fileToUpload.name);
-        await uploadBytesResumable(fileRef, fileToUpload);
-        finalImageUrl = await getDownloadURL(fileRef); // Lấy link ảnh trực tiếp sau khi up
-      }
-
-      statusText.innerText = "Đang lưu dữ liệu bài học...";
       await addDoc(collection(db, "youtubeLinks"), {
         type: document.getElementById('lessonCourseType').value,
         chapter: document.getElementById('lessonChapter').value,
         title: document.getElementById('lessonTitle').value,
         text: document.getElementById('lessonText').value,
-        imgUrl: finalImageUrl, // Lưu link ảnh đã tạo
+        imgUrl: document.getElementById('lessonImg').value, // Lấy link ảnh từ input
         url: document.getElementById('lessonUrl').value,
         createdAt: serverTimestamp()
       });
 
       statusText.style.color = "#16a34a";
       statusText.innerText = "Lưu bài học thành công!";
-      
-      // Reset Form và ảnh xem trước
       lessonForm.reset();
-      fileToUpload = null;
-      imgPreview.style.display = 'none';
-      imgPreview.src = '';
       
       loadLessons();
       setTimeout(() => { statusText.innerText = ""; }, 3000);
