@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khu vực học tập - Haomechatronics</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: linear-gradient(120deg, #07111f 0%, #0a1a34 60%, #07111f 100%); min-height: 100vh; padding: 40px 0; font-family: 'Inter', sans-serif; color: #333;}
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .portal-card { background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06); margin-bottom: 24px;}
+    .btn { padding: 10px 20px; border-radius: 8px; cursor: pointer; border: none; font-weight: 600;}
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-secondary { background: #e2e8f0; color: #1e293b; }
+    .btn-danger { background: #ef4444; color: white; padding: 6px 12px; font-size: 13px; border-radius: 6px; }
+    .grid-2 { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: start;}
+    .admin-only { display: none; }
+    
+    .form-input { width: 100%; border: 1px solid #dbe2ea; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; box-sizing: border-box; font-family: inherit;}
+    .course-group-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; margin-bottom: 16px;}
+    .course-group-card h3 { margin-top: 0; color: #0f172a; font-size: 18px;}
+    .lesson-item { background: #fff; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 10px;}
+    .lesson-item h4 { margin: 0 0 8px 0; color: #1e293b;}
+    .lesson-item a { color: #2563eb; word-break: break-all; font-size: 14px; font-weight: 500;}
+    
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="container" id="lesson-portal">
+  <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 20px 24px; border-radius: 20px; margin-bottom: 24px;">
+    <div>
+      <span style="color: #2563eb; font-weight: 700; font-size: 14px; text-transform: uppercase;">Haomechatronics Academy</span>
+      <h2 style="margin: 5px 0 0 0;">Khu vực bài học</h2>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-secondary" id="portalRefreshBtn">Tải lại</button>
+      <button class="btn btn-primary" id="portalLogoutBtn">Đăng xuất</button>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <article class="portal-card admin-only" id="addLessonCard">
+        <h3 style="margin-top:0;">Đăng tải bài học mới</h3>
+        <form id="lessonForm">
+          <select id="lessonCourseType" class="form-input" required>
+            <option value="">Chọn lộ trình khóa học...</option>
+            <option value="basic">PLC Cơ bản</option>
+            <option value="practical">PLC Ứng dụng thực tế</option>
+            <option value="advanced">PLC Nâng cao + HMI</option>
+          </select>
+          <input type="text" id="lessonTitle" class="form-input" placeholder="Tiêu đề bài học (VD: Bài 1: Tổng quan PLC)" required />
+          <input type="url" id="lessonUrl" class="form-input" placeholder="Link YouTube" required />
+          <textarea id="lessonDescription" class="form-input" placeholder="Mô tả ngắn" style="min-height: 80px;"></textarea>
+          <button class="btn btn-primary" type="submit" style="width: 100%;">Lưu bài học</button>
+        </form>
+        <p id="lessonFormStatus" style="color: #16a34a; margin-top: 10px; font-weight: 500;"></p>
+      </article>
+
+      <article class="portal-card">
+        <h3 style="margin-top:0;">Danh sách bài học</h3>
+        
+        <div class="course-group-card">
+          <h3>📘 PLC Cơ bản</h3>
+          <div id="list-basic"><p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p></div>
+        </div>
+
+        <div class="course-group-card">
+          <h3>📙 PLC Ứng dụng thực tế</h3>
+          <div id="list-practical"><p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p></div>
+        </div>
+
+        <div class="course-group-card">
+          <h3>📕 PLC Nâng cao + HMI</h3>
+          <div id="list-advanced"><p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p></div>
+        </div>
+      </article>
+    </div>
+
+    <div>
+      <article class="portal-card">
+        <h3 style="margin-top:0;">Tài khoản của bạn</h3>
+        <p id="portalUserInfo" style="background: #f1f5f9; padding: 12px; border-radius: 8px; font-weight: 600; color: #334155; word-break: break-all;">Đang kiểm tra...</p>
+      </article>
+
+      <article class="portal-card admin-only" id="adminPanel">
+        <h3 style="margin-top:0;">Admin: Cấp quyền Học viên</h3>
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 12px;">Nhập Gmail của học viên đã thanh toán để họ có thể đăng nhập.</p>
+        <form id="subuserForm" style="display: flex; gap: 8px;">
+          <input type="email" id="subuserEmail" class="form-input" style="margin-bottom:0;" placeholder="hocvien@gmail.com" required />
+          <button class="btn btn-primary" type="submit">Thêm</button>
+        </form>
+        <p id="subuserStatus" style="margin-top: 10px; font-weight: 500; font-size: 14px;"></p>
+        
+        <h4 style="margin: 20px 0 10px 0;">Danh sách đã cấp quyền:</h4>
+        <div id="subuserList" style="display: grid; gap: 8px;"></div>
+      </article>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+  import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+  import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc, serverTimestamp, query, orderBy, addDoc } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+
+  const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
+
+  const firebaseConfig = {
+    apiKey: 'AIzaSyDA51Ei3Oe9ipXYjoT857xrqNoU4eZ-4X4',
+    authDomain: 'project-81bb7049-bc9f-499f-974.firebaseapp.com',
+    projectId: 'project-81bb7049-bc9f-499f-974',
+    storageBucket: 'project-81bb7049-bc9f-499f-974.firebasestorage.app',
+    messagingSenderId: '533570063852',
+    appId: '1:533570063852:web:d15aa61abd7a7c2e64c4c9'
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+
+  // DOM Elements
+  const portalUserInfo = document.getElementById('portalUserInfo');
+  const portalLogoutBtn = document.getElementById('portalLogoutBtn');
+  const portalRefreshBtn = document.getElementById('portalRefreshBtn');
+  const lessonForm = document.getElementById('lessonForm');
+  const subuserForm = document.getElementById('subuserForm');
+
+  // KIỂM TRA QUYỀN ĐĂNG NHẬP
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "login.html"; 
+      return;
+    }
+    
+    // Kiểm tra xem User này có phải Admin hoặc nằm trong danh sách AllowedUsers không
+    if (user.email !== ADMIN_EMAIL) {
+      const docRef = doc(db, 'allowedUsers', user.email);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        alert("Tài khoản chưa được Admin cấp quyền khóa học. Vui lòng liên hệ hỗ trợ!");
+        signOut(auth).then(() => { window.location.href = "index.html"; });
+        return;
+      }
+    }
+
+    currentUser = user;
+    portalUserInfo.innerText = user.email;
+
+    // Nếu là Admin thì mở các Form ẩn
+    if (user.email === ADMIN_EMAIL) {
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
+      loadSubusers();
+    }
+
+    loadLessons();
+  });
+
+  // TẢI DANH SÁCH BÀI HỌC
+  async function loadLessons() {
+    try {
+      const q = query(collection(db, "youtubeLinks"), orderBy("createdAt", "asc"));
+      const querySnapshot = await getDocs(q);
+      
+      let htmlBasic = '', htmlPractical = '', htmlAdvanced = '';
+
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const docId = docSnap.id;
+        // Nút xóa chỉ hiện cho Admin
+        const deleteBtn = (currentUser && currentUser.email === ADMIN_EMAIL) 
+          ? `<button class="btn-danger" onclick="window.deleteLesson('${docId}')" style="margin-top: 10px; border:none; cursor:pointer;">Xóa bài này</button>` 
+          : '';
+
+        const itemHtml = `
+          <div class="lesson-item">
+            <h4>${data.title}</h4>
+            <p style="font-size: 13px; color: #475569; margin: 0 0 10px 0;">${data.description}</p>
+            <a href="${data.url}" target="_blank">📺 Xem Video Bài Học</a><br>
+            ${deleteBtn}
+          </div>
+        `;
+
+        if (data.type === 'basic') htmlBasic += itemHtml;
+        else if (data.type === 'practical') htmlPractical += itemHtml;
+        else if (data.type === 'advanced') htmlAdvanced += itemHtml;
+      });
+
+      document.getElementById('list-basic').innerHTML = htmlBasic || '<p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p>';
+      document.getElementById('list-practical').innerHTML = htmlPractical || '<p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p>';
+      document.getElementById('list-advanced').innerHTML = htmlAdvanced || '<p style="color:#64748b; font-size: 14px;">Chưa có bài học.</p>';
+    } catch (error) {
+      console.error("Lỗi khi tải bài học:", error);
+    }
+  }
+
+  // THÊM BÀI HỌC MỚI (CHỈ ADMIN)
+  lessonForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const type = document.getElementById('lessonCourseType').value;
+    const title = document.getElementById('lessonTitle').value;
+    const url = document.getElementById('lessonUrl').value;
+    const desc = document.getElementById('lessonDescription').value;
+    const statusText = document.getElementById('lessonFormStatus');
+
+    try {
+      statusText.innerText = "Đang lưu...";
+      await addDoc(collection(db, "youtubeLinks"), {
+        type: type,
+        title: title,
+        url: url,
+        description: desc,
+        createdAt: serverTimestamp()
+      });
+      statusText.innerText = "Lưu thành công!";
+      lessonForm.reset();
+      loadLessons();
+      setTimeout(() => { statusText.innerText = ""; }, 3000);
+    } catch (error) {
+      statusText.style.color = "red";
+      statusText.innerText = "Lỗi: " + error.message;
+    }
+  });
+
+  // ADMIN: TẢI DANH SÁCH USER ĐƯỢC CẤP QUYỀN
+  async function loadSubusers() {
+    const listDiv = document.getElementById('subuserList');
+    try {
+      const querySnapshot = await getDocs(collection(db, "allowedUsers"));
+      let html = '';
+      querySnapshot.forEach((docSnap) => {
+        html += `
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #f1f5f9; padding: 10px; border-radius: 8px;">
+            <span style="font-size: 14px;">${docSnap.id}</span>
+            <button class="btn-danger" onclick="window.deleteUser('${docSnap.id}')" style="border:none; cursor:pointer;">Xóa</button>
+          </div>
+        `;
+      });
+      listDiv.innerHTML = html || '<p style="color:#64748b; font-size: 14px;">Chưa có tài khoản nào.</p>';
+    } catch (error) {
+      console.error("Lỗi tải user:", error);
+    }
+  }
+
+  // ADMIN: THÊM USER MỚI
+  subuserForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('subuserEmail').value.trim();
+    const statusText = document.getElementById('subuserStatus');
+    try {
+      await setDoc(doc(db, "allowedUsers", email), {
+        addedAt: serverTimestamp()
+      });
+      statusText.style.color = "#16a34a";
+      statusText.innerText = "Đã cấp quyền thành công!";
+      subuserForm.reset();
+      loadSubusers();
+      setTimeout(() => { statusText.innerText = ""; }, 3000);
+    } catch (error) {
+      statusText.style.color = "red";
+      statusText.innerText = "Lỗi: " + error.message;
+    }
+  });
+
+  // HÀM XÓA GLOBAL CHO CÁC NÚT BẤM (Vì dùng type="module")
+  window.deleteLesson = async (docId) => {
+    if(confirm("Bạn có chắc muốn xóa bài học này?")) {
+      await deleteDoc(doc(db, "youtubeLinks", docId));
+      loadLessons();
+    }
+  };
+
+  window.deleteUser = async (email) => {
+    if(confirm(`Thu hồi quyền truy cập của ${email}?`)) {
+      await deleteDoc(doc(db, "allowedUsers", email));
+      loadSubusers();
+    }
+  };
+
+  // NÚT CHỨC NĂNG CƠ BẢN
+  portalRefreshBtn.addEventListener('click', loadLessons);
+  
+  portalLogoutBtn.addEventListener('click', () => {
+    signOut(auth).then(() => { window.location.href = "index.html"; });
+  });
+</script>
+</body>
+</html>
