@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     body { background: linear-gradient(120deg, #07111f 0%, #0a1a34 60%, #07111f 100%); min-height: 100vh; padding: 30px 0; font-family: 'Inter', sans-serif; color: #333;}
-    /* Mở rộng container ra full màn hình */
     .container { max-width: 96%; margin: 0 auto; padding: 0 20px; }
     
     .portal-card { background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06); margin-bottom: 24px;}
@@ -21,7 +20,6 @@
     
     .form-input { width: 100%; border: 1px solid #dbe2ea; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; box-sizing: border-box; font-family: inherit; font-size: 15px;}
     
-    /* Giao diện khóa học Full-width */
     .course-group-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; margin-bottom: 30px;}
     .course-group-card h3 { margin-top: 0; color: #0f172a; font-size: 22px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px;}
     
@@ -29,7 +27,6 @@
     .progress-bar { background: #16a34a; height: 100%; width: 0%; transition: width 0.5s ease-in-out; }
     .progress-text { font-size: 16px; color: #475569; font-weight: 700; background: #e2e8f0; padding: 6px 16px; border-radius: 20px;}
 
-    /* Kích thước chữ to hơn */
     .chapter-title { background: #1e293b; padding: 12px 20px; border-radius: 8px; font-weight: 700; color: #fff; margin: 24px 0 16px 0; font-size: 18px; text-transform: uppercase;}
     details.lesson-details { background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; margin-bottom: 12px; overflow: hidden; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.02);}
     summary.lesson-summary { padding: 18px 24px; font-weight: 600; cursor: pointer; background: #fff; display: flex; align-items: center; gap: 16px; user-select: none; font-size: 18px; color: #0f172a;}
@@ -53,7 +50,6 @@
     </div>
     <div style="display: flex; align-items: center; gap: 16px;">
       <div id="portalUserInfo" style="font-size: 13px; color: #64748b; font-weight: 500; display: none;"></div>
-      
       <button class="btn btn-secondary" id="portalRefreshBtn">Tải lại</button>
       <button class="btn btn-primary" id="portalLogoutBtn">Đăng xuất</button>
     </div>
@@ -61,7 +57,7 @@
 
   <div class="grid-2 admin-only" style="margin-bottom: 24px;">
     <article class="portal-card" style="margin-bottom: 0;">
-      <h3 style="margin-top:0; font-size: 20px;">Đăng tải bài học mới</h3>
+      <h3 id="formTitle" style="margin-top:0; font-size: 20px;">Đăng tải bài học mới</h3>
       <form id="lessonForm">
         <select id="lessonCourseType" class="form-input" required>
           <option value="">Chọn lộ trình khóa học...</option>
@@ -72,11 +68,13 @@
         <input type="text" id="lessonChapter" class="form-input" placeholder="Tên Chương (VD: Chương 1: Tổng quan)" required />
         <input type="text" id="lessonTitle" class="form-input" placeholder="Tiêu đề bài học (VD: Bài 1: Cấu tạo PLC)" required />
         <textarea id="lessonText" class="form-input" placeholder="Nội dung chữ (Ghi chú, giải thích...)" style="min-height: 120px;"></textarea>
-        
         <input type="url" id="lessonImg" class="form-input" placeholder="Link hình ảnh (Không bắt buộc)" />
         <input type="url" id="lessonUrl" class="form-input" placeholder="Link YouTube (Không bắt buộc)" />
         
-        <button class="btn btn-primary" type="submit" style="width: 100%; font-size: 16px; padding: 14px;">Lưu bài học</button>
+        <div style="display: flex; gap: 12px; margin-top: 8px;">
+          <button class="btn btn-primary" type="submit" id="submitLessonBtn" style="flex: 1; font-size: 16px; padding: 14px;">Lưu bài học</button>
+          <button class="btn btn-secondary" type="button" id="cancelEditBtn" onclick="window.cancelEdit()" style="display: none; padding: 14px;">Hủy sửa</button>
+        </div>
       </form>
       <p id="lessonFormStatus" style="margin-top: 12px; font-weight: 600; text-align: center;"></p>
     </article>
@@ -120,13 +118,13 @@
       <div id="list-advanced"></div>
     </div>
   </article>
-
 </div>
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
   import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
-  import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc, serverTimestamp, query, orderBy, addDoc, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+  // Bổ sung thêm updateDoc
+  import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc, serverTimestamp, query, orderBy, addDoc, updateDoc, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
 
   const ADMIN_EMAIL = 'haostudio84l1@gmail.com';
 
@@ -146,6 +144,10 @@
   let currentUser = null;
   let userPermissions = { basic: false, practical: false, advanced: false };
   let completedLessonsData = [];
+  
+  // Biến mới: Lưu toàn bộ dữ liệu bài học để dùng cho việc sửa
+  let allLessonsData = {};
+  let currentEditId = null;
 
   const portalUserInfo = document.getElementById('portalUserInfo');
   const portalLogoutBtn = document.getElementById('portalLogoutBtn');
@@ -175,7 +177,6 @@
     document.getElementById('lesson-portal').style.display = 'block';
     currentUser = user;
     
-    // Hiển thị email nhỏ ở góc phải
     portalUserInfo.innerText = user.email;
     portalUserInfo.style.display = 'block';
 
@@ -202,6 +203,7 @@
       const q = query(collection(db, "youtubeLinks"), orderBy("createdAt", "asc"));
       const querySnapshot = await getDocs(q);
       
+      allLessonsData = {}; // Xóa dữ liệu cũ đi trước khi load lại
       let coursesData = {
         basic: { total: 0, done: 0, chapters: {} },
         practical: { total: 0, done: 0, chapters: {} },
@@ -211,6 +213,9 @@
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
         const docId = docSnap.id;
+        
+        allLessonsData[docId] = data; // Lưu lại dữ liệu của từng bài
+
         const type = data.type;
         const chapterName = data.chapter || "Chưa phân chương";
         
@@ -235,8 +240,14 @@
           
           lessons.forEach(lesson => {
             const checkedAttr = lesson.isCompleted ? "checked" : "";
-            const adminDelBtn = (currentUser.email === ADMIN_EMAIL) 
-              ? `<hr style="border:0; border-top: 1px solid #e2e8f0; margin: 20px 0;"><button class="btn-danger" onclick="window.deleteLesson('${lesson.id}')">🗑️ Xóa bài học này</button>` : '';
+            
+            // Nút sửa và xóa cho Admin
+            const adminBtns = (currentUser.email === ADMIN_EMAIL) 
+              ? `<hr style="border:0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
+                 <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-primary" onclick="window.editLesson('${lesson.id}')" style="padding: 8px 16px; font-size: 14px; background: #0f766e;">✏️ Sửa bài này</button>
+                    <button class="btn-danger" onclick="window.deleteLesson('${lesson.id}')" style="padding: 8px 16px;">🗑️ Xóa bài này</button>
+                 </div>` : '';
             
             const textHtml = lesson.text ? `<div class="lesson-text">${lesson.text}</div>` : '';
             const imgHtml = lesson.imgUrl ? `<img src="${lesson.imgUrl}" class="lesson-img" />` : '';
@@ -252,7 +263,7 @@
                   ${textHtml}
                   ${imgHtml}
                   ${vidHtml}
-                  ${adminDelBtn}
+                  ${adminBtns}
                 </div>
               </details>
             `;
@@ -285,29 +296,71 @@
     }
   };
 
-  // ADMIN: LƯU BÀI HỌC (Đã bỏ up ảnh storage)
+  // ADMIN: HÀM ĐƯA DỮ LIỆU LÊN FORM ĐỂ SỬA
+  window.editLesson = (lessonId) => {
+    const data = allLessonsData[lessonId];
+    if (!data) return;
+
+    document.getElementById('lessonCourseType').value = data.type;
+    document.getElementById('lessonChapter').value = data.chapter || "";
+    document.getElementById('lessonTitle').value = data.title || "";
+    document.getElementById('lessonText').value = data.text || "";
+    document.getElementById('lessonImg').value = data.imgUrl || "";
+    document.getElementById('lessonUrl').value = data.url || "";
+    
+    currentEditId = lessonId;
+    
+    // Đổi giao diện nút bấm và tiêu đề Form
+    document.getElementById('formTitle').innerText = "✏️ Chỉnh sửa bài học";
+    document.getElementById('submitLessonBtn').innerText = "Cập nhật bài học";
+    document.getElementById('cancelEditBtn').style.display = "block";
+
+    // Cuộn lên mượt mà tới form đăng bài
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // ADMIN: HÀM HỦY SỬA
+  window.cancelEdit = () => {
+    currentEditId = null;
+    lessonForm.reset();
+    document.getElementById('formTitle').innerText = "Đăng tải bài học mới";
+    document.getElementById('submitLessonBtn').innerText = "Lưu bài học";
+    document.getElementById('cancelEditBtn').style.display = "none";
+  };
+
+  // ADMIN: LƯU BÀI HỌC (XỬ LÝ CẢ THÊM MỚI VÀ CẬP NHẬT)
   lessonForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const statusText = document.getElementById('lessonFormStatus');
     statusText.style.color = "#2563eb";
-    statusText.innerText = "Đang lưu dữ liệu bài học...";
+    statusText.innerText = currentEditId ? "Đang cập nhật bài học..." : "Đang lưu dữ liệu bài học...";
 
     try {
-      await addDoc(collection(db, "youtubeLinks"), {
+      const lessonData = {
         type: document.getElementById('lessonCourseType').value,
         chapter: document.getElementById('lessonChapter').value,
         title: document.getElementById('lessonTitle').value,
         text: document.getElementById('lessonText').value,
-        imgUrl: document.getElementById('lessonImg').value, // Lấy link ảnh từ input
+        imgUrl: document.getElementById('lessonImg').value,
         url: document.getElementById('lessonUrl').value,
-        createdAt: serverTimestamp()
-      });
+      };
 
-      statusText.style.color = "#16a34a";
-      statusText.innerText = "Lưu bài học thành công!";
-      lessonForm.reset();
+      if (currentEditId) {
+        // Cập nhật bài cũ
+        await updateDoc(doc(db, "youtubeLinks", currentEditId), lessonData);
+        statusText.style.color = "#16a34a";
+        statusText.innerText = "Cập nhật thành công!";
+        window.cancelEdit(); // Reset form về dạng Thêm mới
+      } else {
+        // Thêm bài mới
+        lessonData.createdAt = serverTimestamp();
+        await addDoc(collection(db, "youtubeLinks"), lessonData);
+        statusText.style.color = "#16a34a";
+        statusText.innerText = "Lưu bài học mới thành công!";
+        lessonForm.reset();
+      }
       
-      loadLessons();
+      loadLessons(); // Tải lại danh sách
       setTimeout(() => { statusText.innerText = ""; }, 3000);
     } catch (error) {
       statusText.style.color = "red";
@@ -360,7 +413,7 @@
   });
 
   window.deleteLesson = async (docId) => {
-    if(confirm("Bạn có chắc muốn xóa bài học này?")) {
+    if(confirm("Bạn có chắc muốn xóa bài học này? Mọi dữ liệu của bài học sẽ bị mất!")) {
       await deleteDoc(doc(db, "youtubeLinks", docId));
       loadLessons();
     }
